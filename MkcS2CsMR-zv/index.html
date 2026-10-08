@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add("js")</script>
+<title>Opia Concept Store</title>
+<meta name="description" content="Opia Concept Store: tienda de regalos. Pásate por Opia Concept Store o escríbenos por WhatsApp o por teléfono.">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#1f2a17">
+<meta property="og:title" content="Opia Concept Store">
+<meta property="og:description" content="Opia Concept Store: tienda de regalos. Pásate por Opia Concept Store o escríbenos por WhatsApp o por teléfono.">
+<meta property="og:type" content="website">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=&#39;http://www.w3.org/2000/svg&#39;%20viewBox=&#39;0%200%2064%2064&#39;%3E%3Crect%20width=&#39;64&#39;%20height=&#39;64&#39;%20rx=&#39;16&#39;%20fill=&#39;%23536b3a&#39;/%3E%3Ctext%20x=&#39;32&#39;%20y=&#39;42&#39;%20font-size=&#39;28&#39;%20font-family=&#39;sans-serif&#39;%20font-weight=&#39;700&#39;%20text-anchor=&#39;middle&#39;%20fill=&#39;%23ffffff&#39;%3EOC%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="../fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Fraunces";src:url(../fonts/fraunces.woff2) format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:"DM Sans";src:url(../fonts/dm-sans.woff2) format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+:root{--bg:#fbfaf6;--surface:#ffffff;--ink:#23261f;--muted:#5c6153;--primary:#536b3a;--on-primary:#ffffff;--accent:#e2a64b;--hero-from:#1f2a17;--hero-to:#536b3a;--hero-ink:#f6f8ef;--line:#dfdeda;--radius:18px;--font-head:"Fraunces",ui-serif,Georgia,"Times New Roman",serif;--font-body:"DM Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--head-weight:650;--track:-.02em;--nav-ink:#f6f8ef;--brand:#536b3a;--brand2:#e2a64b}
+/* Solentis · diseño de webs de negocio (v2). Todo sale de las variables del tema; sin recursos externos. */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:88px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--font-head);font-weight:var(--head-weight);letter-spacing:var(--track);line-height:1.04;margin:0;text-wrap:balance}
+p{margin:0 0 1rem}
+.wrap{width:min(1180px,100% - 2.5rem);margin-inline:auto}
+.skip{position:absolute;left:-999px;top:8px;background:var(--primary);color:var(--on-primary);padding:.6rem 1rem;border-radius:999px;z-index:100}
+.skip:focus{left:12px}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 85%,#fff);outline-offset:3px;border-radius:6px}
+.grain::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.045;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+.dark.grain::after{mix-blend-mode:screen;opacity:.05}
+
+/* barra de propuesta + progreso */
+.progress{position:fixed;left:0;top:0;height:3px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(90deg,var(--accent),var(--primary));z-index:80}
+.demo-bar{display:flex;gap:.75rem;align-items:center;justify-content:center;flex-wrap:wrap;padding:.5rem 1rem;background:#111;color:#f4f4f4;font:600 .8rem/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center;position:relative;z-index:60}
+.demo-bar a{background:#fff;color:#111;border-radius:999px;padding:.28rem .85rem;text-decoration:none;font-weight:700}
+.demo-bar a:hover{background:#ffe9a8}
+
+/* navegación */
+.nav{position:fixed;inset:auto 0 auto 0;z-index:50;transition:background .3s,box-shadow .3s,backdrop-filter .3s,transform .35s}
+.has-bar .nav{top:2.3rem}
+.nav .wrap{display:flex;align-items:center;gap:1.4rem;height:72px}
+.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;font-family:var(--font-head);font-weight:var(--head-weight);font-size:1.15rem;letter-spacing:var(--track);color:var(--nav-ink)}
+.mark{width:40px;height:40px;border-radius:calc(var(--radius) * .7);display:grid;place-items:center;background:var(--primary);color:var(--on-primary);font:800 .95rem/1 var(--font-body);letter-spacing:.02em;flex:none}
+.links{display:flex;gap:1.6rem;margin-left:auto}
+.links a{text-decoration:none;font-weight:600;font-size:.95rem;color:var(--nav-ink);opacity:.82;position:relative;padding:.3rem 0;transition:opacity .2s}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:0 50%;transition:transform .3s}
+.links a:hover,.links a.on{opacity:1}
+.links a:hover::after,.links a.on::after{transform:scaleX(1)}
+.nav .btn{margin-left:.2rem}
+.nav.solid{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:saturate(1.6) blur(16px);-webkit-backdrop-filter:saturate(1.6) blur(16px);box-shadow:0 1px 0 var(--line),0 12px 40px -24px rgba(0,0,0,.35);--nav-ink:var(--ink)}
+.nav.solid .brand{color:var(--ink)}
+.burger{display:none;margin-left:auto;width:44px;height:44px;border-radius:50%;border:1px solid color-mix(in srgb,var(--nav-ink) 30%,transparent);background:transparent;color:var(--nav-ink);cursor:pointer;place-items:center}
+.nav.solid .burger{color:var(--ink);border-color:var(--line)}
+.sheet{position:fixed;inset:0;z-index:70;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;padding:1.2rem 1.5rem 2rem;transform:translateY(-102%);transition:transform .45s cubic-bezier(.7,0,.2,1)}
+.sheet.open{transform:none}
+.sheet .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+.sheet nav{display:grid;gap:.2rem}
+.sheet nav a{font:var(--head-weight) clamp(2rem,9vw,3rem)/1.15 var(--font-head);text-decoration:none;letter-spacing:var(--track);padding:.4rem 0;border-bottom:1px solid var(--line)}
+.sheet .btn{margin-top:auto}
+
+/* botones */
+.btn{--bg-b:var(--primary);--ink-b:var(--on-primary);display:inline-flex;align-items:center;justify-content:center;gap:.55rem;border:1.5px solid transparent;border-radius:999px;padding:.95rem 1.6rem;font:700 1rem/1 var(--font-body);text-decoration:none;cursor:pointer;background:var(--bg-b);color:var(--ink-b);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,background .2s,color .2s;box-shadow:0 10px 28px -12px color-mix(in srgb,var(--primary) 75%,transparent);will-change:transform}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px -12px color-mix(in srgb,var(--primary) 80%,transparent)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn{position:relative;overflow:hidden}
+.btn svg{width:19px;height:19px}
+.btn .rp{position:absolute;border-radius:50%;width:90px;height:90px;margin:-45px 0 0 -45px;background:rgba(255,255,255,.45);transform:scale(0);animation:ripple .65s ease-out forwards;pointer-events:none}
+.btn-sm{padding:.7rem 1.15rem;font-size:.92rem}
+.btn-ghost{--bg-b:transparent;--ink-b:var(--hero-ink);border-color:color-mix(in srgb,var(--hero-ink) 45%,transparent);box-shadow:none}
+.btn-ghost:hover{background:color-mix(in srgb,var(--hero-ink) 14%,transparent);box-shadow:none}
+.btn-line{--bg-b:transparent;--ink-b:var(--ink);border-color:var(--line);box-shadow:none}
+.btn-line:hover{border-color:var(--primary);box-shadow:none}
+
+/* portada */
+.hero{position:relative;isolation:isolate;min-height:min(100svh,880px);display:flex;flex-direction:column;justify-content:flex-end;color:var(--hero-ink);background:linear-gradient(135deg,var(--hero-from),var(--hero-to));overflow:hidden;padding:9.5rem 0 0}
+.hero-bg{position:absolute;inset:0;z-index:-1}
+.hero-img{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;animation:kb 22s ease-in-out infinite alternate;will-change:transform}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--hero-from) 55%,transparent) 0%,color-mix(in srgb,var(--hero-from) 20%,transparent) 38%,color-mix(in srgb,var(--hero-from) 88%,transparent) 100%)}
+.hero:not(.has-photo) .hero-shade{background:radial-gradient(120% 90% at 85% 10%,transparent 0%,color-mix(in srgb,var(--hero-from) 60%,transparent) 100%)}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:float 16s ease-in-out infinite;will-change:transform}
+.blob.b1{width:46vmax;height:46vmax;left:-14vmax;top:-18vmax;background:var(--primary)}
+.blob.b2{width:38vmax;height:38vmax;right:-12vmax;top:8vmax;background:var(--accent);opacity:.4;animation-delay:-5s;animation-duration:20s}
+.blob.b3{width:30vmax;height:30vmax;left:30%;bottom:-18vmax;background:var(--primary);opacity:.32;animation-delay:-9s}
+.dots{position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--hero-ink) 22%,transparent) 1.2px,transparent 1.4px);background-size:28px 28px;-webkit-mask-image:radial-gradient(70% 60% at 75% 35%,#000,transparent);mask-image:radial-gradient(70% 60% at 75% 35%,#000,transparent);opacity:.7}
+.ghost{position:absolute;right:-2%;top:50%;width:min(40vw,500px);color:var(--hero-ink);opacity:.12}
+.ghost svg{width:100%;height:auto;stroke-width:1.1}
+.hero-in{padding-bottom:6.5rem;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:.6rem;border:1px solid color-mix(in srgb,var(--hero-ink) 30%,transparent);background:color-mix(in srgb,var(--hero-ink) 8%,transparent);backdrop-filter:blur(8px);padding:.42rem .95rem;border-radius:999px;font:700 .78rem/1 var(--font-body);letter-spacing:.12em;text-transform:uppercase}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 30%,transparent)}
+.hero h1{font-size:clamp(2.9rem,8.4vw + .4rem,7.2rem);margin:1.3rem 0 1.1rem;max-width:15ch;letter-spacing:calc(var(--track) * 1.4)}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding:.08em .03em .16em;margin:-.08em -.03em -.16em}
+.w>span{display:inline-block;transform:translateY(112%) rotate(5deg);transform-origin:0 100%;animation:wordup 1s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(.12s + var(--i) * .09s)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(520px circle at var(--px,70%) var(--py,30%),color-mix(in srgb,var(--accent) 26%,transparent),transparent 62%);mix-blend-mode:screen;opacity:.9;transition:opacity .4s}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+.ring{position:absolute;right:max(-8%,-110px);top:50%;width:min(52vw,640px);aspect-ratio:1;border-radius:50%;translate:0 -50%;background:conic-gradient(from var(--a),transparent 0 55%,color-mix(in srgb,var(--accent) 70%,transparent) 78%,transparent 100%);-webkit-mask:radial-gradient(circle,transparent 61%,#000 62%,#000 63.5%,transparent 64.5%);mask:radial-gradient(circle,transparent 61%,#000 62%,#000 63.5%,transparent 64.5%);animation:spin 14s linear infinite;opacity:.8}
+.ring.r2{width:min(40vw,500px);animation-duration:22s;animation-direction:reverse;opacity:.5}
+.ghost{transform:translate3d(calc(var(--mx2,0) * 26px),calc(var(--my2,0) * 20px - 52%),0);transition:transform .25s ease-out}
+
+.hero-center .hero-in{text-align:center}.hero-center h1{margin-inline:auto}.hero-center .sub,.hero-center .cta-row,.hero-center .pills{margin-inline:auto;justify-content:center}
+.sub{font-size:clamp(1.1rem,1.2vw + .8rem,1.5rem);max-width:34ch;line-height:1.45;opacity:.93;margin-bottom:2rem}
+.cta-row{display:flex;gap:.8rem;flex-wrap:wrap}
+.pills{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.8rem}
+.pill{display:inline-flex;align-items:center;gap:.5rem;font:600 .88rem/1 var(--font-body);padding:.55rem .95rem;border-radius:999px;background:color-mix(in srgb,var(--hero-ink) 11%,transparent);border:1px solid color-mix(in srgb,var(--hero-ink) 20%,transparent);backdrop-filter:blur(8px);color:var(--hero-ink);text-decoration:none}
+.pill svg{width:16px;height:16px;opacity:.9}
+.live{display:none}.live.on{display:inline-flex}
+.dot{width:9px;height:9px;border-radius:50%;background:#9aa0a6;flex:none}
+.live.open .dot{background:#3ddc84;box-shadow:0 0 0 0 rgba(61,220,132,.7);animation:pulse 2s infinite}
+.live.closed .dot{background:#ff6b6b}
+.credit{position:absolute;right:1.25rem;bottom:.9rem;font:600 .7rem/1.2 var(--font-body);color:#fff;opacity:.75;text-shadow:0 1px 6px rgba(0,0,0,.6);z-index:2;max-width:46ch;text-align:right}
+.credit a{text-decoration:underline}
+.marquee{border-block:1px solid color-mix(in srgb,var(--hero-ink) 18%,transparent);background:color-mix(in srgb,var(--hero-from) 55%,transparent);backdrop-filter:blur(10px);overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee .track{display:inline-flex;gap:2.2rem;padding:1rem 0;animation:slide 38s linear infinite;will-change:transform}
+.marquee span{display:inline-flex;align-items:center;gap:2.2rem;font:var(--head-weight) 1.05rem/1 var(--font-head);letter-spacing:var(--track);text-transform:uppercase;color:var(--hero-ink);opacity:.9}
+.marquee span::after{content:"✦";color:var(--accent);font-size:.8em}
+
+/* tarjeta de datos rápidos */
+.quick{position:relative;z-index:3;margin-top:-2.6rem}
+.quick .card{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));background:var(--surface);border-radius:calc(var(--radius) * 1.3);border:1px solid var(--line);box-shadow:0 30px 70px -34px rgba(0,0,0,.45);overflow:hidden}
+.q{display:flex;gap:.9rem;align-items:center;padding:1.25rem 1.4rem;text-decoration:none;border-right:1px solid var(--line);transition:background .25s}
+.q:last-child{border-right:0}
+a.q:hover{background:color-mix(in srgb,var(--primary) 7%,var(--surface))}
+.q .ico{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--primary) 12%,transparent);color:var(--primary);flex:none}
+.q small{display:block;font:700 .7rem/1 var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.q b{display:block;font-weight:700;line-height:1.3;font-size:.98rem}
+
+/* secciones */
+.sec{padding:clamp(4.5rem,9vw,8rem) 0;position:relative}
+.sec.alt{background:var(--surface)}
+.label{display:inline-flex;align-items:center;gap:.7rem;font:800 .78rem/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem}
+.label::before{content:"";width:34px;height:2px;background:var(--accent);border-radius:2px}
+h2{font-size:clamp(2.1rem,4.6vw + .3rem,4rem)}
+.lead{font-size:1.18rem;color:var(--muted);max-width:56ch;margin-top:1rem}
+.head{display:grid;gap:.4rem;margin-bottom:3rem}
+
+/* sobre nosotros */
+.about{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2rem,6vw,5.5rem);align-items:start}
+.quote{font:var(--head-weight) clamp(1.7rem,3.2vw + .4rem,2.8rem)/1.12 var(--font-head);letter-spacing:var(--track);margin-bottom:1.6rem;position:relative}
+.quote em{font-style:normal;background:linear-gradient(transparent 62%,color-mix(in srgb,var(--accent) 45%,transparent) 62%)}
+.prose p{color:var(--muted);font-size:1.1rem}
+.traits{list-style:none;padding:0;margin:1.6rem 0 0;display:flex;flex-wrap:wrap;gap:.6rem}
+.traits li{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .95rem;border-radius:999px;background:color-mix(in srgb,var(--primary) 10%,transparent);color:var(--ink);font-weight:600;font-size:.92rem;border:1px solid color-mix(in srgb,var(--primary) 20%,transparent);transition:transform .25s,background .25s}
+.traits li:hover{transform:translateY(-2px);background:color-mix(in srgb,var(--primary) 18%,transparent)}
+.traits svg{width:16px;height:16px;color:var(--primary)}
+.facts{background:var(--bg);border:1px solid var(--line);border-radius:calc(var(--radius) * 1.3);padding:1.6rem;display:grid;gap:1.15rem;box-shadow:0 24px 60px -40px rgba(0,0,0,.4)}
+.alt .facts{background:var(--bg)}
+.fact{display:flex;gap:1rem;align-items:flex-start}
+.fact .ico{width:42px;height:42px;border-radius:calc(var(--radius) * .6);display:grid;place-items:center;background:var(--primary);color:var(--on-primary);flex:none}
+.fact b{display:block;font-size:.95rem}
+.fact span,.fact a{color:var(--muted);font-size:.98rem;text-decoration:none}
+.fact a:hover{color:var(--primary)}
+.near{border-top:1px dashed var(--line);padding-top:1.1rem}
+.near h4{font:800 .72rem/1 var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
+.near ul{list-style:none;margin:0;padding:0;display:grid;gap:.55rem}
+.near li{display:flex;justify-content:space-between;gap:1rem;font-weight:600;font-size:.97rem}
+.near li span{color:var(--muted);font-weight:500;white-space:nowrap}
+.collage{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.2rem}
+.collage figure{margin:0;border-radius:calc(var(--radius) * 1.2);overflow:hidden;position:relative;aspect-ratio:4/5;background:var(--line)}
+.collage figure:nth-child(2){margin-top:2rem}
+.collage img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.collage figure:hover img{transform:scale(1.06)}
+
+.emblem{position:relative;margin-top:2.2rem;border-radius:calc(var(--radius) * 1.6);overflow:hidden;aspect-ratio:16/10;display:grid;place-items:center;color:var(--hero-ink);background:linear-gradient(135deg,var(--hero-from),var(--hero-to));isolation:isolate}
+.emblem::before,.emblem::after{content:"";position:absolute;border-radius:50%;filter:blur(46px);z-index:-1}
+.emblem::before{width:60%;aspect-ratio:1;background:var(--primary);left:-12%;top:-30%;opacity:.7}
+.emblem::after{width:50%;aspect-ratio:1;background:var(--accent);right:-10%;bottom:-34%;opacity:.5}
+.emblem svg{width:44%;height:auto;opacity:.92;stroke-width:1}
+.emblem small{position:absolute;left:1.2rem;bottom:1rem;font:800 .72rem/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+.emblem .big{position:absolute;right:1.2rem;top:1rem;font:var(--head-weight) clamp(2.2rem,5vw,3.6rem)/1 var(--font-head);opacity:.28;letter-spacing:var(--track)}
+
+/* servicios (bento) */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:1.1rem}
+.svc{--mx:50%;--my:0%;position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--radius) * 1.3);padding:1.7rem;grid-column:span 2;min-height:220px;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .35s}
+.alt .svc{background:var(--bg)}
+.svc::before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx) var(--my),color-mix(in srgb,var(--primary) 16%,transparent),transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none}
+.svc{transform-style:preserve-3d}
+.svc:hover{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-6px);border-color:color-mix(in srgb,var(--primary) 55%,var(--line));box-shadow:0 28px 60px -34px color-mix(in srgb,var(--primary) 70%,transparent)}
+.svc:hover::before{opacity:1}
+.svc .no{position:absolute;right:1.3rem;top:1.1rem;font:var(--head-weight) 1rem/1 var(--font-head);color:var(--muted);opacity:.5}
+.svc .ico{width:54px;height:54px;border-radius:calc(var(--radius) * .8);display:grid;place-items:center;background:color-mix(in srgb,var(--primary) 13%,transparent);color:var(--primary);margin-bottom:auto;transition:transform .4s,background .3s,color .3s}
+.svc:hover .ico{background:var(--primary);color:var(--on-primary);transform:rotate(-8deg) scale(1.06)}
+.svc h3{font-size:1.4rem;margin:1.8rem 0 .5rem}
+.svc p{color:var(--muted);margin:0;font-size:1rem}
+.svc.big{grid-column:span 3;grid-row:span 1;background:linear-gradient(145deg,var(--primary),color-mix(in srgb,var(--primary) 70%,#000));color:var(--on-primary);border-color:transparent}
+.svc.big p,.svc.big .no{color:inherit;opacity:.85}
+.svc.big .ico{background:color-mix(in srgb,var(--on-primary) 18%,transparent);color:var(--on-primary)}
+.svc.big:hover .ico{background:var(--on-primary);color:var(--primary)}
+.svc.big::before{background:radial-gradient(420px circle at var(--mx) var(--my),rgba(255,255,255,.22),transparent 60%)}
+.bento.n3 .svc,.bento.n3 .svc.big{grid-column:span 2}
+.bento.n4 .svc,.bento.n4 .svc.big{grid-column:span 3}
+.note{margin-top:1.2rem;font-size:.9rem;color:var(--muted)}
+
+/* galería */
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:clamp(150px,18vw,230px);gap:1rem}
+.gallery button{border:0;padding:0;margin:0;border-radius:calc(var(--radius) * 1.1);overflow:hidden;cursor:zoom-in;position:relative;background:var(--line)}
+.gallery button:nth-child(1){grid-column:span 7;grid-row:span 2}
+.gallery button:nth-child(2),.gallery button:nth-child(3){grid-column:span 5}
+.gallery button:nth-child(n+4){grid-column:span 4}
+.gallery.g4 button:nth-child(n){grid-column:span 6;grid-row:span 1}
+.gallery.g5 button:nth-child(n+4){grid-column:span 6}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.8,.2,1),filter .4s}
+.gallery button:hover img{transform:scale(1.07)}
+.gallery .tag,.collage .tag{position:absolute;left:.7rem;bottom:.7rem;background:rgba(0,0,0,.6);color:#fff;font:600 .68rem/1 var(--font-body);padding:.35rem .6rem;border-radius:999px;backdrop-filter:blur(6px)}
+dialog.lb{border:0;padding:0;background:transparent;max-width:100vw;max-height:100vh;width:100vw;height:100vh}
+dialog.lb::backdrop{background:rgba(8,8,10,.92)}
+dialog.lb .in{width:100%;height:100%;display:grid;place-items:center;padding:3rem 1rem}
+dialog.lb img{max-height:86vh;max-width:min(96vw,1400px);border-radius:12px;object-fit:contain}
+dialog.lb button{position:fixed;top:1rem;right:1rem;width:46px;height:46px;border-radius:50%;border:0;background:#fff;color:#111;cursor:pointer;display:grid;place-items:center}
+
+/* pasos */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;counter-reset:s}
+.step{position:relative;padding:2rem 1.7rem 1.7rem;border-radius:calc(var(--radius) * 1.3);background:var(--surface);border:1px solid var(--line);counter-increment:s}
+.step::before{content:counter(s,decimal-leading-zero);font:var(--head-weight) 3.4rem/1 var(--font-head);letter-spacing:var(--track);color:transparent;-webkit-text-stroke:1.5px color-mix(in srgb,var(--primary) 55%,transparent);display:block;margin-bottom:1rem}
+.step h3{font-size:1.35rem;margin-bottom:.45rem}
+.step p{color:var(--muted);margin:0}
+
+/* horario + reserva */
+.split{display:grid;grid-template-columns:.9fr 1.1fr;gap:1.4rem;align-items:start}
+.split.single{grid-template-columns:minmax(0,680px);justify-content:center}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--radius) * 1.4);padding:clamp(1.4rem,3vw,2.2rem);box-shadow:0 26px 70px -44px rgba(0,0,0,.45)}
+.alt .panel{background:var(--bg)}
+.panel h3{font-size:1.7rem;margin-bottom:1.2rem}
+.hours{width:100%;border-collapse:collapse}
+.hours tr{border-bottom:1px solid var(--line)}
+.hours tr:last-child{border:0}
+.hours td{padding:.8rem 0;font-weight:600}
+.hours td:last-child{text-align:right;color:var(--muted);font-weight:500;font-variant-numeric:tabular-nums}
+.hours tr.today td{color:var(--primary);font-weight:800}
+.hours tr.today td:last-child{color:var(--primary)}
+.status{display:flex;align-items:center;gap:.6rem;font-weight:700;margin-bottom:1rem;padding:.8rem 1rem;border-radius:calc(var(--radius) * .8);background:color-mix(in srgb,var(--primary) 9%,transparent)}
+.status .dot{background:#9aa0a6}.status.open .dot{background:#2bb673;box-shadow:0 0 0 0 rgba(43,182,115,.6);animation:pulse 2s infinite}.status.closed .dot{background:#e5484d}
+form.book{display:grid;gap:1rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.f label{display:block;font:700 .8rem/1 var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem}
+.f input,.f select,.f textarea{width:100%;font:500 1rem/1.3 var(--font-body);color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:calc(var(--radius) * .75);padding:.85rem 1rem;transition:border-color .2s,box-shadow .2s}
+.alt .f input,.alt .f select,.alt .f textarea{background:var(--surface)}
+.f textarea{resize:vertical;min-height:90px}
+.f input:focus,.f select:focus,.f textarea:focus{outline:0;border-color:var(--primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--primary) 18%,transparent)}
+.stepper{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:calc(var(--radius) * .75);background:var(--bg);overflow:hidden}
+.alt .stepper{background:var(--surface)}
+.stepper button{width:48px;height:48px;border:0;background:transparent;font:700 1.3rem/1 var(--font-body);color:var(--ink);cursor:pointer;transition:background .2s}
+.stepper button:hover{background:color-mix(in srgb,var(--primary) 12%,transparent)}
+.stepper output{flex:1;text-align:center;font-weight:800}
+.hint{font-size:.85rem;color:var(--muted);margin:0}
+
+/* valoración real */
+.rating{display:flex;align-items:center;gap:1.6rem;flex-wrap:wrap;justify-content:center;padding:2rem;border-radius:calc(var(--radius) * 1.4);background:var(--surface);border:1px solid var(--line)}
+.rating big{font:var(--head-weight) 4.5rem/1 var(--font-head);letter-spacing:var(--track);color:var(--primary)}
+.stars{display:flex;gap:.2rem;color:#f5b301}.stars svg{width:26px;height:26px;fill:currentColor}
+
+/* preguntas */
+.faq{max-width:860px;margin:0 auto;display:grid;gap:.8rem}
+details{background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--radius) * 1.1);transition:border-color .25s,box-shadow .25s}
+.alt details{background:var(--bg)}
+details[open]{border-color:color-mix(in srgb,var(--primary) 50%,var(--line));box-shadow:0 20px 50px -36px color-mix(in srgb,var(--primary) 65%,transparent)}
+summary{cursor:pointer;list-style:none;padding:1.25rem 1.5rem;font:700 1.1rem/1.35 var(--font-body);display:flex;justify-content:space-between;align-items:center;gap:1rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:400 1.8rem/1 var(--font-body);color:var(--primary);transition:transform .35s;flex:none}
+details[open] summary::after{transform:rotate(135deg)}
+details p{padding:0 1.5rem 1.4rem;margin:0;color:var(--muted)}
+
+/* mapa */
+.mapbox{position:relative;border-radius:calc(var(--radius) * 1.5);overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -48px rgba(0,0,0,.5)}
+.mapbox iframe{width:100%;height:clamp(340px,46vw,500px);border:0;display:block;filter:saturate(.9) contrast(1.02)}
+.maptag{position:absolute;left:1.2rem;bottom:1.2rem;background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--radius) * 1.1);padding:1rem 1.2rem;max-width:min(340px,calc(100% - 2.4rem));box-shadow:0 16px 40px -20px rgba(0,0,0,.5)}
+.maptag b{display:block;margin-bottom:.2rem}
+.maptag span{color:var(--muted);font-size:.95rem;display:block;margin-bottom:.8rem}
+
+.bigname{overflow:hidden;white-space:nowrap;padding:clamp(1.5rem,4vw,3rem) 0;border-block:1px solid var(--line);-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.bigname .track{display:inline-flex;gap:3rem;animation:sweep 46s linear infinite;will-change:transform}
+.bigname span{font:var(--head-weight) clamp(3.2rem,11vw,9rem)/1 var(--font-head);letter-spacing:var(--track);color:transparent;-webkit-text-stroke:1.5px color-mix(in srgb,var(--ink) 35%,transparent);display:inline-flex;align-items:center;gap:3rem}
+.bigname span:nth-child(even){color:var(--primary);-webkit-text-stroke:0;opacity:.9}
+.bigname span::after{content:"";width:.22em;height:.22em;border-radius:50%;background:var(--accent)}
+
+/* llamada final */
+.band{position:relative;overflow:hidden;border-radius:calc(var(--radius) * 2);padding:clamp(2.8rem,7vw,5.5rem) clamp(1.5rem,5vw,4rem);text-align:center;color:var(--hero-ink);background:linear-gradient(135deg,var(--hero-from),var(--hero-to));isolation:isolate}
+.band::before,.band::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);z-index:-1;opacity:.5}
+.band::before{width:420px;height:420px;background:var(--primary);left:-120px;top:-160px}
+.band::after{width:360px;height:360px;background:var(--accent);right:-100px;bottom:-160px;opacity:.38}
+.band h2{max-width:18ch;margin:0 auto 1rem}
+.band p{max-width:46ch;margin:0 auto 2rem;opacity:.92;font-size:1.15rem}
+.band .cta-row{justify-content:center}
+
+/* pie y accesos móviles */
+footer{padding:2.6rem 0 6rem;border-top:1px solid var(--line);color:var(--muted);font-size:.92rem}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem 2rem;flex-wrap:wrap;align-items:center}
+footer .cred{flex-basis:100%;font-size:.8rem;opacity:.85}
+.dock{position:fixed;inset:auto 0 0 0;z-index:55;display:none;gap:.6rem;padding:.7rem .8rem calc(.7rem + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(16px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .4s}
+.dock.show{transform:none}
+.dock .btn{flex:1;padding:.85rem 1rem}
+.totop{position:fixed;right:1.1rem;bottom:1.1rem;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:grid;place-items:center;opacity:0;pointer-events:none;transform:translateY(10px);transition:.3s;z-index:54;box-shadow:0 12px 30px -14px rgba(0,0,0,.5)}
+.totop.show{opacity:1;pointer-events:auto;transform:none}
+
+/* movimiento */
+.rise{opacity:0;transform:translateY(26px);animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d,0s)}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
+.reveal.rl{transform:translateX(-46px)}.reveal.rr{transform:translateX(46px)}.reveal.rz{transform:scale(.93)}
+.reveal.in{opacity:1;transform:none}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes wordup{to{transform:none}}
+@keyframes spin{to{--a:360deg}}
+@keyframes sweep{to{transform:translateX(-50%)}}
+@keyframes ripple{to{transform:scale(2.6);opacity:0}}
+@keyframes float{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(4vmax,3vmax,0) scale(1.08)}}
+@keyframes kb{from{transform:scale(1) translate3d(0,0,0)}to{transform:scale(1.08) translate3d(-1.2%,-1%,0)}}
+@keyframes slide{to{transform:translateX(-50%)}}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rise,.reveal{opacity:1;transform:none}.w>span{transform:none}}
+
+/* adaptación */
+@media (max-width:980px){
+  .links,.nav>.wrap>.btn{display:none}.burger{display:grid}
+  .about,.split{grid-template-columns:1fr}
+  .bento,.bento.n3,.bento.n4{grid-template-columns:1fr 1fr}.svc,.svc.big,.bento.n3 .svc,.bento.n4 .svc,.bento.n3 .svc.big,.bento.n4 .svc.big{grid-column:span 1}
+  .steps{grid-template-columns:1fr}
+  .q{border-right:0;border-bottom:1px solid var(--line)}.q:last-child{border-bottom:0}
+  .gallery{grid-auto-rows:150px}.gallery button:nth-child(n){grid-column:span 6;grid-row:span 1}.gallery button:nth-child(1){grid-column:span 12;grid-row:span 2}
+}
+@media (max-width:620px){
+  body{font-size:1rem}
+  .hero{padding-top:7.5rem;min-height:92svh}.hero-in{padding-bottom:5rem}
+  .bento,.bento.n3,.bento.n4{grid-template-columns:1fr}.svc{min-height:0}
+  .row2{grid-template-columns:1fr}
+  .dock{display:flex}.credit{display:none}.collage figure:nth-child(2){margin-top:1rem}
+  .marquee span{font-size:.95rem}
+}
+
+/* ---------- marca propia: logo del negocio ---------- */
+.mark.logo{width:auto;height:44px;padding:5px 11px;box-sizing:border-box;background:#fff;box-shadow:0 6px 18px -8px rgba(0,0,0,.45);border-radius:calc(var(--radius) * .7)}
+.mark.logo img{max-height:34px;height:auto;width:auto;max-width:150px;object-fit:contain;display:block}
+.brand.has-logo>span:not(.mark){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hero-logo{display:inline-flex;align-items:center;background:#fff;border-radius:calc(var(--radius) * 1.1);padding:.7rem 1.2rem;margin:0 0 1.4rem;box-shadow:0 18px 40px -22px rgba(0,0,0,.6);max-width:min(260px,70vw)}
+.hero-logo img{height:clamp(44px,7vw,72px);width:auto;max-width:100%;object-fit:contain;display:block}
+.foot-logo{height:34px;width:auto;background:#fff;border-radius:8px;padding:4px 9px;vertical-align:middle;margin-right:.6rem}
+.scene-note{margin:1.1rem 0 0;font-size:.82rem;color:var(--muted);max-width:44ch}
+
+/* ---------- escena animada del sector: se despieza al hacer scroll ---------- */
+.scene{position:relative;height:calc(var(--n,4)*88vh + 100vh);background:var(--bg);--ex:0}
+.scene-pin{position:sticky;top:0;height:100vh;min-height:560px;display:grid;grid-template-columns:minmax(0,.88fr) minmax(0,1.3fr);gap:clamp(1rem,4vw,4.5rem);align-items:center;max-width:1280px;margin:0 auto;padding:clamp(4.6rem,10vh,6.4rem) clamp(1.1rem,4vw,2.6rem) 2rem;overflow:hidden}
+.scene-copy .label{margin-bottom:.8rem}
+.scene-copy h2{font:var(--head-weight) clamp(1.9rem,4.2vw,3.1rem)/1.05 var(--font-head);letter-spacing:var(--track);margin:0 0 .8rem}
+.scene-copy .lead{color:var(--muted);font-size:1.05rem;margin:0;max-width:34ch}
+.scene-steps{list-style:none;margin:1.5rem 0 0;padding:0;display:grid;gap:.35rem}
+.scene-steps li{display:grid;grid-template-columns:auto 1fr;gap:.9rem;padding:.8rem 1rem;border-radius:calc(var(--radius)*.75);opacity:.34;transition:opacity .4s,background .4s,transform .4s;border:1px solid transparent}
+.scene-steps li.on{opacity:1;background:color-mix(in srgb,var(--primary) 9%,transparent);border-color:color-mix(in srgb,var(--primary) 22%,transparent);transform:translateX(8px)}
+.scene-steps .no{font:700 .78rem var(--font-body);color:var(--primary);letter-spacing:.1em;padding-top:.3rem}
+.scene-steps h3{font:600 1.08rem var(--font-head);margin:0 0 .15rem;color:var(--ink)}
+.scene-steps p{margin:0;color:var(--muted);font-size:.95rem;line-height:1.5}
+.scene-copy .cta-row{margin-top:1.4rem}
+.scene-art{position:relative;display:grid;place-items:center;min-width:0}
+.scene-svg{width:100%;height:auto;max-height:76vh;overflow:visible;display:block}
+.scene-svg .part{transform:translate(calc(var(--ex,0)*var(--dx)*1px),calc(var(--ex,0)*var(--dy)*1px)) rotate(calc(var(--ex,0)*var(--r)*1deg));transform-box:fill-box;transform-origin:center;transition:opacity .45s,filter .45s;will-change:transform}
+.scene-svg.dim .part{opacity:.26;filter:saturate(.6)}
+.scene-svg.dim .part.hot{opacity:1;filter:drop-shadow(0 10px 18px color-mix(in srgb,var(--primary) 38%,transparent))}
+.scene-svg .tag{opacity:clamp(0,calc((var(--ex,0) - .78)*5),1);transition:opacity .4s}
+.scene-svg.dim .tag{opacity:clamp(0,calc((var(--ex,0) - .78)*5),.32)}
+.scene-svg.dim .tag.hot{opacity:1}
+.s-ln{fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round}
+.s-ln.t{stroke:color-mix(in srgb,var(--ink) 52%,transparent)}
+.s-frame line{stroke:var(--primary);stroke-width:13;stroke-linecap:round}
+.s-pri{fill:var(--primary)}.s-acc{fill:var(--accent)}.s-ink{fill:var(--ink)}.s-paper{fill:var(--surface)}
+.s-soft{fill:color-mix(in srgb,var(--primary) 20%,transparent)}
+.s-pri-ln{fill:none;stroke:var(--primary);stroke-linecap:round;stroke-linejoin:round}
+.s-acc-ln{fill:none;stroke:var(--accent);stroke-linecap:round;stroke-linejoin:round}
+.s-thin{fill:none;stroke:var(--ink);stroke-width:1.5;opacity:.55;stroke-linejoin:round}
+.n-red{fill:#e0483a}.n-green{fill:#4b9b4a}.n-yellow{fill:#f2c230}.n-brown{fill:#b9803f}.n-cream{fill:#f6e8c8}.n-dark{fill:#5a3a22}
+.s-text{font:600 17px var(--font-body);fill:var(--ink)}
+.s-halo{fill:color-mix(in srgb,var(--primary) 9%,transparent)}.s-halo.b{fill:color-mix(in srgb,var(--accent) 11%,transparent)}
+.s-shadow{fill:color-mix(in srgb,var(--ink) 15%,transparent)}
+.hero-art{position:absolute;right:max(1rem,3vw);bottom:clamp(3rem,9vh,6rem);width:min(48vw,700px);height:auto;opacity:.92;pointer-events:none;z-index:1;animation:heroFloat 9s ease-in-out infinite}
+.hero-art{--ink:var(--hero-ink);--surface:color-mix(in srgb,var(--hero-from) 62%,var(--hero-ink));--primary:var(--brand2);--accent:var(--hero-ink)}
+.hero-art .tag{display:none}
+.hero-center .hero-art{opacity:.5}
+.hero.has-scene .hero-in{position:relative;z-index:2}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-.4deg)}50%{transform:translateY(-14px) rotate(.5deg)}}
+@media (max-width:900px){
+  .scene{height:calc(var(--n,4)*80vh + 100vh)}
+  .scene-pin{grid-template-columns:1fr;grid-template-rows:minmax(0,46vh) auto;align-content:start;gap:.6rem;padding-top:4.6rem}
+  .scene-art{order:-1}.scene-svg{max-height:44vh}
+  .scene-copy .lead{display:none}.scene-steps{margin-top:.6rem}.scene-steps li:not(.on){display:none}.scene-steps li.on{transform:none}
+  .scene-copy h2{font-size:1.55rem;margin-bottom:.2rem}.scene-copy .cta-row{display:none}
+  .hero-art{width:92vw;right:-4vw;bottom:8.5rem;opacity:.33}
+}
+@media (prefers-reduced-motion:reduce){.scene{height:auto;--ex:1}.scene-pin{position:relative;height:auto;overflow:visible;padding-block:4rem}.scene-steps li{opacity:1}.scene-steps li:not(.on){display:grid}.hero-art{animation:none}}
+html:not(.js) .scene{height:auto;--ex:1}html:not(.js) .scene-pin{position:relative;height:auto}
+
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Store", "name": "Opia Concept Store", "telephone": "+34633029187", "address": {"@type": "PostalAddress", "streetAddress": "Carrer de Ca'n Brondo 5", "addressLocality": "", "addressCountry": "ES"}, "geo": {"@type": "GeoCoordinates", "latitude": 39.5711489, "longitude": 2.6474418}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "10:30", "closes": "14:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "16:30", "closes": "20:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "10:30", "closes": "14:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "16:30", "closes": "20:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "10:30", "closes": "14:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "16:30", "closes": "20:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "10:30", "closes": "14:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "16:30", "closes": "20:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "10:30", "closes": "14:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "16:30", "closes": "20:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:30", "closes": "14:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "16:30", "closes": "20:00"}]}</script>
+</head>
+<body class="grain has-bar">
+<a class="skip" href="#main">Saltar al contenido</a>
+<div class="progress" aria-hidden="true"></div>
+
+<div class="demo-bar" data-bar><span>Propuesta de diseño para <b>Opia Concept Store</b>, preparada por Aaron Alba · No es la web oficial del negocio</span><a href="https://aaronalbaa.github.io/aaronalba-fa56b8/MkcS2CsMR-zv/contratar/">Me interesa</a></div>
+
+
+<header class="nav" id="nav"><div class="wrap">
+  <a class="brand" href="#top" aria-label="Opia Concept Store"><span class="mark">OC</span><span>Opia Concept Store</span></a>
+  <nav class="links" aria-label="Secciones"><a href="#nosotros">Nosotros</a><a href="#servicios">Servicios</a><a href="#reservar">Contacto rápido</a><a href="#contacto">Contacto</a></nav>
+  <a class="btn btn-sm" href="https://wa.me/34633029187?text=Hola%2C%20quer%C3%ADa%20hacer%20una%20consulta."><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Escríbenos</a>
+  <button class="burger" id="burger" aria-label="Abrir el menú" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+</div></header>
+<div class="sheet" id="sheet" aria-hidden="true">
+  <div class="top"><a class="brand" href="#top" style="color:var(--ink)"><span class="mark">OC</span><span>Opia Concept Store</span></a><button class="burger" id="close" aria-label="Cerrar el menú" style="display:grid;color:var(--ink);border-color:var(--line)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <nav><a href="#nosotros">Nosotros</a><a href="#servicios">Servicios</a><a href="#reservar">Contacto rápido</a><a href="#contacto">Contacto</a></nav>
+  <a class="btn" href="https://wa.me/34633029187?text=Hola%2C%20quer%C3%ADa%20hacer%20una%20consulta."><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Escríbenos por WhatsApp</a>
+</div>
+
+<main id="main">
+<section class="hero has-scene" id="top">
+  <div class="hero-bg" aria-hidden="true">
+    <span class="blob b1" data-par="0.1"></span><span class="blob b2" data-par="-0.07"></span><span class="blob b3" data-par="0.05"></span><div class="dots"></div><span class="ring"></span><span class="ring r2"></span>
+    <div class="hero-shade"></div>
+  </div>
+  <svg class="scene-svg hero-art" viewBox="-40 0 960 540" role="img" aria-label="Anatomía de un buen regalo" style="--ex:0"><g class="back"><ellipse cx="440" cy="478" rx="290" ry="14" class="s-shadow"/><circle cx="440" cy="300" r="226" class="s-halo"/><circle cx="440" cy="300" r="156" class="s-halo b"/></g><g class="parts"><g class="part" data-part="caja" style="--dx:0;--dy:0;--r:0"><rect x="320" y="270" width="240" height="170" rx="12" class="s-pri" style="stroke:var(--ink);stroke-width:5"/><rect x="304" y="236" width="272" height="52" rx="12" class="s-acc" style="stroke:var(--ink);stroke-width:5"/><rect x="420" y="236" width="40" height="204" class="s-paper" style="stroke:var(--ink);stroke-width:4"/></g><g class="part" data-part="lazo" style="--dx:0;--dy:-60;--r:0"><path d="M440 236 C380 180 330 196 352 232 C368 252 410 246 440 236 C470 246 512 252 528 232 C550 196 500 180 440 236Z" class="s-paper" style="stroke:var(--ink);stroke-width:5;stroke-linejoin:round"/><circle cx="440" cy="236" r="14" class="s-ink"/></g><g class="part" data-part="bolsa" style="--dx:96;--dy:-20;--r:0"><path d="M600 300 L724 300 L736 456 L588 456 Z" class="s-paper" style="stroke:var(--ink);stroke-width:5;stroke-linejoin:round"/><path d="M626 300 q0 -48 36 -48 q36 0 36 48" class="s-ln" style="stroke-width:7"/><rect x="626" y="352" width="72" height="60" rx="10" class="s-soft"/><path d="M644 382 l12 12 l24 -26" class="s-pri-ln" style="stroke-width:7"/></g><g class="part" data-part="etiqueta" style="--dx:-110;--dy:-40;--r:0"><g transform="rotate(-12 190 360)"><path d="M148 314 L232 314 L246 346 L232 378 L148 378 Z" class="s-paper" style="stroke:var(--ink);stroke-width:4"/><circle cx="166" cy="346" r="6" class="s-ink"/><path d="M246 346 q42 -4 66 -50" class="s-ln t" style="stroke-width:3"/><line x1="176" y1="336" x2="222" y2="336" class="s-ln t" style="stroke-width:3"/><line x1="176" y1="352" x2="212" y2="352" class="s-ln t" style="stroke-width:3"/></g></g><g class="part" data-part="brillos" style="--dx:0;--dy:-20;--r:0"><path d="M250 148 l6 16 l17 1 l-13 11 l5 17 l-15 -10 l-15 10 l5 -17 l-13 -11 l17 -1z" class="s-acc" transform="scale(1)"/><path d="M640 128 l6 16 l17 1 l-13 11 l5 17 l-15 -10 l-15 10 l5 -17 l-13 -11 l17 -1z" class="s-acc" transform="scale(1)"/><path d="M700 208 l6 16 l17 1 l-13 11 l5 17 l-15 -10 l-15 10 l5 -17 l-13 -11 l17 -1z" class="s-acc" transform="scale(1)"/></g></g><g class="labels"><g class="tag" data-for="caja"><circle cx="440" cy="360" r="5" class="s-pri"/><polyline points="440,360 478,380 492,380" class="s-thin"/><text x="498" y="385" text-anchor="start" class="s-text">El regalo</text></g><g class="tag" data-for="lazo"><circle cx="440" cy="158" r="5" class="s-pri"/><polyline points="440,158 478,134 492,134" class="s-thin"/><text x="498" y="139" text-anchor="start" class="s-text">El lazo</text></g><g class="tag" data-for="bolsa"><circle cx="756" cy="360" r="5" class="s-pri"/><polyline points="756,360 794,388 808,388" class="s-thin"/><text x="814" y="393" text-anchor="start" class="s-text">La bolsa</text></g><g class="tag" data-for="etiqueta"><circle cx="80" cy="306" r="5" class="s-pri"/><polyline points="80,306 42,280 28,280" class="s-thin"/><text x="22" y="285" text-anchor="end" class="s-text">La etiqueta</text></g></g></svg>
+  <div class="wrap hero-in">
+    
+    <span class="eyebrow rise"><i></i>Regalos y detalles</span>
+    <h1 aria-label="Opia Concept Store"><span class="w" aria-hidden="true"><span style="--i:0">Opia</span></span> <span class="w" aria-hidden="true"><span style="--i:1">Concept</span></span> <span class="w" aria-hidden="true"><span style="--i:2">Store</span></span> </h1>
+    <p class="sub rise" style="--d:.16s">El detalle perfecto. Pásate por Opia Concept Store o escríbenos por WhatsApp o por teléfono.</p>
+    <div class="cta-row rise" style="--d:.24s">
+      <a class="btn" href="https://wa.me/34633029187?text=Hola%2C%20quer%C3%ADa%20hacer%20una%20consulta." data-mag><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Escríbenos por WhatsApp</a>
+      <a class="btn btn-ghost" href="#reservar" data-mag><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Escríbenos</a>
+      <a class="btn btn-ghost" href="tel:+34633029187" data-mag><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> +34 633 029 187</a>
+      
+    </div>
+    <div class="pills rise" style="--d:.32s">
+      <span class="pill live" data-live><i class="dot"></i><span data-live-text>Horario</span></span>
+      
+      <span class="pill"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Carrer de Ca&#39;n Brondo 5</span>
+    </div>
+  </div>
+  <div class="marquee" aria-hidden="true"><div class="track"><span>Regalos</span><span>Decoración</span><span>Complementos</span><span>Envoltorio</span><span>Encargos</span><span>Regalos</span><span>Decoración</span><span>Complementos</span><span>Envoltorio</span><span>Encargos</span></div></div>
+  
+</section>
+
+
+<section class="quick"><div class="wrap"><div class="card reveal">
+  <a class="q" href="https://www.google.com/maps/search/?api=1&amp;query=39.5711489,2.6474418" rel="noopener">
+    <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span><small>Dónde</small><b>Carrer de Ca&#39;n Brondo 5</b></span>
+  </a><a class="q" href="tel:+34633029187">
+    <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span><small>Llámanos</small><b>+34 633 029 187</b></span>
+  </a><a class="q" href="#horario">
+    <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span><small>Hoy</small><b data-today>Ver horario</b></span>
+  </a><a class="q" href="https://wa.me/34633029187?text=Hola%2C%20quer%C3%ADa%20hacer%20una%20consulta.">
+    <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><span><small>WhatsApp</small><b>Escríbenos</b></span>
+  </a>
+</div></div></section>
+
+
+<section class="scene" id="escena" data-scene="gift" style="--n:4" aria-labelledby="escena-t"><div class="scene-pin"><div class="scene-copy"><span class="label">Opia Concept Store · Anatomía de un buen regalo</span><h2 id="escena-t">Del escaparate a las manos</h2><p class="lead">Desliza y descubre cómo se prepara algo especial.</p><ol class="scene-steps"><li data-step="0" data-hot="caja"><span class="no">01</span><div><h3>Lo encuentras</h3><p>Esa cosa especial que no sabías que buscabas, o justo lo que tenías en mente.</p></div></li><li data-step="1" data-hot="etiqueta"><span class="no">02</span><div><h3>Lo eliges</h3><p>Con calma y buen consejo: en la tienda de barrio te ayudan a acertar.</p></div></li><li data-step="2" data-hot="lazo,bolsa"><span class="no">03</span><div><h3>Te lo envuelven</h3><p>Un lazo, una bolsa bonita y todo listo para regalar (o para regalarte).</p></div></li><li data-step="3" data-hot="brillos,caja"><span class="no">04</span><div><h3>A estrenar</h3><p>Lo mejor: ver la cara de quien lo recibe.</p></div></li></ol><div class="cta-row"><a class="btn" href="https://wa.me/34633029187?text=Hola%2C%20quer%C3%ADa%20hacer%20una%20consulta." data-mag><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Escríbenos por WhatsApp</a></div><p class="scene-note">Ilustración de ejemplo del sector: la adaptaremos a lo que realmente hacéis.</p></div><div class="scene-art"><svg class="scene-svg" viewBox="-40 0 960 540" role="img" aria-label="Anatomía de un buen regalo"><g class="back"><ellipse cx="440" cy="478" rx="290" ry="14" class="s-shadow"/><circle cx="440" cy="300" r="226" class="s-halo"/><circle cx="440" cy="300" r="156" class="s-halo b"/></g><g class="parts"><g class="part" data-part="caja" style="--dx:0;--dy:0;--r:0"><rect x="320" y="270" width="240" height="170" rx="12" class="s-pri" style="stroke:var(--ink);stroke-width:5"/><rect x="304" y="236" width="272" height="52" rx="12" class="s-acc" style="stroke:var(--ink);stroke-width:5"/><rect x="420" y="236" width="40" height="204" class="s-paper" style="stroke:var(--ink);stroke-width:4"/></g><g class="part" data-part="lazo" style="--dx:0;--dy:-60;--r:0"><path d="M440 236 C380 180 330 196 352 232 C368 252 410 246 440 236 C470 246 512 252 528 232 C550 196 500 180 440 236Z" class="s-paper" style="stroke:var(--ink);stroke-width:5;stroke-linejoin:round"/><circle cx="440" cy="236" r="14" class="s-ink"/></g><g class="part" data-part="bolsa" style="--dx:96;--dy:-20;--r:0"><path d="M600 300 L724 300 L736 456 L588 456 Z" class="s-paper" style="stroke:var(--ink);stroke-width:5;stroke-linejoin:round"/><path d="M626 300 q0 -48 36 -48 q36 0 36 48" class="s-ln" style="stroke-width:7"/><rect x="626" y="352" width="72" height="60" rx="10" class="s-soft"/><path d="M644 382 l12 12 l24 -26" class="s-pri-ln" style="stroke-width:7"/></g><g class="part" data-part="etiqueta" style="--dx:-110;--dy:-40;--r:0"><g transform="rotate(-12 190 360)"><path d="M148 314 L232 314 L246 346 L232 378 L148 378 Z" class="s-paper" style="stroke:var(--ink);stroke-width:4"/><circle cx="166" cy="346" r="6" class="s-ink"/><path d="M246 346 q42 -4 66 -50" class="s-ln t" style="stroke-width:3"/><line x1="176" y1="336" x2="222" y2="336" class="s-ln t" style="stroke-width:3"/><line x1="176" y1="352" x2="212" y2="352" class="s-ln t" style="stroke-width:3"/></g></g><g class="part" data-part="brillos" style="--dx:0;--dy:-20;--r:0"><path d="M250 148 l6 16 l17 1 l-13 11 l5 17 l-15 -10 l-15 10 l5 -17 l-13 -11 l17 -1z" class="s-acc" transform="scale(1)"/><path d="M640 128 l6 16 l17 1 l-13 11 l5 17 l-15 -10 l-15 10 l5 -17 l-13 -11 l17 -1z" class="s-acc" transform="scale(1)"/><path d="M700 208 l6 16 l17 1 l-13 11 l5 17 l-15 -10 l-15 10 l5 -17 l-13 -11 l17 -1z" class="s-acc" transform="scale(1)"/></g></g><g class="labels"><g class="tag" data-for="caja"><circle cx="440" cy="360" r="5" class="s-pri"/><polyline points="440,360 478,380 492,380" class="s-thin"/><text x="498" y="385" text-anchor="start" class="s-text">El regalo</text></g><g class="tag" data-for="lazo"><circle cx="440" cy="158" r="5" class="s-pri"/><polyline points="440,158 478,134 492,134" class="s-thin"/><text x="498" y="139" text-anchor="start" class="s-text">El lazo</text></g><g class="tag" data-for="bolsa"><circle cx="756" cy="360" r="5" class="s-pri"/><polyline points="756,360 794,388 808,388" class="s-thin"/><text x="814" y="393" text-anchor="start" class="s-text">La bolsa</text></g><g class="tag" data-for="etiqueta"><circle cx="80" cy="306" r="5" class="s-pri"/><polyline points="80,306 42,280 28,280" class="s-thin"/><text x="22" y="285" text-anchor="end" class="s-text">La etiqueta</text></g></g></svg></div></div></section>
+
+<section class="sec" id="nosotros">
+  <div class="wrap about">
+    <div>
+      <span class="label reveal">Sobre nosotros</span>
+      <p class="quote reveal">El <em>detalle perfecto</em>.</p>
+      <div class="prose reveal rl"><p>Opia Concept Store es un comercio de barrio: atención cercana y consejo de quien conoce lo que vende.</p><p>Nos encuentras en Carrer de Ca&#39;n Brondo 5. Muy cerca están Can Maroto (2 min andando) y Can Cotoner (2 min andando). Aquí tienes el horario y cómo llegar. Si buscas algo en concreto, pregúntanos.</p></div>
+      
+      <div class="emblem reveal" aria-hidden="true"><span class="big">OC</span><svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><small>Regalos y detalles</small></div>
+      
+    </div>
+    <aside class="facts reveal rr">
+      <div class="fact"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><b>Dónde estamos</b><a href="https://www.google.com/maps/search/?api=1&amp;query=39.5711489,2.6474418" rel="noopener">Carrer de Ca&#39;n Brondo 5</a></div></div>
+      <div class="fact"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><div><b>Teléfono</b><a href="tel:+34633029187">+34 633 029 187</a></div></div>
+      
+      
+      <div class="near"><h4>A pocos pasos</h4><ul><li>Can Maroto<span>2 min andando</span></li><li>Can Cotoner<span>2 min andando</span></li><li>Can Sansimón<span>2 min andando</span></li></ul></div>
+    </aside>
+  </div>
+</section>
+
+<section class="sec alt" id="servicios">
+  <div class="wrap">
+    <div class="head"><span class="label reveal">Qué encontrarás</span><h2 class="reveal">Qué encontrarás</h2>
+    <p class="lead reveal">Ejemplo de contenido: lo ajustaremos a lo que realmente ofreces.</p></div>
+    <div class="bento n5">
+      
+      <article class="svc big s3 reveal" data-svc style="--d:0.0s"><span class="no">01</span><div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><h3>Regalos</h3><p>Ideas para cada persona y cada ocasión.</p></article>
+      
+      <article class="svc s3 reveal" data-svc style="--d:0.1s"><span class="no">02</span><div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.7 1.8L21.5 17.5l-1.8.7L19 20l-.7-1.8-1.8-.7 1.8-.7z"/></svg></div><h3>Decoración</h3><p>Detalles para la casa.</p></article>
+      
+      <article class="svc reveal" data-svc style="--d:0.2s"><span class="no">03</span><div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><h3>Complementos</h3><p>Pequeños caprichos.</p></article>
+      
+      <article class="svc reveal" data-svc style="--d:0.0s"><span class="no">04</span><div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><h3>Envoltorio</h3><p>Te lo dejamos listo para regalar.</p></article>
+      
+      <article class="svc reveal" data-svc style="--d:0.1s"><span class="no">05</span><div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><h3>Encargos</h3><p>Cuéntanos qué buscas.</p></article>
+      
+    </div>
+  </div>
+</section>
+
+
+
+<section class="sec alt" id="como">
+  <div class="wrap">
+    <div class="head"><span class="label reveal">Así de fácil</span><h2 class="reveal">Así de fácil</h2></div>
+    <div class="steps"><div class="step reveal rl" style="--d:0.0s"><h3>Escríbenos</h3><p>Cuéntanos qué buscas o qué necesitas.</p></div><div class="step reveal " style="--d:0.12s"><h3>Te respondemos</h3><p>Lo antes posible.</p></div><div class="step reveal rr" style="--d:0.24s"><h3>Pásate cuando quieras</h3><p>Te esperamos.</p></div></div>
+  </div>
+</section>
+
+
+<section class="sec alt" id="reservar">
+  <div class="wrap">
+    <div class="head"><span class="label reveal">Horario y reserva</span><h2 class="reveal">Escríbenos</h2></div>
+    <div class="split">
+      
+      <div class="panel reveal" id="horario">
+        <h3>Horario</h3>
+        <div class="status" data-status><i class="dot"></i><span data-status-text>Comprobando…</span></div>
+        <table class="hours"><tr data-days="Lun–Sáb"><td>Lun–Sáb</td><td>10:30–14:30 ·  16:30–20:00</td></tr></table>
+      </div>
+      
+      
+      <div class="panel reveal" style="--d:.1s">
+        <h3>Escríbenos</h3>
+        <form class="book" id="book" novalidate>
+          <div class="f"><label for="b-name">Tu nombre</label><input id="b-name" name="name" autocomplete="given-name" required placeholder="¿Cómo te llamas?"></div>
+          
+          <div class="f"><label for="b-note">Tu mensaje</label><textarea id="b-note" name="note" placeholder="¿En qué podemos ayudarte?"></textarea></div>
+          <button class="btn" type="submit" data-mag><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Enviar por WhatsApp</button>
+          <p class="hint">Se abre WhatsApp con tu mensaje listo para enviar. (En esta propuesta usa el contacto real del negocio.)</p>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="head" style="text-align:center;justify-items:center"><span class="label reveal">Preguntas frecuentes</span><h2 class="reveal">Lo que suelen preguntar</h2></div>
+    <div class="faq reveal"><details open><summary>¿Lo envolvéis para regalo?</summary><p>Pregúntanos y te lo dejamos listo.</p></details><details><summary>¿Dónde estáis?</summary><p>En Carrer de Ca&#39;n Brondo 5. Abajo tienes el mapa para llegar fácilmente.</p></details><details><summary>¿Cuál es el horario?</summary><p>Lo tienes en la sección de horario; si tienes dudas, escríbenos.</p></details></div>
+  </div>
+</section>
+
+
+<section class="sec alt" id="mapa">
+  <div class="wrap">
+    <div class="head"><span class="label reveal">Ubicación</span><h2 class="reveal">Cómo llegar</h2></div>
+    <div class="mapbox reveal"><iframe title="Mapa de Opia Concept Store" loading="lazy" referrerpolicy="no-referrer" src="https://www.openstreetmap.org/export/embed.html?bbox=2.64344,39.56865,2.65144,39.57365&amp;layer=mapnik&amp;marker=39.57115,2.64744"></iframe>
+      <div class="maptag"><b>Opia Concept Store</b><span>Carrer de Ca&#39;n Brondo 5</span><a class="btn btn-sm" href="https://www.google.com/maps/search/?api=1&amp;query=39.5711489,2.6474418" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Abrir en el mapa</a></div></div>
+  </div>
+</section>
+
+
+<div class="bigname" aria-hidden="true"><div class="track"><span>Opia Concept Store</span><span>Tienda de regalos</span><span>Regalos</span><span>Opia Concept Store</span><span>Tienda de regalos</span><span>Regalos</span></div></div>
+
+<section class="sec" id="contacto">
+  <div class="wrap">
+    <div class="band reveal">
+      <h2>Pásate o escríbenos</h2>
+      <p>Encuéntranos en Carrer de Ca&#39;n Brondo 5 o escríbenos por WhatsApp o por teléfono.</p>
+      <div class="cta-row">
+        <a class="btn" href="https://wa.me/34633029187?text=Hola%2C%20quer%C3%ADa%20hacer%20una%20consulta." data-mag><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Escribir por WhatsApp</a>
+        <a class="btn btn-ghost" href="tel:+34633029187" data-mag><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Llamar ahora</a>
+        
+        
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Opia Concept Store · Carrer de Ca&#39;n Brondo 5</span><span>Propuesta de diseño de Aaron Alba</span>
+  </div></footer>
+
+
+<div class="dock" id="dock">
+  <a class="btn btn-line" href="tel:+34633029187"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Llamar</a>
+  <a class="btn" href="https://wa.me/34633029187?text=Hola%2C%20quer%C3%ADa%20hacer%20una%20consulta."><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> WhatsApp</a>
+</div>
+
+<button class="totop" id="totop" aria-label="Volver arriba"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg></button>
+
+<script type="application/json" id="cfg">{"sched":{"d":[[[630,870],[990,1200]],[[630,870],[990,1200]],[[630,870],[990,1200]],[[630,870],[990,1200]],[[630,870],[990,1200]],[[630,870],[990,1200]],[]]},"book":{"kind":"message","wa":"https://wa.me/34633029187","email":"","subject":"Consulta desde la web de Opia Concept Store"}}</script>
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return(r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var cfg={};try{cfg=JSON.parse($("#cfg").textContent)}catch(e){}
+var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var fine=window.matchMedia&&matchMedia("(pointer: fine)").matches;
+
+/* barra, progreso y accesos */
+var nav=$("#nav"),dock=$("#dock"),totop=$("#totop"),prog=$(".progress"),pars=$$("[data-par]"),bar=$("[data-bar]"),heroIn=$(".hero-in"),ticking=false;
+function frame(){
+  ticking=false;var y=window.scrollY||0,h=document.documentElement.scrollHeight-innerHeight;
+  if(bar)nav.style.top=Math.max(0,bar.offsetHeight-y)+"px";
+  nav.classList.toggle("solid",y>40);
+  if(prog)prog.style.transform="scaleX("+(h>0?Math.min(1,y/h):0)+")";
+  if(dock)dock.classList.toggle("show",y>420);
+  totop.classList.toggle("show",y>900);
+  if(!reduce&&y<innerHeight*1.2){pars.forEach(function(el){el.style.translate="0 "+(y*parseFloat(el.dataset.par))+"px"});
+    if(heroIn){var k=Math.min(1,y/(innerHeight*.7));heroIn.style.translate="0 "+(-y*.12)+"px";heroIn.style.opacity=String(1-k*.85)}}
+}
+addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationFrame(frame)}},{passive:true});frame();
+totop.addEventListener("click",function(){scrollTo({top:0,behavior:reduce?"auto":"smooth"})});
+
+/* menú móvil */
+var sheet=$("#sheet"),burger=$("#burger");
+function menu(open){sheet.classList.toggle("open",open);sheet.setAttribute("aria-hidden",open?"false":"true");burger.setAttribute("aria-expanded",open?"true":"false");document.body.style.overflow=open?"hidden":""}
+burger.addEventListener("click",function(){menu(true)});$("#close").addEventListener("click",function(){menu(false)});
+$$("#sheet a").forEach(function(a){a.addEventListener("click",function(){menu(false)})});
+addEventListener("keydown",function(e){if(e.key==="Escape")menu(false)});
+
+/* aparecer al hacer scroll */
+if("IntersectionObserver" in window&&!reduce){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.1,rootMargin:"0px 0px -5% 0px"});
+  $$(".reveal").forEach(function(el){io.observe(el)});
+}else{$$(".reveal").forEach(function(el){el.classList.add("in")})}
+
+/* sección activa en el menú */
+if("IntersectionObserver" in window){
+  var links=$$(".links a"),map={};links.forEach(function(a){map[a.getAttribute("href").slice(1)]=a});
+  var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&map[e.target.id]){links.forEach(function(l){l.classList.remove("on")});map[e.target.id].classList.add("on")}})},{rootMargin:"-45% 0px -50% 0px"});
+  Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)so.observe(s)});
+}
+
+/* tarjetas con foco de luz e inclinación 3D, portada que sigue al cursor y botones magnéticos (solo con ratón) */
+if(fine&&!reduce){
+  $$(".svc").forEach(function(c){
+    c.addEventListener("pointermove",function(e){var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+      c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(e.clientY-r.top)+"px");
+      c.style.setProperty("--ry",((x-.5)*8)+"deg");c.style.setProperty("--rx",((.5-y)*6)+"deg")});
+    c.addEventListener("pointerleave",function(){c.style.setProperty("--rx","0deg");c.style.setProperty("--ry","0deg")});
+  });
+  var hero=$(".hero");
+  if(hero){hero.addEventListener("pointermove",function(e){var r=hero.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    hero.style.setProperty("--px",(x*100)+"%");hero.style.setProperty("--py",(y*100)+"%");hero.style.setProperty("--mx2",(x-.5).toFixed(3));hero.style.setProperty("--my2",(y-.5).toFixed(3))})}
+  $$("[data-mag]").forEach(function(b){
+    b.addEventListener("pointermove",function(e){var r=b.getBoundingClientRect(),x=(e.clientX-r.left-r.width/2)*.18,y=(e.clientY-r.top-r.height/2)*.28;b.style.transform="translate("+x+"px,"+y+"px)"});
+    b.addEventListener("pointerleave",function(){b.style.transform=""});
+  });
+}
+
+/* onda al pulsar un botón */
+$$(".btn").forEach(function(b){b.addEventListener("pointerdown",function(e){if(reduce)return;var r=b.getBoundingClientRect(),d=document.createElement("span");d.className="rp";d.style.left=(e.clientX-r.left)+"px";d.style.top=(e.clientY-r.top)+"px";b.appendChild(d);setTimeout(function(){d.remove()},700)})});
+
+/* números reales que suben al aparecer (valoración) */
+$$("[data-count]").forEach(function(el){
+  var to=parseFloat(el.dataset.count.replace(",",".")),dec=(el.dataset.count.split(/[.,]/)[1]||"").length,done=false;
+  function run(){if(done)return;done=true;if(reduce){return}var t0=performance.now();(function tick(t){var k=Math.min(1,(t-t0)/1100),v=to*(1-Math.pow(1-k,3));el.textContent=v.toFixed(dec).replace(".",",");if(k<1)requestAnimationFrame(tick)})(t0)}
+  if("IntersectionObserver" in window){var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run();o.disconnect()}})});o.observe(el)}
+});
+
+/* galería ampliable */
+var lb=$("#lb");
+if(lb){
+  $$("[data-lb]").forEach(function(b){b.addEventListener("click",function(){$("img",lb).src=b.dataset.lb;lb.showModal()})});
+  lb.addEventListener("click",function(e){if(e.target===lb||e.target.closest(".in")&&!e.target.closest("img"))lb.close()});
+}
+
+/* horario: «abierto ahora» según el horario real (zona horaria de Madrid) */
+var S=cfg.sched&&cfg.sched.d;
+var DAYS=["lunes","martes","miércoles","jueves","viernes","sábado","domingo"];
+function hh(m){m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0")}
+function madrid(){
+  var p={},f=new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Madrid",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false,year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
+  f.forEach(function(x){p[x.type]=x.value});
+  var wd=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].indexOf(p.weekday);
+  return{day:wd,min:(parseInt(p.hour,10)%24)*60+parseInt(p.minute,10),iso:p.year+"-"+p.month+"-"+p.day};
+}
+function state(){
+  if(!S)return null;var n=madrid(),today=S[n.day]||[],prev=S[(n.day+6)%7]||[],i,r;
+  for(i=0;i<prev.length;i++){r=prev[i];if(r[1]>1440&&n.min<r[1]-1440)return{open:true,until:r[1]-1440,n:n}}
+  for(i=0;i<today.length;i++){r=today[i];if(n.min>=r[0]&&n.min<r[1])return{open:true,until:r[1],n:n}}
+  for(i=0;i<today.length;i++){r=today[i];if(r[0]>n.min)return{open:false,next:{d:0,at:r[0]},n:n}}
+  for(var k=1;k<=7;k++){var ds=S[(n.day+k)%7]||[];if(ds.length)return{open:false,next:{d:k,at:ds[0][0]},n:n}}
+  return{open:false,next:null,n:n};
+}
+function say(st){
+  if(!st)return"";
+  if(st.open){var left=(st.until>1440?st.until-1440:st.until)-st.n.min;return left>0&&left<=45?"Abierto · cierra pronto ("+hh(st.until)+")":"Abierto ahora · cierra a las "+hh(st.until)}
+  if(!st.next)return"Cerrado";
+  if(st.next.d===0)return"Cerrado · abre hoy a las "+hh(st.next.at);
+  if(st.next.d===1)return"Cerrado · abre mañana a las "+hh(st.next.at);
+  return"Cerrado · abre el "+DAYS[(st.n.day+st.next.d)%7]+" a las "+hh(st.next.at);
+}
+function todayText(n){var t=S[n.day]||[];return t.length?t.map(function(r){return hh(r[0])+"–"+hh(r[1])}).join(" · "):"Hoy cerrado"}
+function paint(){
+  if(!S)return;var st=state();if(!st)return;
+  var txt=say(st);
+  $$("[data-live]").forEach(function(el){el.classList.add("on");el.classList.toggle("open",st.open);el.classList.toggle("closed",!st.open);$("[data-live-text]",el).textContent=txt});
+  var box=$("[data-status]");if(box){box.classList.toggle("open",st.open);box.classList.toggle("closed",!st.open);$("[data-status-text]",box).textContent=txt}
+  var td=$("[data-today]");if(td)td.textContent=todayText(st.n);
+  var dayNames={0:["lun"],1:["mar"],2:["mié","mie"],3:["jue"],4:["vie"],5:["sáb","sab"],6:["dom"]};
+  $$(".hours tr").forEach(function(tr){var d=(tr.dataset.days||"").toLowerCase(),on=false;
+    var m=d.match(/^([a-záéíóú]{3})(?:\s*[–-]\s*([a-záéíóú]{3}))?/);
+    if(m){var idx=function(s){for(var k in dayNames)if(dayNames[k].indexOf(s)>-1)return +k;return -1},a=idx(m[1]),b=m[2]?idx(m[2]):a;
+      if(a>-1&&b>-1){var i=a;for(var g=0;g<7;g++){if(i===st.n.day){on=true;break}if(i===b)break;i=(i+1)%7}}
+      if(!on&&/,/.test(d)){d.split(",").forEach(function(x){if(dayNames[st.n.day].indexOf(x.trim().slice(0,3))>-1)on=true})}}
+    tr.classList.toggle("today",on)});
+}
+paint();setInterval(paint,60000);
+
+/* reserva / cita / presupuesto: abre WhatsApp (o el correo) con el mensaje listo */
+var form=$("#book"),B=cfg.book||{};
+if(form){
+  var date=$("#b-date"),time=$("#b-time"),np=$("#b-n"),people=2;
+  function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+  function pretty(v){try{return new Date(v+"T12:00:00").toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"})}catch(e){return v}}
+  function slots(){
+    if(!time)return;time.innerHTML="";var v=date.value;if(!v)return;
+    var d=new Date(v+"T12:00:00"),wd=(d.getDay()+6)%7,ranges=S?(S[wd]||[]):null,opts=[];
+    if(ranges===null){for(var m=12*60;m<=23*60;m+=30)opts.push(m)}
+    else ranges.forEach(function(r){var end=Math.min(r[1]-60,1439);for(var m=r[0];m<=end;m+=30)opts.push(m)});
+    if(!opts.length){time.innerHTML="<option value=''>Cerrado ese día</option>";return}
+    opts.forEach(function(m){var o=document.createElement("option");o.value=o.textContent=hh(m);time.appendChild(o)});
+  }
+  if(date){
+    var n=madrid(),t=new Date(n.iso+"T12:00:00"),tm=new Date(t.getTime()+864e5);date.min=n.iso;date.max=iso(new Date(t.getTime()+90*864e5));
+    if(B.kind==="table"){date.value=iso(tm);slots();date.addEventListener("change",slots)}
+  }
+  $$("[data-step]",form).forEach(function(b){b.addEventListener("click",function(){people=Math.max(1,Math.min(14,people+parseInt(b.dataset.step,10)));np.textContent=people})});
+  form.addEventListener("submit",function(e){
+    e.preventDefault();var f=new FormData(form),name=(f.get("name")||"").toString().trim(),note=(f.get("note")||"").toString().trim(),msg;
+    if(!name){$("#b-name").focus();$("#b-name").setCustomValidity("Dinos cómo te llamas");$("#b-name").reportValidity();setTimeout(function(){$("#b-name").setCustomValidity("")},1500);return}
+    if(B.kind==="table"){
+      if(!f.get("time")){date.focus();return}
+      msg="Hola, soy "+name+". Quisiera reservar mesa para "+people+(people===1?" persona":" personas")+" el "+pretty(f.get("date"))+" a las "+f.get("time")+"."+(note?" "+note:"");
+    }else if(B.kind==="appointment"){
+      msg="Hola, soy "+name+". Quisiera pedir cita para "+f.get("service")+(f.get("date")?" el "+pretty(f.get("date")):"")+" ("+String(f.get("part")).toLowerCase()+")."+(note?" "+note:"");
+    }else if(B.kind==="quote"){
+      msg="Hola, soy "+name+". Necesito presupuesto de: "+f.get("service")+". Urgencia: "+String(f.get("urgency")).toLowerCase()+"."+(f.get("zone")?" Zona: "+f.get("zone")+".":"")+(note?" "+note:"");
+    }else{msg="Hola, soy "+name+". "+note}
+    if(B.wa)window.open(B.wa+"?text="+encodeURIComponent(msg),"_blank","noopener");
+    else if(B.email)location.href="mailto:"+B.email+"?subject="+encodeURIComponent(B.subject||"Consulta")+"&body="+encodeURIComponent(msg);
+  });
+}
+})();
+
+(function(){
+"use strict";
+var $=function(s,r){return(r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var sc=$(".scene");if(!sc)return;
+if(reduce){sc.style.setProperty("--ex","1");return}
+var items=$$(".scene-steps li",sc),svg=$(".scene-svg",sc),n=items.length,ticking=false,last=-2;
+function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+function update(){
+  ticking=false;
+  var r=sc.getBoundingClientRect(),total=r.height-innerHeight;if(total<=0)return;
+  var p=Math.min(1,Math.max(0,-r.top/total));
+  var ex=ease(Math.min(1,Math.max(0,(p-.05)/.30)));                         /* 0–5 % montada · 5–35 % se despieza */
+  sc.style.setProperty("--ex",ex.toFixed(3));
+  var k=p<.30?-1:Math.min(n-1,Math.floor((p-.30)/.70*n));                    /* a partir del 30 %, un paso de texto cada tramo */
+  if(k===last)return;last=k;
+  items.forEach(function(li,i){li.classList.toggle("on",k===-1?i===0:i===k)});
+  var hot=k>=0?(items[k].dataset.hot||"").split(","):[];
+  $$(".part",svg).forEach(function(el){el.classList.toggle("hot",hot.indexOf(el.dataset.part)>-1)});
+  $$(".tag",svg).forEach(function(el){el.classList.toggle("hot",hot.indexOf(el.dataset.for)>-1)});
+  svg.classList.toggle("dim",hot.length>0&&hot[0]!=="");
+}
+addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});
+addEventListener("resize",update);update();
+})();
+
+</script>
+</body>
+</html>
