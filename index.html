@@ -1,15 +1,15 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Aaron Alba — Webs para negocios locales, sin pagar hasta verla</title>
-<meta name="description" content="Aaron Alba: webs rápidas y a medida para negocios locales. Ves la propuesta en tu móvil antes de pagar nada; si te gusta, pago único y sin permanencia.">
+<title>Aaron Alba — Diseño web profesional para negocios locales</title>
+<meta name="description" content="Aaron Alba: diseño y publico páginas web profesionales para negocios locales, a medida de cada sector. Pago único, sin permanencia ni letra pequeña.">
 <link rel="canonical" href="https://aaronalbaa.github.io/aaronalba-fa56b8/">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website"><meta property="og:locale" content="es_ES">
-<meta property="og:title" content="Aaron Alba — Webs para negocios locales"><meta property="og:description" content="Aaron Alba: webs rápidas y a medida para negocios locales. Ves la propuesta en tu móvil antes de pagar nada; si te gusta, pago único y sin permanencia.">
+<meta property="og:title" content="Aaron Alba — Diseño web profesional para negocios locales"><meta property="og:description" content="Aaron Alba: diseño y publico páginas web profesionales para negocios locales, a medida de cada sector. Pago único, sin permanencia ni letra pequeña.">
 <meta property="og:url" content="https://aaronalbaa.github.io/aaronalba-fa56b8/">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#d9531e">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Aaron Alba", "url": "https://aaronalbaa.github.io/aaronalba-fa56b8/", "description": "Aaron Alba: webs rápidas y a medida para negocios locales. Ves la propuesta en tu móvil antes de pagar nada; si te gusta, pago único y sin permanencia.", "areaServed": "ES", "priceRange": "150€-450€", "telephone": "+34610218023", "email": "aaronalbaa@icloud.com"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Aaron Alba", "url": "https://aaronalbaa.github.io/aaronalba-fa56b8/", "description": "Aaron Alba: diseño y publico páginas web profesionales para negocios locales, a medida de cada sector. Pago único, sin permanencia ni letra pequeña.", "areaServed": "ES", "priceRange": "150€-450€", "telephone": "+34610218023", "email": "aaronalbaa@icloud.com"}</script>
 <style>
 :root{--bg:#faf7f2;--surface:#fff;--surface-2:#f4efe6;--ink:#1d1b18;--ink-2:#6a645b;--ink-3:#948d80;--line:#e8e1d6;
   --accent:#d9531e;--accent-hi:#ea6a33;--accent-lo:#b84315;--glow:rgba(217,83,30,.14)}
@@ -74,13 +74,16 @@ section{padding:70px 0}
 .about-text p:last-child{margin:0}
 .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media (max-width:860px){.portfolio-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto}}
-.portfolio-card{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .2s,box-shadow .2s}
-.portfolio-card:hover{transform:translateY(-4px);box-shadow:0 24px 44px -28px rgba(0,0,0,.4)}
-.portfolio-thumb{aspect-ratio:4/3;overflow:hidden;background:var(--surface-2)}
-.portfolio-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.portfolio-card{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.portfolio-card:hover{transform:translateY(-6px);box-shadow:0 30px 50px -28px rgba(0,0,0,.45)}
+.portfolio-thumb{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--surface-2)}
+.portfolio-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.portfolio-card:hover .portfolio-thumb img{transform:scale(1.07)}
+.portfolio-num{position:absolute;top:12px;left:12px;background:rgba(10,10,10,.55);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;backdrop-filter:blur(6px);letter-spacing:.03em}
 .portfolio-body{padding:18px 20px}
-.portfolio-body b{display:block;font-size:16px;margin-bottom:4px}
-.portfolio-body span{display:block;color:var(--ink-2);font-size:14px;margin-bottom:10px;line-height:1.45}
+.portfolio-cat{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+.portfolio-body b{display:block;font-size:16.5px;margin-bottom:4px}
+.portfolio-desc{display:block;color:var(--ink-2);font-size:14px;margin-bottom:10px;line-height:1.45}
 .portfolio-link{display:inline-flex!important;align-items:center;gap:5px;font-size:13.5px;font-weight:700;color:var(--accent)}
 .contact{text-align:center}
 .contact-box{max-width:620px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:44px 32px}
@@ -92,8 +95,35 @@ section{padding:70px 0}
 .contact-btn.alt{background:var(--surface-2);color:var(--ink)}
 .secondary-link{display:block;margin-top:20px;font-size:13.5px;color:var(--ink-3);text-decoration:underline}
 footer{padding:36px 0;text-align:center;color:var(--ink-3);font-size:13px;border-top:1px solid var(--line)}
-.reveal{opacity:0;transform:translateY(22px)}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1!important;transform:none!important}}
+.build{background:var(--surface-2);padding:70px 0 0;overflow:clip}
+.build-pin{position:relative;height:100vh;display:flex;align-items:center;justify-content:center}
+.browser-mock{position:relative;z-index:2;width:min(620px,88vw);background:var(--surface);border-radius:16px;box-shadow:0 34px 70px -30px rgba(0,0,0,.5);overflow:hidden;border:1px solid var(--line)}
+.browser-bar{display:flex;align-items:center;gap:7px;padding:12px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.browser-bar .dot{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none}
+.browser-bar .dot:nth-child(1){background:#ef6a5f}.browser-bar .dot:nth-child(2){background:#f4bf4f}.browser-bar .dot:nth-child(3){background:#61c454}
+.url-bar{flex:1;margin-left:8px;background:var(--bg);border-radius:8px;padding:6px 12px;font-size:12.5px;color:var(--ink-3);font-family:ui-monospace,"SF Mono",Menlo,monospace;display:flex;align-items:center;gap:6px;min-width:0}
+.url-text{white-space:nowrap}
+.browser-body{position:relative;padding:30px;height:260px}
+.skel,.real{position:absolute;left:30px;right:30px;border-radius:8px}
+.skel{opacity:0;background:linear-gradient(90deg,var(--surface-2) 25%,var(--line) 37%,var(--surface-2) 63%);background-size:400% 100%;animation:shimmer 1.6s infinite linear}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.skel-hero{top:0;height:92px}
+.skel-line{height:13px}
+.skel-line.w1{top:112px;right:110px}
+.skel-line.w2{top:136px;right:190px}
+.skel-btn{top:168px;width:124px;height:36px;border-radius:999px}
+.real-hero{top:0;height:92px;background:linear-gradient(135deg,var(--accent-hi),var(--accent-lo))}
+.real-line{height:11px;background:var(--line);border-radius:4px}
+.real-line.w1{top:114px;right:130px}
+.real-line.w2{top:136px;right:210px}
+.real-btn{top:166px;width:136px;height:38px;border-radius:999px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.live-badge{position:absolute;top:14px;right:16px;z-index:3;background:#1fae62;color:#fff;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:999px;display:flex;align-items:center;gap:6px}
+.live-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+.bubble{position:absolute;z-index:1;background:var(--surface);border:1px solid var(--line);box-shadow:0 16px 32px -16px rgba(0,0,0,.4);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:600;max-width:190px;line-height:1.35}
+.b1{top:14%;left:3%}.b2{bottom:20%;left:1%}.b3{bottom:12%;right:2%}
+@media (max-width:720px){.build-pin{height:88vh}.browser-body{height:230px}.bubble{max-width:130px;font-size:11.5px;padding:8px 11px}.b1{top:8%;left:1%}.b3{right:1%;bottom:6%}}
+.reveal{opacity:1}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.build-pin{height:auto;padding:30px 0}.skel{display:none}}
 </style></head><body>
 <nav class="nav"><a class="brand" href="#top"><span class="mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg></span>Aaron Alba</a>
 <div class="nav-links"><a href="#servicios">Servicios</a><a href="#proyectos">Proyectos</a><a href="#como-funciona">Cómo funciona</a><a href="#contacto">Contacto</a></div>
@@ -101,12 +131,36 @@ footer{padding:36px 0;text-align:center;color:var(--ink-3);font-size:13px;border
 
 <header class="hero" id="top"><div class="wrap">
   <p class="eyebrow reveal">Diseño web para negocios locales</p>
-  <h1 class="reveal">Tu web, lista para enseñártela<br><span class="accent">antes de pagar nada</span></h1>
-  <p class="hero-sub reveal">Te preparo una propuesta a la medida de tu negocio. La ves en tu móvil tal cual quedaría y, si te gusta, pago único: sin cuotas obligatorias ni permanencia.</p>
-  <div class="hero-cta reveal"><a class="btn" href="https://wa.me/34610228835?text=Hola%2C%20quiero%20una%20web%20para%20mi%20negocio."><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z" fill="none"/><path d="M8.3 7.6c.2-.5.5-.5.7-.5h.6c.2 0 .4 0 .6.4.2.5.7 1.6.7 1.8.1.1.1.3 0 .4-.6 1.2-1.2 1.1-.7 1.9.9 1.5 1.6 2 2.9 2.6.2.1.4.1.5-.1.2-.2.6-.7.8-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.8.8.2.1.4.2.4.3.1.2.1 1-.3 1.9-.4.9-2.1 1.6-2.9 1.6-.8.1-1.4.1-3.2-.7-2.7-1.2-4.4-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1z"/></svg> Pide la tuya por WhatsApp</a><a class="btn alt" href="#servicios">Ver precios <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a></div>
+  <h1 class="reveal">Diseño web hecho a mano,<br><span class="accent">no en serie</span></h1>
+  <p class="hero-sub reveal">Diseño, construyo y publico tu web yo mismo — sin plantillas, sin agencia de por medio. Pago único, sin cuotas obligatorias ni permanencia.</p>
+  <div class="hero-cta reveal"><a class="btn" href="https://wa.me/34610228835?text=Hola%2C%20quiero%20una%20web%20para%20mi%20negocio."><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z" fill="none"/><path d="M8.3 7.6c.2-.5.5-.5.7-.5h.6c.2 0 .4 0 .6.4.2.5.7 1.6.7 1.8.1.1.1.3 0 .4-.6 1.2-1.2 1.1-.7 1.9.9 1.5 1.6 2 2.9 2.6.2.1.4.1.5-.1.2-.2.6-.7.8-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.8.8.2.1.4.2.4.3.1.2.1 1-.3 1.9-.4.9-2.1 1.6-2.9 1.6-.8.1-1.4.1-3.2-.7-2.7-1.2-4.4-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1z"/></svg> Hablemos de tu web</a><a class="btn alt" href="#proyectos">Ver el portfolio <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a></div>
 </div></header>
 
-<section><div class="wrap"><div class="ticks stagger"><div class="tick reveal"><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></i><div><b>Lo ves antes de pagar</b><span>Te preparamos la propuesta y la enseñamos en tu móvil tal cual quedaría.</span></div></div><div class="tick reveal"><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></i><div><b>Pago único, sin permanencia</b><span>Nada de cuotas obligatorias ni letra pequeña: pagas una vez y es tuya.</span></div></div><div class="tick reveal"><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></i><div><b>Pensada para que te encuentren</b><span>Rápida, adaptada al móvil y con tu teléfono, WhatsApp y ubicación siempre a mano.</span></div></div></div></div></section>
+<section class="build"><div class="wrap">
+  <div class="section-head"><span class="eyebrow">En directo</span><h2>Así nace tu web</h2><p>Desliza para verlo: de la idea a que la vea tu primer cliente.</p></div>
+</div>
+<div class="build-pin">
+  <div class="browser-mock">
+    <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <div class="url-bar"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span class="url-text">tunegocio.es</span></div></div>
+    <div class="browser-body">
+      <div class="skel skel-hero"></div>
+      <div class="skel skel-line w1"></div>
+      <div class="skel skel-line w2"></div>
+      <div class="skel skel-btn"></div>
+      <div class="real real-hero"></div>
+      <div class="real real-line w1"></div>
+      <div class="real real-line w2"></div>
+      <div class="real real-btn">Reservar ahora</div>
+    </div>
+    <div class="live-badge">En línea</div>
+  </div>
+  <div class="bubble b1">¿Tenéis mesa libre esta noche?</div>
+  <div class="bubble b2">¿Hacéis presupuestos?</div>
+  <div class="bubble b3">¡Me ha encantado la web! 😍</div>
+</div></section>
+
+<section><div class="wrap"><div class="ticks stagger"><div class="tick reveal"><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></i><div><b>Diseño 100% a medida</b><span>Nada de plantillas genéricas: cada web se piensa para tu negocio y tu sector.</span></div></div><div class="tick reveal"><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></i><div><b>Pago único, sin permanencia</b><span>Nada de cuotas obligatorias ni letra pequeña: pagas una vez y es tuya.</span></div></div><div class="tick reveal"><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></i><div><b>Pensada para que te encuentren</b><span>Rápida, adaptada al móvil y con tu teléfono, WhatsApp y ubicación siempre a mano.</span></div></div></div></div></section>
 
 <section class="about"><div class="wrap"><div class="about-grid">
   <div class="photo-collage reveal">
@@ -131,13 +185,13 @@ footer{padding:36px 0;text-align:center;color:var(--ink-3);font-size:13px;border
 </div></section>
 
 <section id="proyectos"><div class="wrap">
-  <div class="section-head"><span class="eyebrow">Proyectos</span><h2>Otros negocios para los que he trabajado</h2><p>Cada sector pide un diseño distinto: esto es solo una muestra.</p></div>
-  <div class="portfolio-grid stagger"><a class="portfolio-card reveal" href="https://supercompu.pages.dev" target="_blank" rel="noopener"><div class="portfolio-thumb"><img src="img/proj-supercompu.webp" alt="SuperCompu" loading="lazy" width="900" height="675"></div><div class="portfolio-body"><b>SuperCompu</b><span>Tienda de PCs a medida: montados a mano, probados y enviados a cualquier parte del mundo.</span><span class="portfolio-link">Ver el proyecto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div></a><a class="portfolio-card reveal" href="https://aquaaron.netlify.app" target="_blank" rel="noopener"><div class="portfolio-thumb"><img src="img/proj-aquaaron.webp" alt="Aquaaron" loading="lazy" width="900" height="675"></div><div class="portfolio-body"><b>Aquaaron</b><span>Fontanería, electricidad y albañilería en Andalucía, con más de 30 años de experiencia detrás.</span><span class="portfolio-link">Ver el proyecto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div></a><a class="portfolio-card reveal" href="https://www.marmortenproduction.com/" target="_blank" rel="noopener"><div class="portfolio-thumb"><img src="img/proj-marmorten.webp" alt="Marmorten Production" loading="lazy" width="900" height="675"></div><div class="portfolio-body"><b>Marmorten Production</b><span>Productora audiovisual premiada: cortometrajes, anuncios y pilotos de serie.</span><span class="portfolio-link">Ver el proyecto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div></a></div>
+  <div class="section-head"><span class="eyebrow">Proyectos</span><h2>Un vistazo a mi trabajo</h2><p>Cada sector pide un lenguaje visual distinto: esto es solo una muestra.</p></div>
+  <div class="portfolio-grid stagger"><a class="portfolio-card reveal" href="https://supercompu.pages.dev" target="_blank" rel="noopener"><div class="portfolio-thumb"><img src="img/proj-supercompu.webp" alt="SuperCompu" loading="lazy" width="900" height="675"><span class="portfolio-num">01</span></div><div class="portfolio-body"><span class="portfolio-cat">E-commerce</span><b>SuperCompu</b><span class="portfolio-desc">Tienda de PCs a medida: montados a mano, probados y enviados a cualquier parte del mundo.</span><span class="portfolio-link">Ver el proyecto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div></a><a class="portfolio-card reveal" href="https://aquaaron.netlify.app" target="_blank" rel="noopener"><div class="portfolio-thumb"><img src="img/proj-aquaaron.webp" alt="Aquaaron" loading="lazy" width="900" height="675"><span class="portfolio-num">02</span></div><div class="portfolio-body"><span class="portfolio-cat">Servicios</span><b>Aquaaron</b><span class="portfolio-desc">Fontanería, electricidad y albañilería en Andalucía, con más de 30 años de experiencia detrás.</span><span class="portfolio-link">Ver el proyecto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div></a><a class="portfolio-card reveal" href="https://www.marmortenproduction.com/" target="_blank" rel="noopener"><div class="portfolio-thumb"><img src="img/proj-marmorten.webp" alt="Marmorten Production" loading="lazy" width="900" height="675"><span class="portfolio-num">03</span></div><div class="portfolio-body"><span class="portfolio-cat">Audiovisual</span><b>Marmorten Production</b><span class="portfolio-desc">Productora audiovisual premiada: cortometrajes, anuncios y pilotos de serie.</span><span class="portfolio-link">Ver el proyecto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div></a></div>
 </div></section>
 
 <section id="como-funciona"><div class="wrap">
-  <div class="section-head"><span class="eyebrow">Cómo funciona</span><h2>Tres pasos, sin compromiso</h2></div>
-  <div class="steps stagger"><div class="step reveal"><i>1</i><b>Nos cuentas tu negocio</b><span>Por WhatsApp o aquí mismo: qué vendes, dónde estás y qué quieres que vea quien te busque.</span></div><div class="step reveal"><i>2</i><b>Te enseñamos la propuesta</b><span>Sin compromiso y sin coste: la ves en tu móvil, con tus datos, antes de decidir nada.</span></div><div class="step reveal"><i>3</i><b>Si te gusta, pago único</b><span>En cuanto pagas, tu web queda publicada en tu enlace, al momento.</span></div></div>
+  <div class="section-head"><span class="eyebrow">Cómo funciona</span><h2>De tu idea a tu web online</h2></div>
+  <div class="steps stagger"><div class="step reveal"><i>1</i><b>Me cuentas tu negocio</b><span>Por WhatsApp o aquí mismo: qué vendes, dónde estás y qué quieres transmitir.</span></div><div class="step reveal"><i>2</i><b>Diseño y construyo tu web</b><span>Cuido cada detalle: textos, fotos, velocidad y que se vea impecable en el móvil.</span></div><div class="step reveal"><i>3</i><b>La publico en tu enlace</b><span>Pago único y queda online, lista para que te encuentren, sin cuotas ocultas.</span></div></div>
 </div></section>
 
 <section class="trust"><div class="wrap">
@@ -146,7 +200,7 @@ footer{padding:36px 0;text-align:center;color:var(--ink-3);font-size:13px;border
 </div></section>
 
 <section id="contacto" class="contact"><div class="wrap">
-  <div class="contact-box reveal"><h2>Hablemos de tu negocio</h2><p>Cuéntame qué vendes y dónde estás: te preparo la propuesta sin compromiso.</p>
+  <div class="contact-box reveal"><h2>Hablemos de tu negocio</h2><p>Cuéntame qué vendes y dónde estás, y diseñamos juntos tu web.</p>
     <div class="contact-list"><a class="contact-btn" href="https://wa.me/34610228835?text=Hola%2C%20quiero%20una%20web%20para%20mi%20negocio."><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z" fill="none"/><path d="M8.3 7.6c.2-.5.5-.5.7-.5h.6c.2 0 .4 0 .6.4.2.5.7 1.6.7 1.8.1.1.1.3 0 .4-.6 1.2-1.2 1.1-.7 1.9.9 1.5 1.6 2 2.9 2.6.2.1.4.1.5-.1.2-.2.6-.7.8-1 .2-.2.4-.2.6-.1.2.1 1.5.7 1.8.8.2.1.4.2.4.3.1.2.1 1-.3 1.9-.4.9-2.1 1.6-2.9 1.6-.8.1-1.4.1-3.2-.7-2.7-1.2-4.4-4-4.6-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.1z"/></svg> Escríbeme por WhatsApp</a><a class="contact-btn alt" href="tel:+34610218023"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.9.6 2.7a2 2 0 0 1-.4 2.1L8 9.9a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.8 2z"/></svg> Llamar: +34610218023</a><a class="contact-btn alt" href="mailto:aaronalbaa@icloud.com"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/></svg> aaronalbaa@icloud.com</a></div>
     <a class="secondary-link" href="/info/">Ver la presentación completa →</a>
   </div>
@@ -158,10 +212,14 @@ footer{padding:36px 0;text-align:center;color:var(--ink-3);font-size:13px;border
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.gsap) return;
+  // el HTML/CSS ya enseña la página entera tal cual, sin JS: si algo de esto falla (red, bloqueador),
+  // la web se queda bien de todos modos, solo que sin animar. Las animaciones son una capa que se añade encima.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
-  gsap.set('.hero .reveal', {opacity: 1, y: 0});
-  gsap.from('.hero .reveal', {opacity: 0, y: 18, duration: .8, ease: 'power2.out', stagger: .12});
+
+  gsap.set('.reveal', {opacity: 0, y: 22});
+  gsap.set('.hero .reveal', {y: 18});
+  gsap.to('.hero .reveal', {opacity: 1, y: 0, duration: .8, ease: 'power2.out', stagger: .12});
   document.querySelectorAll('.stagger').forEach(function (group) {
     gsap.to(group.querySelectorAll('.reveal'), {
       opacity: 1, y: 0, duration: .7, ease: 'power2.out', stagger: .08,
@@ -172,6 +230,24 @@ document.addEventListener('DOMContentLoaded', function () {
     if (el.closest('.stagger')) return;
     gsap.to(el, {opacity: 1, y: 0, duration: .7, ease: 'power2.out', scrollTrigger: {trigger: el, start: 'top 88%'}});
   });
+
+  // «Así nace tu web»: boceto -> contenido real -> publicada -> llegan los primeros mensajes, al ritmo del scroll
+  var buildPin = document.querySelector('.build-pin');
+  if (buildPin) {
+    gsap.set('.browser-mock', {opacity: 0, scale: .94});
+    gsap.set('.skel', {opacity: 1});
+    gsap.set('.real', {opacity: 0});
+    gsap.set('.live-badge', {opacity: 0});
+    gsap.set('.bubble', {opacity: 0, y: 14});
+    gsap.set('.url-text', {clipPath: 'inset(0 100% 0 0)'});
+    var tl = gsap.timeline({scrollTrigger: {trigger: buildPin, start: 'top top', end: '+=2000', scrub: .6, pin: true}});
+    tl.to('.browser-mock', {opacity: 1, scale: 1, duration: 1, ease: 'power2.out'})
+      .to('.skel', {opacity: 0, duration: .8}, '+=.3')
+      .to('.real', {opacity: 1, duration: .8}, '<')
+      .to('.url-text', {clipPath: 'inset(0 0% 0 0)', duration: 1, ease: 'none'}, '<.15')
+      .to('.live-badge', {opacity: 1, duration: .5})
+      .to('.bubble', {opacity: 1, y: 0, stagger: .3, duration: .6}, '+=.2');
+  }
 });
 </script>
 </body></html>
