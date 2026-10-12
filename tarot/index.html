@@ -3,28 +3,44 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Arcana — Tarot y Academia Esotérica</title>
-<meta name="description" content="Lecturas de tarot con interpretación por IA y una academia para aprender prácticas esotéricas paso a paso.">
+<title>Arcana — Tarot, oráculos y cielo</title>
+<meta name="description" content="Tarot, runas, I Ching, Luna, planetas, horóscopo diario y chino, academia esotérica y una guía de IA para conocerte mejor.">
 <meta name="theme-color" content="#0d0b14">
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔮%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Runic&family=Noto+Sans+Ogham&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="sky" aria-hidden="true"></div>
-<div id="app">
+<div id="app" hidden>
   <main id="view" aria-live="polite"></main>
   <nav class="tabs" id="tabs">
-    <button data-a="tab" data-tab="read"><span>🔮</span><small>Leer</small></button>
+    <button data-a="tab" data-tab="home"><span>🏠</span><small>Hoy</small></button>
+    <button data-a="tab" data-tab="oracle"><span>🔮</span><small>Oráculos</small></button>
+    <button data-a="tab" data-tab="sky"><span>🌙</span><small>Cielo</small></button>
+    <button data-a="tab" data-tab="chat"><span>💬</span><small>Sibila</small></button>
     <button data-a="tab" data-tab="acad"><span>🎓</span><small>Academia</small></button>
-    <button data-a="tab" data-tab="set"><span>⚙️</span><small>Ajustes</small></button>
   </nav>
 </div>
+<div id="ob" hidden></div>
 <div id="overlay" hidden></div>
 <div id="modal" hidden></div>
 <div id="toast" role="status"></div>
 <script src="cards.js"></script>
+<script src="astro.js"></script>
+<script src="decks.js"></script>
+<script src="iching.js"></script>
+<script src="horoscope.js"></script>
 <script src="academy.js"></script>
+<script src="core.js"></script>
+<script src="ai.js"></script>
+<script src="read.js"></script>
+<script src="sky.js"></script>
+<script src="home.js"></script>
+<script src="acad.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
