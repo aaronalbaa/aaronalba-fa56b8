@@ -133,7 +133,7 @@
     h += ARC.missionsHTML();
 
     var kp = knowPct();
-    h += '<button class="group know" data-a="tab" data-tab="chat"><div class="grow"><span class="gi">🔮</span><div><b>Sibila te conoce al ' + kp + '%</b><small>Cuanto más sabe de ti, más personales son sus respuestas</small></div><i class="chev">›</i></div><div class="meter"><i style="width:' + kp + '%"></i></div></button>';
+    h += '<button class="group know" data-a="goKnow"><div class="grow"><span class="gi">🔮</span><div><b>Sibila te conoce al ' + kp + '%</b><small>Cuanto más sabe de ti, más personales son sus respuestas</small></div><i class="chev">›</i></div><div class="meter"><i style="width:' + kp + '%"></i></div></button>';
     h += '<p class="fine">' + esc(TX.dayPrompt(now)) + '</p>';
     return h + '</section>';
   };
@@ -163,6 +163,7 @@
     ARC.openModal('<h3>💭 Reflexión</h3><p class="hint">' + esc(q) + '</p><textarea id="jnote" rows="7" placeholder="Escribe sin juzgarte…"></textarea><button class="btn primary big" data-a="journalSave">Guardar</button>');
   };
   A.goSkyLuna = function () { ARC.sky.setSub('luna'); ARC.go('sky'); };
+  A.goKnow = function () { ME.sub = 'conocete'; ARC.go('me'); };
   A.goSkyLocal = function () { ARC.sky.setSub('local'); ARC.go('sky'); };
   A.goSkySigno = function () { ARC.sky.setSub('signo'); ARC.go('sky'); };
 
@@ -183,6 +184,7 @@
     { k: 'meta', l: 'Meta de este año', q: '¿Cuál es tu meta más importante este año?', t: 'text' }
   ];
   ARC.FACTS = FACTS;
+  ARC.factsHTML = function () { return conocete(); };
   function conocete() {
     var f = P.facts = P.facts || {}, done = FACTS.filter(function (q) { var v = f[q.k]; return v && (!Array.isArray(v) || v.length); }).length;
     var h = '<div class="panel"><div class="lbl">Conócete · ' + done + '/' + FACTS.length + '</div><div class="meter"><i style="width:' + Math.round(done / FACTS.length * 100) + '%"></i></div>' +
@@ -238,13 +240,15 @@
       Object.keys(pr).map(function (k) { return '<button data-a="provider" data-v="' + k + '" class="' + (cur === k ? 'on' : '') + '">' + esc({ free: 'Gratis', gemini: 'Gemini', anthropic: 'Claude' }[k]) + '</button>'; }).join('') + '</div>' +
       '<p class="hint">' + esc(pr[cur].note) + '</p>' + keyField +
       '<button class="btn ghost" data-a="aiTest">Probar conexión</button><div id="aiTestOut" class="hint"></div></div>' +
+      '<div class="panel"><div class="lbl">Tono de Sibila</div><div class="seg three">' + [['sabio', 'Mentor sabio'], ['cercano', 'Cercano'], ['directo', 'Directo']].map(function (t) { return '<button data-a="tone" data-v="' + t[0] + '" class="' + ((P.tone || 'sabio') === t[0] ? 'on' : '') + '">' + t[1] + '</button>'; }).join('') + '</div><p class="hint">Cambia cómo te habla en lecturas, horóscopos y conversaciones.</p>' +
+      '<label class="toggle"><input type="checkbox" id="revealall"' + (P.revealAll ? ' checked' : '') + '><span>Mostrar todas las puertas desde el principio</span></label></div>' +
       '<div class="panel"><div class="lbl">Lecturas</div><label class="toggle"><input type="checkbox" id="rev"' + (S.reversed ? ' checked' : '') + '><span>↺ Permitir cartas invertidas</span></label></div>' +
       '<div class="panel"><div class="lbl">Tus datos</div><p class="hint">Todo se guarda solo en este dispositivo: perfil, diario, chat y progreso.</p>' +
       '<button class="btn ghost" data-a="progReset">Reiniciar la academia</button><button class="btn ghost danger" data-a="wipeAll">Borrar todos mis datos</button></div>' +
       '<p class="fine">Arcana es una herramienta de reflexión y entretenimiento. No predice el futuro ni sustituye a profesionales de la salud, el derecho o las finanzas.</p>';
   }
   ARC.views.me = function () {
-    var body = ME.sub === 'diario' ? diarioHTML() : ME.sub === 'perfil' ? perfilHTML() : ME.sub === 'conocete' ? conocete() : ajustesHTML();
+    var body = ME.sub === 'diario' ? diarioHTML() : ME.sub === 'perfil' ? perfilHTML() : ME.sub === 'conocete' ? (ARC.interview ? ARC.interview.html() : conocete()) : ajustesHTML();
     return '<section class="page"><button class="btn link left" data-a="tab" data-tab="home">← Hoy</button><header class="hero small"><h1>Yo <span>🌙</span></h1></header><div class="chips sub">' +
       TABS.map(function (t) { return '<button data-a="meSub" data-v="' + t[0] + '" class="' + (ME.sub === t[0] ? 'on' : '') + '">' + t[1] + '</button>'; }).join('') + '</div>' + body + '</section>';
   };
@@ -261,6 +265,8 @@
     var v = el.dataset.v, i = P.owned.indexOf(v); if (i > -1) P.owned.splice(i, 1); else P.owned.push(v); ARC.save('profile'); ARC.render(true);
   };
   A.tstyleMe = function (el) { P.tarotStyle = el.dataset.v; ARC.save('profile'); ARC.render(true); };
+  A.tone = function (el) { P.tone = el.dataset.v; ARC.save('profile'); ARC.render(true); };
+  ARC.changes.revealall = function (v) { P.revealAll = v; ARC.save('profile'); ARC.toast(v ? 'Todas las puertas abiertas' : 'Las puertas se revelarán con tu avance'); };
   A.provider = function (el) { S.provider = el.dataset.v; ARC.save('settings'); ARC.render(true); };
   A.aiTest = function () {
     var out = $('#aiTestOut'); out.textContent = 'Probando…';

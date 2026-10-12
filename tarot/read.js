@@ -200,16 +200,19 @@
       '<div class="actions"><button class="btn ghost" data-a="saveReading">📓 Guardar en mi diario</button><button class="btn link" data-a="hub">Nueva lectura</button></div></section>';
   }
 
-  var SYSTEM_BASE = 'Eres una guía de oráculos cálida, serena y respetuosa que escribe en español. Interpretas la tirada que recibes ' +
+  var SYSTEM_PRE = 'Eres una guía de oráculos cálida, serena y respetuosa que escribe en español. Interpretas la tirada que recibes ' +
     'conectando cada carta con su posición y con la pregunta de la persona. Reglas: tono empático y claro; ' +
     'no hagas predicciones absolutas ni afirmes certezas sobre el futuro; presenta el oráculo como una herramienta de reflexión; ' +
     'no des diagnósticos médicos, legales ni financieros (si el tema los toca, recomienda con suavidad consultar a un profesional); ' +
     'si hay señales de crisis emocional, responde con cuidado y sugiere buscar apoyo (en España, 024 o 112). ' +
     'Formato: una breve introducción, una interpretación de cada carta (en negrita el nombre y la posición), ' +
-    'una síntesis que una las cartas y una pregunta final de introspección. Máximo unas 400 palabras y algunos emojis sutiles. ' + ARC.PERSONALIZE;
+    'una síntesis que una las cartas y una pregunta final de introspección. Máximo unas 400 palabras y algunos emojis sutiles. ';
+  function SYSTEM_TXT() { return SYSTEM_PRE + ARC.PERSONALIZE; }
 
-  var SYSTEM = SYSTEM_BASE;
-  function userContext() { return 'CONTEXTO\n' + ARC.ctx(); }
+  function userContext() {
+    var c = R.consult ? '\nCONSULTA PREVIA (lo que la persona dijo antes de la tirada): motivo «' + R.consult.why + '», estado «' + R.consult.feel + '», espera «' + R.consult.hope + '», plazo «' + R.consult.when + '».' : '';
+    return 'CONTEXTO\n' + ARC.ctx() + c;
+  }
 
   function aiInterpret() {
     ARC.ai.guard(function () {
@@ -220,7 +223,7 @@
       });
       var user = userContext() + '\nPregunta: ' + (R.question || '(sin pregunta concreta; lectura general)') + '\nOráculo: ' + d.name + '\nTirada: ' + s.name + '\nCartas:\n' + lines.join('\n');
       R.aiState = 'loading'; updateAI();
-      ARC.ai.ask({ system: SYSTEM, messages: [{ role: 'user', content: user }], max: 1000 }).then(function (t) {
+      ARC.ai.ask({ system: SYSTEM_TXT(), messages: [{ role: 'user', content: user }], max: 1000 }).then(function (t) {
         R.ai = t; R.aiState = 'done'; updateAI();
       }).catch(function (e) { R.aiState = 'error'; R.aiError = e.message; updateAI(); });
     });
@@ -423,7 +426,21 @@
   A.tstyle = function (el) { P.tarotStyle = el.dataset.v; ARC.save('profile'); ARC.render(true); };
   A.mode = function (el) { R.mode = el.dataset.v; ARC.render(true); };
   A.spread = function (el) { R.spread = el.dataset.v; ARC.render(true); };
+  var CONS = { why: ['Una duda concreta', 'Una decisión', 'Ansiedad o inquietud', 'Curiosidad', 'Necesito claridad', 'Solo explorar'], feel: ['Tranquilo/a', 'Nervioso/a', 'Triste', 'Esperanzado/a', 'Confuso/a', 'Cansado/a'], hope: ['Confirmación', 'Consejo', 'Calma', 'Una advertencia', 'Una sorpresa'], when: ['Hoy', 'Esta semana', 'Este mes', 'Este año'] };
+  var CQ = { why: '¿Qué te mueve a preguntar hoy?', feel: '¿Cómo te sientes ahora mismo?', hope: '¿Qué esperas oír?', when: '¿Para cuándo es la respuesta?' };
+  function consultModal(next) {
+    R.consultTmp = R.consult || { why: '', feel: '', hope: '', when: '' }; R.consultNext = next;
+    ARC.openModal('<h3>Antes de empezar</h3><p class="hint">Un momento de calma. Sibila te hace cuatro preguntas para leer mejor tus cartas.</p>' +
+      Object.keys(CONS).map(function (k) { return '<div class="lbl">' + CQ[k] + '</div><div class="chips wrap">' + CONS[k].map(function (o) { return '<button data-a="consPick" data-k="' + k + '" data-v="' + esc(o) + '" class="' + (R.consultTmp[k] === o ? 'on' : '') + '">' + esc(o) + '</button>'; }).join('') + '</div>'; }).join('') +
+      '<button class="btn primary big" data-a="consGo">Continuar ✨</button><button class="btn link" data-a="consSkip">Saltar</button>', 'tall');
+  }
+  A.consPick = function (el) { R.consultTmp[el.dataset.k] = el.dataset.v; $$('[data-a=consPick][data-k=' + el.dataset.k + ']').forEach(function (b) { b.classList.toggle('on', b === el); }); };
+  A.consGo = function () { var t = R.consultTmp; R.consult = { why: t.why || 'no indicado', feel: t.feel || 'no indicado', hope: t.hope || 'no indicado', when: t.when || 'no indicado' }; ARC.closeModal(); var n = R.consultNext; R.consultNext = null; if (n) n(); };
+  A.consSkip = function () { R.consult = null; ARC.closeModal(); var n = R.consultNext; R.consultNext = null; if (n) n(); };
+
   A.start = function () {
+    if (!R.consultDone) { R.consultDone = true; consultModal(function () { A.start(); }); return; }
+    R.consultDone = false;
     var n = sp().pos.length;
     R.stage = 'table'; R.dealt = false; R.shuffling = false;
     R.cards = R.mode === 'fisica' ? new Array(n).fill(null) : [];
@@ -467,7 +484,7 @@
   A.reading = function () { R.stage = 'reading'; P.stats = P.stats || { readings: 0 }; P.stats.readings = (P.stats.readings || 0) + 1; ARC.save('profile'); ARC.render(); };
   A.detail = function (el) { var p = Number(el.dataset.p); if (R.cards[p]) detailModal(R.cards[p], sp().pos[p]); };
   A.ai = function () { if (R.stage === 'ich') ichAI(); else aiInterpret(); };
-  A.cast = function () { ichCast(); };
+  A.cast = function () { if (!R.consultDone) { R.consultDone = true; consultModal(function () { A.cast(); }); return; } R.consultDone = false; ichCast(); };
 
   function ichAI() {
     ARC.ai.guard(function () {
@@ -475,7 +492,7 @@
       var user = userContext() + '\nPregunta: ' + (R.question || '(lectura general)') + '\nI Ching: hexagrama ' + r.num + ' ' + H[r.num][1] + ' (' + H[r.num][0] + '), trigrama superior ' + r.upper.n + ', inferior ' + r.lower.n + '.' +
         (r.rel ? ' Líneas móviles: ' + r.moving.join(', ') + '. Hexagrama resultante: ' + r.rel + ' ' + H[r.rel][1] + '.' : ' Sin líneas móviles.');
       R.aiState = 'loading'; updateAI();
-      ARC.ai.ask({ system: SYSTEM.replace('cada carta con su posición', 'el hexagrama con sus trigramas y líneas móviles'), messages: [{ role: 'user', content: user }], max: 900 })
+      ARC.ai.ask({ system: SYSTEM_TXT().replace('cada carta con su posición', 'el hexagrama con sus trigramas y líneas móviles'), messages: [{ role: 'user', content: user }], max: 900 })
         .then(function (t) { R.ai = t; R.aiState = 'done'; updateAI(); })
         .catch(function (e) { R.aiState = 'error'; R.aiError = e.message; updateAI(); });
     });

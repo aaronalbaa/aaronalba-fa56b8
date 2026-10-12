@@ -129,10 +129,17 @@
       var wxd = ARC.loc && ARC.loc.getWeather && ARC.loc.getWeather();
       L.push('UBICACIÓN: ' + P.loc.name + ' (zona horaria ' + P.loc.tz + ')' + (wxd && wxd.current ? '; clima ahora: ' + Math.round(wxd.current.temperature_2m) + '°, nubosidad ' + wxd.current.cloud_cover + '%' : '') + '.');
     }
+    if (ARC.interview) { var ps = ARC.interview.summary(); if (ps) L.push(ps); }
     L.push('CIELO HOY: ' + mi.name + ' en ' + ASTRO.SIGNS[mi.sign].n + ' (' + Math.round(mi.illum * 100) + '% iluminada), Sol en ' + ASTRO.SIGNS[pl[0].sign].n + (retro.length ? '; ' + retro.join(', ') : '') + '.');
     return L.join('\n');
   };
-  ARC.PERSONALIZE = 'PERSONALIZACIÓN: usa el CONTEXTO de la persona para que la respuesta sea específica y relevante para ella, no genérica. Indica de forma explícita en qué te basas (por ejemplo «porque sacaste…», «por tu Venus en…», «porque me contaste que…»). Distingue lo que dicen las cartas de lo que infieres de la persona. Si falta información clave, dilo y haz una sola pregunta concreta. Nunca afirmes certezas sobre el futuro: ofrece posibilidades, símbolos y preguntas útiles.';
+  var TONES = {
+    sabio: 'TONO: hablas como un mentor ancestral, sereno y solemne, custodio de un códice de saber: lenguaje sobrio y evocador, con metáforas de templos, estrellas y raíces, y una calidez profunda. No presumas de omnisciencia: eres sabio porque escuchas, observas y haces buenas preguntas. ',
+    cercano: 'TONO: hablas de forma cercana, cálida y sencilla, como una amiga sabia que conoce bien a la persona. ',
+    directo: 'TONO: hablas de manera clara y concisa, sin adornos, con honestidad amable. '
+  };
+  var PERS_BASE = 'PERSONALIZACIÓN: usa el CONTEXTO de la persona para que la respuesta sea específica y relevante para ella, no genérica. Indica de forma explícita en qué te basas (por ejemplo «porque sacaste…», «por tu Venus en…», «porque me contaste que…»). Distingue lo que dicen las cartas de lo que infieres de la persona. Si falta información clave, dilo y haz una sola pregunta concreta. Nunca afirmes certezas sobre el futuro: ofrece posibilidades, símbolos y preguntas útiles.';
+  Object.defineProperty(ARC, 'PERSONALIZE', { get: function () { return (TONES[P.tone || 'sabio'] || TONES.sabio) + PERS_BASE; } });
 
   ARC.ai = { PROVIDERS: PROVIDERS, ready: ready, ask: ask, guard: guard };
 
@@ -153,6 +160,8 @@
     lines.push('Tu objetivo es conocer mejor a la persona y ayudarla a reflexionar. Haz UNA pregunta abierta por mensaje, escucha, refleja lo que dice y conecta con símbolos (cartas, Luna, signos) solo cuando ayude, como metáfora y no como verdad. Respuestas breves (máx. ~110 palabras), sin listas largas, con algún emoji sutil.');
     lines.push('Reglas: no hagas predicciones ni afirmes certezas sobre el futuro; no des diagnósticos médicos, psicológicos, legales ni financieros; no eres terapeuta (si el tema es serio, sugiere con suavidad apoyo profesional). Si detectas señales de crisis o autolesión, responde con cuidado y recomienda llamar al 024 (España) o al 112. No inventes datos sobre la persona.');
     lines.push(ARC.PERSONALIZE);
+    var nq = ARC.interview ? ARC.interview.nextQuestions(3) : [];
+    if (nq.length) lines.push('Si la conversación lo permite, entre tus preguntas puedes explorar alguno de estos temas que aún no conoces: ' + nq.join(' / '));
     lines.push('CONTEXTO\n' + ARC.ctx());
     return lines.join('\n');
   }

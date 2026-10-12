@@ -62,7 +62,7 @@
   ARC.missionsState = function () { roll(); return MS; };
   var MISSIONS = [
     ['checkin', '🌤️', 'Chequeo de ánimo', 'Cómo te sientes hoy'], ['carta', '🃏', 'Tu carta del día', 'Descúbrela y reflexiona'],
-    ['respira', '🌬️', 'Respira un minuto', 'Calma tu cuerpo'], ['reflexion', '📓', 'Una reflexión', 'Escribe unas líneas']
+    ['respira', '🌬️', 'Respira un minuto', 'Calma tu cuerpo'], ['reflexion', '📓', 'Una reflexión', 'Escribe unas líneas'], ['conocer', '🪞', 'Conócete un poco más', 'Una pregunta de Sibila']
   ];
   ARC.mission = function (id) {
     roll(); if (MS.done[id]) return;
@@ -85,6 +85,7 @@
     } else if (id === 'carta') { ARC.go('home'); ARC.act.dayFlip && ARC.act.dayFlip(); ARC.mission('carta'); ARC.render(true); }
     else if (id === 'respira') { breathe(); }
     else if (id === 'reflexion') { ARC.act.promptWrite && ARC.act.promptWrite(); }
+    else if (id === 'conocer') { ARC.act.knowOne && ARC.act.knowOne(); }
   };
   A.moodPick = function (el) {
     var i = Number(el.dataset.i), note = ($('#moodnote') || {}).value || '';

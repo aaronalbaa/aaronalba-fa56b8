@@ -859,3 +859,12 @@ body[data-tab=crypt] #fab, body[data-tab=chat] #fab { display: none; }
   .doors { grid-template-columns: repeat(4, 1fr); }
   .home2 { max-width: 720px; }
 }
+
+/* ---------- entrevista ---------- */
+.ivh { font-size: 24px; margin: 4px 0 8px; } .ivq { font-family: var(--serif); font-size: 24px; line-height: 1.35; margin: 18px 0 20px; }
+.ivbar { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin: 6px 0 10px; } .ivbar i { display: block; height: 100%; background: linear-gradient(90deg, var(--violet), var(--gold)); transition: width .4s; }
+.lik { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 12px; }
+.lik button { background: var(--card); border: 1.5px solid var(--line2); border-radius: 18px; padding: 14px 0 10px; display: grid; justify-items: center; gap: 4px; cursor: pointer; color: inherit; transition: .15s; }
+.lik button span { font-size: 28px; } .lik button small { font-size: 11px; color: var(--muted); } .lik button.on, .lik button:active { border-color: var(--gold); background: #e6c97a14; transform: translateY(-2px); }
+.gtags.big span { font-size: 14px; padding: 6px 14px; }
+@media (min-width: 900px) { .lik button { padding: 20px 0 14px; } }
