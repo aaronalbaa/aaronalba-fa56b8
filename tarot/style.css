@@ -868,3 +868,21 @@ body[data-tab=crypt] #fab, body[data-tab=chat] #fab { display: none; }
 .lik button span { font-size: 28px; } .lik button small { font-size: 11px; color: var(--muted); } .lik button.on, .lik button:active { border-color: var(--gold); background: #e6c97a14; transform: translateY(-2px); }
 .gtags.big span { font-size: 14px; padding: 6px 14px; }
 @media (min-width: 900px) { .lik button { padding: 20px 0 14px; } }
+
+/* ---------- tirada guiada ---------- */
+.guide .gsteps { display: flex; justify-content: center; gap: 10px; margin: 6px 0 14px; }
+.gsteps span { display: grid; justify-items: center; gap: 2px; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line2); place-content: center; font: 600 15px var(--sans); color: var(--muted); position: relative; }
+.gsteps span small { position: absolute; top: 48px; font-size: 10px; font-weight: 400; white-space: nowrap; } .gsteps span.on { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 20px #e6c97a44; } .gsteps span.done { background: var(--gold); color: #1a1226; border-color: var(--gold); }
+.gbody { margin-top: 28px; display: grid; gap: 6px; } .gbody h2 { font-size: 26px; text-align: center; } .gbody .lead { text-align: center; color: #d9d2ea; }
+.gtimer { display: grid; justify-items: center; margin: 4px 0 8px; } .gtimer b { font: 600 52px var(--serif); color: var(--gold); line-height: 1; } .gtimer small { color: var(--muted); }
+.piles { display: flex; justify-content: center; gap: 16px; margin: 10px 0 16px; }
+.pile { width: 92px; aspect-ratio: 2 / 3.3; border-radius: 12px; border: 1.5px solid var(--gold); background: repeating-linear-gradient(45deg, #1d1736 0 6px, #231b42 6px 12px); box-shadow: 0 10px 24px #0008; cursor: pointer; color: var(--gold); font-size: 28px; transition: .25s; }
+.pile:hover, .pile.on { transform: translateY(-10px) rotate(-2deg); box-shadow: 0 16px 34px #e6c97a44; } .pile.on { border-width: 2.5px; }
+.gprompt { text-align: center; display: grid; gap: 2px; margin: 12px 0 4px; } .gprompt small { color: var(--gold); text-transform: uppercase; letter-spacing: .14em; font-size: 11px; }
+.slot.cur { border-color: var(--gold); box-shadow: 0 0 22px #e6c97a55; animation: fabpulse 2.4s ease-in-out infinite; }
+
+/* ---------- péndulo ---------- */
+.pcanvas{display:flex;justify-content:center;margin:8px 0 4px}
+.pcanvas canvas{width:min(100%,380px);aspect-ratio:1;touch-action:none;border-radius:50%;box-shadow:0 0 60px rgba(139,108,255,.18)}
+.pword{text-align:center;font-family:Georgia,serif;font-size:2rem;letter-spacing:.3em;color:var(--gold,#e6c97a);margin:6px 0}
+.pstat{text-align:center;color:var(--muted,#9a93b0);font-size:.95rem;min-height:1.4em;margin:4px 0 12px}

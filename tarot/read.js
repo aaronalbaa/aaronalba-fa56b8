@@ -1,7 +1,7 @@
 /* Oráculos: lecturas con cualquier mazo, I Ching y oráculos rápidos (péndulo, bola, moneda, sí/no, dados). */
 (function () {
   'use strict';
-  var ARC = window.ARC, $ = ARC.$, $$ = ARC.$$, esc = ARC.esc, S = ARC.settings, P = ARC.profile, rnd = ARC.rnd;
+  var ARC = window.ARC, $ = ARC.$, $$ = ARC.$$, esc = ARC.esc, S = ARC.settings, P = ARC.profile, rnd = ARC.rnd, A = ARC.act;
 
   /* ---------- tiradas ---------- */
   var SPREADS = {
@@ -28,7 +28,7 @@
 
   function fresh(keep) {
     return {
-      stage: 'hub', deck: keep ? keep.deck : 'tarot', mode: keep ? keep.mode : 'virtual', spread: keep ? keep.spread : 'ppf',
+      stage: 'hub', deck: keep ? keep.deck : 'tarot', mode: keep ? keep.mode : 'virtual', guided: keep ? !!keep.guided : false, spread: keep ? keep.spread : 'ppf',
       question: keep ? keep.question : '', cards: [], revealed: [], dealt: false, shuffling: false, ai: '', aiState: 'idle', aiError: '',
       quick: null, ich: null
     };
@@ -56,13 +56,14 @@
   }
 
   /* ---------- hub ---------- */
-  var QUICK = [['pendulo', '🔮', 'Péndulo'], ['bola', '🎱', 'Bola de cristal'], ['carta', '🃏', 'Sí/No con carta'], ['moneda', '🪙', 'Moneda'], ['dados', '🎲', 'Dados astrales'], ['una', '✨', 'Una carta']];
+  var QUICK = [['bola', '🎱', 'Bola de cristal'], ['carta', '🃏', 'Sí/No con carta'], ['moneda', '🪙', 'Moneda'], ['dados', '🎲', 'Dados astrales'], ['una', '✨', 'Una carta']];
 
   function hubHTML() {
     var tiles = DECKS.list.map(function (d) {
       return '<button class="tile' + (owned(d.id) ? ' own' : '') + '" data-a="method" data-v="' + d.id + '"><b>' + d.emoji + '</b><span>' + esc(d.id === 'tarot' ? 'Tarot' : d.name) + '</span><small>' + esc(d.desc) + '</small>' +
         (owned(d.id) ? '<em>tuyo</em>' : '') + '</button>';
     }).join('') +
+      '<button class="tile" data-a="method" data-v="pendulo"><b>🔮</b><span>Péndulo</span><small>Digital o con el tuyo, guiado</small></button>' +
       '<button class="tile" data-a="method" data-v="iching"><b>☯️</b><span>I Ching</span><small>64 hexagramas con monedas</small></button>' +
       '<button class="tile" data-a="goSky" data-v="numeros"><b>🔢</b><span>Numerología</span><small>Camino de vida y año personal</small></button>';
     return '<section class="page"><header class="hero"><h1>Oráculos <span>🔮</span></h1><p>Elige tu método y pregunta con el corazón</p></header>' +
@@ -82,10 +83,11 @@
       '<header class="hero"><h1>' + d.emoji + ' ' + esc(d.name) + '</h1><p>' + esc(d.desc) + '</p></header>' +
       '<div class="panel">' + styles +
       '<div class="lbl">Tu pregunta</div><textarea id="q" rows="3" maxlength="300" placeholder="Ej.: ¿Qué necesito entender sobre mi trabajo ahora?">' + esc(R.question) + '</textarea>' +
-      '<div class="lbl">¿Quién echa las cartas?</div><div class="seg">' +
+      '<div class="lbl">¿Quién echa las cartas?</div><div class="seg three">' +
       '<button data-a="mode" data-v="virtual" class="' + (R.mode === 'virtual' ? 'on' : '') + '">🎴 La baraja</button>' +
-      '<button data-a="mode" data-v="fisica" class="' + (R.mode === 'fisica' ? 'on' : '') + '">🖐️ Mis cartas</button></div>' +
-      '<p class="hint">' + (R.mode === 'virtual' ? 'Barajamos y repartimos por ti. Tú giras las cartas.' : 'Echa tus cartas físicas y dinos cuáles salieron: las interpretamos.') + '</p>' +
+      '<button data-a="mode" data-v="fisica" class="' + (R.mode === 'fisica' && !R.guided ? 'on' : '') + '">🖐️ Mis cartas</button>' +
+      '<button data-a="mode" data-v="guiada" class="' + (R.mode === 'fisica' && R.guided ? 'on' : '') + '">🧙 Guiada</button></div>' +
+      '<p class="hint">' + (R.mode === 'virtual' ? 'Barajamos y repartimos por ti. Tú giras las cartas.' : R.guided ? 'Te acompaño paso a paso con tu baraja física: respirar, barajar, cortar y desplegar. Me dices qué sale y lo vamos leyendo juntos.' : 'Echa tus cartas físicas y dinos cuáles salieron: las interpretamos.') + '</p>' +
       '<div class="lbl">Tirada</div><div class="spreads">' + d.spreads.map(function (id) {
         var x = SPREADS[id];
         return '<button class="spread' + (id === R.spread ? ' on' : '') + '" data-a="spread" data-v="' + id + '"><b>' + x.emoji + '</b><span>' + esc(x.name) + '</span><small>' + x.pos.length + (x.pos.length === 1 ? ' carta' : ' cartas') + '</small></button>';
@@ -97,7 +99,7 @@
     var c = R.cards[p], num = p + 1;
     if (R.stage === 'reading') return tcard(c, { flipped: true, num: num, attrs: 'data-a="detail" data-p="' + p + '"' });
     if (R.mode === 'fisica') {
-      if (!c) return '<button class="slot" data-a="pick" data-p="' + p + '" aria-label="Elegir carta ' + num + '"><span>+</span><i class="badge">' + num + '</i></button>';
+      if (!c) return '<button class="slot' + (R.stage === 'guide' && R.g && R.g.step === 3 && R.g.i === p ? ' cur' : '') + '" data-a="pick" data-p="' + p + '" aria-label="Elegir carta ' + num + '"><span>+</span><i class="badge">' + num + '</i></button>';
       return tcard(c, { flipped: true, num: num, attrs: 'data-a="pick" data-p="' + p + '"' });
     }
     return tcard(c, { flipped: !!R.revealed[p], num: num, cls: 'deal', style: 'animation-delay:' + (p * 90) + 'ms',
@@ -219,7 +221,7 @@
       var s = sp(), d = D();
       var lines = s.pos.map(function (name, i) {
         var c = R.cards[i], card = d.cards[c.id];
-        return (i + 1) + '. ' + name + ': ' + card.name + (c.rev ? ' (invertida)' : '') + ' — ' + (c.rev ? card.kwRev : card.kwUp);
+        return (i + 1) + '. ' + name + ': ' + card.name + (c.rev ? ' (invertida)' : '') + ' — ' + (c.rev ? card.kwRev : card.kwUp) + (R.g && R.g.feels && R.g.feels[i] ? ' [la persona sintió: ' + R.g.feels[i] + ' al verla]' : '');
       });
       var user = userContext() + '\nPregunta: ' + (R.question || '(sin pregunta concreta; lectura general)') + '\nOráculo: ' + d.name + '\nTirada: ' + s.name + '\nCartas:\n' + lines.join('\n');
       R.aiState = 'loading'; updateAI();
@@ -399,32 +401,78 @@
       case 'reading': return readingHTML();
       case 'ich': return ichView();
       case 'quick': return quickHTML();
+      case 'guide': return guideHTML();
+      case 'pend': return ARC.pend ? ARC.pend.html() : hubHTML();
       default: return hubHTML();
     }
   };
 
+
+  /* ---------- tirada guiada con cartas físicas ---------- */
+  var FEELS = ['Sorpresa', 'Calma', 'Miedo', 'Alivio', 'Tristeza', 'Alegría', 'Nada especial'];
+  var gTimer = null;
+  function mentorLine(card, rev, pos) {
+    var kw = (rev ? card.kwRev : card.kwUp).split(',')[0].toLowerCase();
+    return 'En «' + pos + '» ha surgido ' + card.name + (rev ? ' invertida' : '') + '. Habla de ' + kw + '. No la juzgues todavía: observa en silencio qué se remueve dentro de ti.';
+  }
+  function guideHTML() {
+    var g = R.g, sp0 = sp(), n = sp0.pos.length, q = R.question ? '«' + esc(R.question) + '»' : 'lo que llevas en el corazón';
+    var names = ['Prepara', 'Baraja', 'Corta', 'Despliega'];
+    var dots = '<div class="gsteps">' + names.map(function (x, i) { return '<span class="' + (i === g.step ? 'on' : i < g.step ? 'done' : '') + '">' + (i + 1) + '<small>' + x + '</small></span>'; }).join('') + '</div>';
+    var body = '';
+    if (g.step === 0) body = ARC.anim.html('breath') + '<h2>Respira y prepárate</h2><p class="lead">Pon el mazo frente a ti y las manos sobre él. Inhala despacio tres veces. Piensa en ' + q + ', sin forzar la respuesta. Cuando sientas calma, continúa.</p><button class="btn primary big" data-a="gNext">Estoy listo/a</button>';
+    else if (g.step === 1) body = ARC.anim.html('shuffle') + '<h2>Baraja con intención</h2><p class="lead">Baraja el tiempo que necesites mientras sostienes tu pregunta. No hay una forma correcta: lo importante es tu atención.</p><div class="gtimer"><b id="gtimer">' + g.left + '</b><small>segundos sugeridos</small></div><button class="btn primary big" data-a="gNext">Ya he barajado</button>';
+    else if (g.step === 2) body = '<h2>Corta el mazo</h2><p class="lead">Con la mano izquierda, divide el mazo en tres montones. Elige el que te llame y colócalo encima de los otros dos.</p><div class="piles">' +
+      [0, 1, 2].map(function (i) { return '<button class="pile' + (g.pile === i ? ' on' : '') + '" data-a="gPile" data-v="' + i + '"><span>✦</span></button>'; }).join('') + '</div>' + (g.pile !== null ? '<button class="btn primary big" data-a="gNext">Continuar</button>' : '<p class="hint c">Toca el montón que elijas</p>');
+    else {
+      var pos = sp0.pos[g.i];
+      body = gridHTML() + '<div class="gprompt"><small>Carta ' + (g.i + 1) + ' de ' + n + '</small><h2>' + esc(pos) + '</h2><p class="lead">Gira la siguiente carta del mazo y colócala en este lugar. Cuando la veas, dime cuál es.</p></div><button class="btn primary big" data-a="gPick">Elegir la carta que salió</button>';
+    }
+    return '<section class="page guide">' + qHeader() + dots + '<div class="gbody">' + body + '</div><button class="btn link" data-a="back">← Salir de la guía</button></section>';
+  }
+  A.gNext = function () {
+    var g = R.g; g.step++; clearInterval(gTimer);
+    if (g.step === 1) { g.left = 30; gTimer = setInterval(function () { var el = $('#gtimer'); if (!el || R.stage !== 'guide' || R.g.step !== 1) { clearInterval(gTimer); return; } R.g.left = Math.max(0, R.g.left - 1); el.textContent = R.g.left; }, 1000); }
+    ARC.render();
+  };
+  A.gPile = function (el) { R.g.pile = Number(el.dataset.v); ARC.render(true); };
+  A.gPick = function () { pickerModal(R.g.i); };
+  function feelModal(slot) {
+    var c = R.cards[slot], card = D().cards[c.id], pos = sp().pos[slot];
+    ARC.openModal('<div class="det">' + tcard(c, { flipped: true, cls: 'big' }) + '<div class="det-t"><small>' + esc(pos) + '</small><h3>' + (card.glyph ? '' : card.emoji + ' ') + esc(card.name) + '</h3><p>' + esc(mentorLine(card, c.rev, pos)) + '</p><div class="lbl">¿Qué sentiste al verla?</div><div class="chips wrap">' +
+      FEELS.map(function (f) { return '<button data-a="feelPick" data-v="' + esc(f) + '">' + esc(f) + '</button>'; }).join('') + '</div></div><button class="btn primary big" data-a="feelGo">Continuar</button></div>');
+  }
+  A.feelPick = function (el) { R.g.feels[R.g.i] = el.dataset.v; $$('[data-a=feelPick]').forEach(function (b) { b.classList.toggle('on', b === el); }); };
+  A.feelGo = function () {
+    ARC.closeModal(); var n = sp().pos.length, nxt = R.cards.findIndex(function (c) { return !c; });
+    if (nxt === -1) { R.stage = 'reading'; P.stats = P.stats || { readings: 0 }; P.stats.readings = (P.stats.readings || 0) + 1; ARC.save('profile'); ARC.render(); return; }
+    R.g.i = nxt; ARC.render(true);
+  };
+
   /* ---------- acciones ---------- */
-  var A = ARC.act;
+  // A declarado arriba
   function setDefaults() {
     var d = D();
     if (d.spreads.indexOf(R.spread) < 0) R.spread = d.spreads[Math.min(1, d.spreads.length - 1)];
     R.mode = owned(R.deck) ? 'fisica' : 'virtual';
   }
-  A.hub = function () { clearTimers(); var q = R.question; R = ARC.R = fresh(R); R.question = q; R.stage = 'hub'; ARC.tab = 'oracle'; ARC.closeModal(); ARC.render(); };
+  A.hub = function () { clearTimers(); if (ARC.pend) ARC.pend.stop(); var q = R.question; R = ARC.R = fresh(R); R.question = q; R.stage = 'hub'; ARC.tab = 'oracle'; ARC.closeModal(); ARC.render(); };
   A.method = function (el) {
     ARC.tab = 'oracle';
     if (el.dataset.v === 'iching') { R.stage = 'ich'; R.ich = null; ARC.render(); return; }
+    if (el.dataset.v === 'pendulo') { R.stage = 'pend'; ARC.render(); return; }
     R.deck = el.dataset.v; setDefaults(); R.stage = 'setup'; ARC.render();
   };
   A.goSky = function (el) { ARC.sky && ARC.sky.setSub(el.dataset.v); ARC.go('sky'); };
   A.quick = function (el) {
     var t = el.dataset.v;
     if (t === 'una') { R.deck = ARC.primaryDeck(); R.spread = 'una'; setDefaults(); R.stage = 'setup'; ARC.tab = 'oracle'; ARC.render(); return; }
+    if (t === 'pendulo' && ARC.pend) { clearTimers(); R.stage = 'pend'; ARC.tab = 'oracle'; ARC.render(); return; }
     clearTimers(); R.stage = 'quick'; ARC.tab = 'oracle'; R.quick = computeQuick(t); ARC.render();
     later(function () { if (R.quick && R.stage === 'quick' && ARC.tab === 'oracle') { R.quick.done = true; ARC.render(true); } }, t === 'bola' ? 1700 : 2200);
   };
   A.tstyle = function (el) { P.tarotStyle = el.dataset.v; ARC.save('profile'); ARC.render(true); };
-  A.mode = function (el) { R.mode = el.dataset.v; ARC.render(true); };
+  A.mode = function (el) { var v = el.dataset.v; R.guided = v === 'guiada'; R.mode = v === 'guiada' ? 'fisica' : v; ARC.render(true); };
   A.spread = function (el) { R.spread = el.dataset.v; ARC.render(true); };
   var CONS = { why: ['Una duda concreta', 'Una decisión', 'Ansiedad o inquietud', 'Curiosidad', 'Necesito claridad', 'Solo explorar'], feel: ['Tranquilo/a', 'Nervioso/a', 'Triste', 'Esperanzado/a', 'Confuso/a', 'Cansado/a'], hope: ['Confirmación', 'Consejo', 'Calma', 'Una advertencia', 'Una sorpresa'], when: ['Hoy', 'Esta semana', 'Este mes', 'Este año'] };
   var CQ = { why: '¿Qué te mueve a preguntar hoy?', feel: '¿Cómo te sientes ahora mismo?', hope: '¿Qué esperas oír?', when: '¿Para cuándo es la respuesta?' };
@@ -445,6 +493,7 @@
     R.stage = 'table'; R.dealt = false; R.shuffling = false;
     R.cards = R.mode === 'fisica' ? new Array(n).fill(null) : [];
     R.revealed = new Array(n).fill(false); R.ai = ''; R.aiState = 'idle';
+    if (R.guided && R.mode === 'fisica') { R.stage = 'guide'; R.g = { step: 0, i: 0, feels: [], pile: null, left: 30 }; }
     ARC.render();
   };
   A.back = function () { R.stage = 'setup'; ARC.render(); };
@@ -479,6 +528,7 @@
   A.choose = function (el) {
     var c = D().cards[Number(el.dataset.id)];
     R.cards[pk.slot] = { id: c.id, rev: !!(S.reversed && D().reversible && !c.norev && pk.rev) };
+    if (R.stage === 'guide') { feelModal(pk.slot); return; }
     ARC.closeModal(); ARC.render(true);
   };
   A.reading = function () { R.stage = 'reading'; P.stats = P.stats || { readings: 0 }; P.stats.readings = (P.stats.readings || 0) + 1; ARC.save('profile'); ARC.render(); };
@@ -518,6 +568,8 @@
   ARC.inputs.pkq = function (v) { pk.q = v; $('#pklist').innerHTML = pickerList(); };
   ARC.changes.pkrev = function (v) { pk.rev = v; };
   ARC.after.oracle = function () {
+    if (R.stage === 'pend') { ARC.pend && ARC.pend.after(); } else if (ARC.pend) ARC.pend.stop();
+    if (R.stage === 'guide') { var gg = $('.guide'); if (gg && ARC.anim) ARC.anim.init(gg); }
     if (R.stage === 'ich' && R.ich && R.ich.shown < 6) { var b = $('#hexbox'); if (b) b.innerHTML = castFigure(R.ich.lines.slice(0, R.ich.shown)); }
   };
 
