@@ -7,7 +7,7 @@
   /* ---------- progreso total: determina qué puertas se abren ---------- */
   function points() {
     var pr = ARC.progress, ch = Object.keys(pr.done || {}).length, books = Object.keys(pr.books || {}).length;
-    return ch + books * 5 + (P.stats.readings || 0) + Math.floor((ARC.journal.length || 0) / 2) + Math.floor((pr.xp || 0) / 60) + ((ARC.missionsState && ARC.missionsState().total) || 0);
+    return ch + books * 5 + (P.stats.readings || 0) + Math.floor((ARC.journal.length || 0) / 2) + Math.floor((pr.xp || 0) / 60) + ((ARC.missionsState && ARC.missionsState().total) || 0) + ((ARC.lib && ARC.lib.finished()) || 0) * 3;
   }
   var DOORS = [
     { id: 'sky', e: '🌙', n: 'Cielo', t: 'Luna, planetas, carta natal y números', need: 0 },

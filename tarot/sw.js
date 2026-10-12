@@ -1,5 +1,5 @@
 /* Service worker de Arcana: funciona sin conexión (excepto la IA) */
-var CACHE = 'arcana-v3';
+var CACHE = 'arcana-v4';
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(['./', './index.html', './style.css', './manifest.webmanifest']); }).then(function () { return self.skipWaiting(); }));
 });
