@@ -4,6 +4,7 @@
   var h = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.arcana;
   if (!h) return;
   document.documentElement.classList.add('native');
+  document.documentElement.classList.add(/Mac/.test(navigator.platform || '') && !(navigator.maxTouchPoints > 1) ? 'native-mac' : 'native-ios');
   function snap() {
     try { var o = {}; for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf('arcana') === 0) o[k] = localStorage.getItem(k); } h.postMessage({ t: 'backup', data: JSON.stringify(o) }); } catch (e) { /* nada */ }
   }

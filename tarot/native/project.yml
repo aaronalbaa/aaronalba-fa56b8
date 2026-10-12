@@ -2,8 +2,8 @@ name: Arcana
 options:
   bundleIdPrefix: com.aaronalbaa
   deploymentTarget:
-    iOS: "16.0"
-    macOS: "13.0"
+    iOS: "16.4"
+    macOS: "13.3"
   createIntermediateGroups: true
 settings:
   base:
