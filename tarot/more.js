@@ -12,6 +12,7 @@
   var DOORS = [
     { id: 'sky', e: '🌙', n: 'Cielo', t: 'Luna, planetas, carta natal y números', need: 0 },
     { id: 'study', e: '📚', n: 'Estudio', t: 'Cursos, enciclopedia y entrenamiento', need: 0 },
+    { id: 'dreams', e: '🌌', n: 'Sueños', t: 'Diario onírico, símbolos y sueño lúcido', need: 0 },
     { id: 'chat', e: '💬', n: 'Sibila', t: 'Tu mentora: conversa y te conoce', need: 0 },
     { id: 'games', e: '🎮', n: 'Juegos', t: 'Adivina, aprende y diviértete', need: 0 },
     { id: 'magic', e: '✨', n: 'Magia', t: 'Rituales, sigilos, sonido y geometría', need: 4, hint: 'Se revela al completar tus primeras lecturas y capítulos' },
