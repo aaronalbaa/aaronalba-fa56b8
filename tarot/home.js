@@ -123,7 +123,7 @@
       '<button class="mini" data-a="tab" data-tab="oracle"><b>🔮</b><span>Haz una pregunta</span><small>Oráculos y tiradas</small></button></div>';
 
     var pr = ARC.progress;
-    h += '<button class="panel acadline" data-a="tab" data-tab="acad"><span>🎓</span><div><b>Academia</b><small>🔥 ' + (pr.last === ARC.dayKey(0) || pr.last === ARC.dayKey(-1) ? pr.streak : 0) + ' días · ✨ ' + pr.xp + ' XP · ' + Object.keys(pr.done).length + ' lecciones</small></div><i>→</i></button>';
+    h += '<button class="panel acadline" data-a="tab" data-tab="study"><span>🎓</span><div><b>Academia</b><small>🔥 ' + (pr.last === ARC.dayKey(0) || pr.last === ARC.dayKey(-1) ? pr.streak : 0) + ' días · ✨ ' + pr.xp + ' XP · ' + Object.keys(pr.done).length + ' lecciones</small></div><i>→</i></button>';
     return h + '</section>';
   };
 
@@ -145,9 +145,49 @@
   A.goSkyLuna = function () { ARC.sky.setSub('luna'); ARC.go('sky'); };
   A.goSkySigno = function () { ARC.sky.setSub('signo'); ARC.go('sky'); };
 
+
+  /* ================= Conócete: preguntas que afinan toda la IA ================= */
+  var FACTS = [
+    { k: 'momento', l: 'Momento vital', q: '¿En qué momento de tu vida estás?', t: 'one', o: ['Empezando algo nuevo', 'En plena transición', 'En estabilidad', 'En crisis o duelo', 'Reinventándome'] },
+    { k: 'area', l: 'Área que más le preocupa', q: '¿Qué área de tu vida te ocupa más ahora?', t: 'one', o: ['Amor y relaciones', 'Trabajo y vocación', 'Dinero', 'Salud y bienestar', 'Familia', 'Propósito', 'Autoestima'] },
+    { k: 'pareja', l: 'Situación sentimental', q: '¿Cómo está tu vida sentimental?', t: 'one', o: ['Soltero/a', 'En pareja', 'Es complicado', 'Separación reciente', 'Prefiero no decirlo'] },
+    { k: 'decide', l: 'Cómo decide', q: '¿Cómo sueles decidir?', t: 'one', o: ['Con la cabeza', 'Con el corazón', 'Con la intuición', 'Depende'] },
+    { k: 'nivel', l: 'Experiencia en esoterismo', q: '¿Cuánta experiencia tienes en esoterismo?', t: 'one', o: ['Soy novato/a', 'Aprendiz', 'Practico a menudo', 'Avanzado/a'] },
+    { k: 'tradiciones', l: 'Tradiciones que le atraen', q: '¿Qué tradiciones te atraen?', t: 'multi', o: ['Tarot', 'Astrología', 'Numerología', 'Wicca y brujería', 'Nórdica', 'Celta', 'Hermetismo', 'Chamanismo', 'Magia del caos', 'Cristales y hierbas'] },
+    { k: 'sanar', l: 'Quiere sanar o cambiar', q: '¿Qué te gustaría sanar o cambiar?', t: 'text' },
+    { k: 'fortaleza', l: 'Su mayor fortaleza', q: '¿Cuál reconoces como tu mayor fortaleza?', t: 'text' },
+    { k: 'miedo', l: 'Miedo recurrente', q: '¿Qué miedo se repite en tu vida?', t: 'text' },
+    { k: 'calma', l: 'Lo que le da calma', q: '¿Qué te hace sentir en calma?', t: 'text' },
+    { k: 'trabajo', l: 'Trabajo o estudios', q: '¿A qué te dedicas o qué estudias?', t: 'text' },
+    { k: 'meta', l: 'Meta de este año', q: '¿Cuál es tu meta más importante este año?', t: 'text' }
+  ];
+  ARC.FACTS = FACTS;
+  function conocete() {
+    var f = P.facts = P.facts || {}, done = FACTS.filter(function (q) { var v = f[q.k]; return v && (!Array.isArray(v) || v.length); }).length;
+    var h = '<div class="panel"><div class="lbl">Conócete · ' + done + '/' + FACTS.length + '</div><div class="meter"><i style="width:' + Math.round(done / FACTS.length * 100) + '%"></i></div>' +
+      '<p class="hint">Cuanto más cuentes, más personales y precisas serán las lecturas, el horóscopo y las respuestas de Sibila. Todo se guarda solo en tu dispositivo y solo se envía a la IA al pedir una interpretación.</p></div>';
+    FACTS.forEach(function (q) {
+      h += '<div class="panel"><div class="lbl">' + esc(q.q) + '</div>';
+      if (q.t === 'text') h += '<textarea id="fact_' + q.k + '" rows="2" maxlength="300" placeholder="Escribe con libertad…">' + esc(f[q.k] || '') + '</textarea>';
+      else {
+        var cur = f[q.k] || (q.t === 'multi' ? [] : '');
+        h += '<div class="chips wrap">' + q.o.map(function (o) { var on = q.t === 'multi' ? cur.indexOf(o) > -1 : cur === o; return '<button data-a="factPick" data-k="' + q.k + '" data-v="' + esc(o) + '" class="' + (on ? 'on' : '') + '">' + esc(o) + '</button>'; }).join('') + '</div>';
+      }
+      h += '</div>';
+    });
+    return h;
+  }
+  A.factPick = function (el) {
+    var q = FACTS.filter(function (x) { return x.k === el.dataset.k; })[0], f = P.facts = P.facts || {}, v = el.dataset.v;
+    if (q.t === 'multi') { var a = f[q.k] || []; var i = a.indexOf(v); if (i > -1) a.splice(i, 1); else a.push(v); f[q.k] = a; }
+    else f[q.k] = f[q.k] === v ? '' : v;
+    ARC.save('profile'); ARC.render(true);
+  };
+  FACTS.forEach(function (q) { if (q.t === 'text') ARC.inputs['fact_' + q.k] = function (v) { (P.facts = P.facts || {})[q.k] = v; ARC.save('profile'); }; });
+
   /* ================= Yo: diario, perfil y ajustes ================= */
   var ME = { sub: 'diario' };
-  var TABS = [['diario', '📓 Diario'], ['perfil', '👤 Perfil'], ['ajustes', '⚙️ Ajustes']];
+  var TABS = [['diario', '📓 Diario'], ['perfil', '👤 Perfil'], ['conocete', '🪞 Conócete'], ['ajustes', '⚙️ Ajustes']];
   function fmtTs(ts) { var d = new Date(ts); return d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear(); }
 
   function diarioHTML() {
@@ -183,7 +223,7 @@
       '<p class="fine">Arcana es una herramienta de reflexión y entretenimiento. No predice el futuro ni sustituye a profesionales de la salud, el derecho o las finanzas.</p>';
   }
   ARC.views.me = function () {
-    var body = ME.sub === 'diario' ? diarioHTML() : ME.sub === 'perfil' ? perfilHTML() : ajustesHTML();
+    var body = ME.sub === 'diario' ? diarioHTML() : ME.sub === 'perfil' ? perfilHTML() : ME.sub === 'conocete' ? conocete() : ajustesHTML();
     return '<section class="page"><button class="btn link left" data-a="tab" data-tab="home">← Hoy</button><header class="hero small"><h1>Yo <span>🌙</span></h1></header><div class="chips sub">' +
       TABS.map(function (t) { return '<button data-a="meSub" data-v="' + t[0] + '" class="' + (ME.sub === t[0] ? 'on' : '') + '">' + t[1] + '</button>'; }).join('') + '</div>' + body + '</section>';
   };

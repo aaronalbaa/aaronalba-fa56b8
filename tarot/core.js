@@ -109,13 +109,51 @@
   function render(keepScroll) {
     var v = $('#view'), fn = ARC.views[ARC.tab];
     v.innerHTML = fn ? fn() : '';
-    var tabKey = ARC.tab === 'me' ? '' : ARC.tab;
-    $$('#tabs button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === tabKey); });
+    $$('#tabs button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === ARC.tab); });
+    var fab = $('#fab'); if (fab) fab.classList.toggle('hide', ARC.tab === 'chat');
     document.body.dataset.tab = ARC.tab;
+    document.body.classList.toggle('crypt', ARC.tab === 'crypt' && !!ARC.profile.darkOk);
+    document.body.classList.toggle('norev', keepScroll === true);
     if (ARC.after[ARC.tab]) ARC.after[ARC.tab]();
     if (keepScroll !== true) window.scrollTo(0, 0);
   }
   function go(tab) { ARC.tab = tab; closeModal(); render(); }
+
+  // Pestañas con subsecciones registradas por otros módulos (study, magic)
+  ARC.subs = { study: [], magic: [], crypt: [] };
+  ARC.curSub = { study: 'cursos', magic: 'rituales', crypt: 'demonios' };
+  ARC.regSub = function (tab, id, emoji, label, fn) { ARC.subs[tab].push({ id: id, emoji: emoji, label: label, fn: fn }); };
+  ARC.setSub = function (tab, id) { ARC.curSub[tab] = id; };
+  var TITLES = { study: ['Estudio', '📚', 'Aprende, colecciona y consulta'], magic: ['Magia', '✨', 'Rituales, sigilos y sonido'], crypt: ['Cripta', '🕯️', 'Lo oscuro, como historia, folclore y misterio'] };
+  function subView(tab) {
+    var list = ARC.subs[tab], cur = ARC.curSub[tab], t = TITLES[tab];
+    if (tab === 'crypt' && !ARC.profile.darkOk) return ARC.gateHTML();
+    if (!list.length) return '<section class="page"><header class="hero small"><h1>' + t[0] + ' <span>' + t[1] + '</span></h1><p>Próximamente…</p></header></section>';
+    var active = list.filter(function (s) { return s.id === cur; })[0] || list[0];
+    var chips = list.map(function (s) { return '<button data-a="subGo" data-tab="' + tab + '" data-v="' + s.id + '" class="' + (s.id === active.id ? 'on' : '') + '">' + s.emoji + ' ' + s.label + '</button>'; }).join('');
+    return '<section class="page"><header class="hero small"><h1>' + t[0] + ' <span>' + t[1] + '</span></h1><p>' + t[2] + '</p></header><div class="chips sub">' + chips + '</div><div class="subbody">' + active.fn() + '</div></section>';
+  }
+  ARC.views.study = function () { return subView('study'); };
+  ARC.views.magic = function () { return subView('magic'); };
+  ARC.views.crypt = function () { return subView('crypt'); };
+  // Aviso obligatorio antes de entrar en la Cripta (contenido oscuro, +18)
+  ARC.gateHTML = function () {
+    return '<section class="page gate"><div class="gate-in"><div class="gate-eye">👁️</div><h1>Cripta</h1><p class="gate-sub">Aquí se guarda lo oscuro del esoterismo: demonología, ouija, criaturas, folclore perturbador y misterios.</p>' +
+      '<div class="gate-box"><b>⚠️ Descargo de responsabilidad</b><ul>' +
+      '<li>Es una zona <b>solo para mayores de 18 años</b>.</li>' +
+      '<li>El contenido se presenta como <b>historia, cultura, folclore, literatura y ficción</b>, con fines educativos y de entretenimiento.</li>' +
+      '<li><b>No se incluyen maldiciones, rituales para dañar a nadie ni instrucciones peligrosas.</b> Dañar a otras personas es antiético y puede ser delito.</li>' +
+      '<li>Nada de esto sustituye la ayuda médica o psicológica. Si algo te inquieta de verdad, habla con un profesional (en España, 024 o 112).</li>' +
+      '<li>Los juegos como la ouija son <b>entretenimiento</b>: las respuestas las genera la aplicación, no seres sobrenaturales.</li></ul>' +
+      '<label class="toggle"><input type="checkbox" id="darkchk"><span>Tengo 18 años o más y acepto lo anterior</span></label></div>' +
+      '<button class="btn primary big" data-a="gateEnter">Entrar en la Cripta</button><button class="btn link" data-a="tab" data-tab="home">Mejor no</button></div></section>';
+  };
+  ARC.act.gateEnter = function () {
+    var c = document.getElementById('darkchk');
+    if (!c || !c.checked) { toast('Marca la casilla para continuar'); return; }
+    ARC.profile.darkOk = true; ARC.save('profile'); render();
+  };
+  ARC.act.subGo = function (el) { ARC.curSub[el.dataset.tab] = el.dataset.v; render(); };
 
   Object.assign(ARC, {
     $: $, $$: $$, esc: esc, norm: norm, pad: pad, store: store, rnd: rnd, shuffle: shuffle, dayKey: dayKey, toast: toast,

@@ -200,18 +200,16 @@
       '<div class="actions"><button class="btn ghost" data-a="saveReading">📓 Guardar en mi diario</button><button class="btn link" data-a="hub">Nueva lectura</button></div></section>';
   }
 
-  var SYSTEM = 'Eres una guía de oráculos cálida, serena y respetuosa que escribe en español. Interpretas la tirada que recibes ' +
+  var SYSTEM_BASE = 'Eres una guía de oráculos cálida, serena y respetuosa que escribe en español. Interpretas la tirada que recibes ' +
     'conectando cada carta con su posición y con la pregunta de la persona. Reglas: tono empático y claro; ' +
     'no hagas predicciones absolutas ni afirmes certezas sobre el futuro; presenta el oráculo como una herramienta de reflexión; ' +
     'no des diagnósticos médicos, legales ni financieros (si el tema los toca, recomienda con suavidad consultar a un profesional); ' +
     'si hay señales de crisis emocional, responde con cuidado y sugiere buscar apoyo (en España, 024 o 112). ' +
     'Formato: una breve introducción, una interpretación de cada carta (en negrita el nombre y la posición), ' +
-    'una síntesis que una las cartas y una pregunta final de introspección. Máximo unas 350 palabras y algunos emojis sutiles.';
+    'una síntesis que una las cartas y una pregunta final de introspección. Máximo unas 400 palabras y algunos emojis sutiles. ' + ARC.PERSONALIZE;
 
-  function userContext() {
-    var ss = ARC.sunSign(), mi = ASTRO.moonInfo(new Date());
-    return (P.name ? 'Nombre: ' + P.name + '. ' : '') + (ss !== null ? 'Signo solar: ' + ASTRO.SIGNS[ss].n + '. ' : '') + 'Hoy: ' + mi.name + ' en ' + ASTRO.SIGNS[mi.sign].n + '.';
-  }
+  var SYSTEM = SYSTEM_BASE;
+  function userContext() { return 'CONTEXTO\n' + ARC.ctx(); }
 
   function aiInterpret() {
     ARC.ai.guard(function () {
