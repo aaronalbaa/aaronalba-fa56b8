@@ -220,6 +220,69 @@
           ]
         }
       ]
+    },
+    {
+      id: 'u8', emoji: '🔮', title: 'Más formas de adivinar', sub: 'Runas, I Ching, Lenormand y el cielo',
+      lessons: [
+        {
+          id: 'u8l1', emoji: 'ᚱ', title: 'Las runas',
+          steps: [
+            learn('El alfabeto sagrado',
+              'El <b>Futhark antiguo</b> tiene <b>24 runas</b> germánicas. Cada una es una letra y un concepto: <b>Fehu</b> (riqueza), <b>Uruz</b> (fuerza), <b>Raidho</b> (viaje), <b>Othala</b> (herencia)…', 'stars'),
+            learn('¿Y las invertidas?',
+              'Las runas simétricas (como <b>Isa</b>, <b>Gebo</b> o <b>Dagaz</b>) se ven igual al revés, así que <b>no tienen versión invertida</b>.', 'cards'),
+            quiz('¿Cuántas runas tiene el Futhark antiguo?', ['16', '20', '24', '36'], 2, 'El Futhark antiguo tiene 24 runas.'),
+            quiz('¿Qué runa se asocia con la riqueza y los recursos?', ['Fehu', 'Isa', 'Raidho'], 0, 'Fehu significa originalmente “ganado”, riqueza móvil.'),
+            quiz('¿Cuál de estas runas no tiene versión invertida?', ['Fehu', 'Isa', 'Ansuz'], 1, 'Isa es una línea vertical: simétrica.')
+          ]
+        },
+        {
+          id: 'u8l2', emoji: '☯️', title: 'El I Ching',
+          steps: [
+            learn('El libro de las mutaciones',
+              'El I Ching es un texto chino milenario con <b>64 hexagramas</b>. Cada hexagrama son <b>seis líneas</b>: <b>yang</b> (continua) o <b>yin</b> (cortada).', 'stars'),
+            learn('Las tres monedas',
+              'Se lanzan tres monedas seis veces. Cara vale 3 y cruz 2; la suma da <b>6, 7, 8 o 9</b>. El <b>6</b> y el <b>9</b> son <b>líneas móviles</b>: se transforman y forman un segundo hexagrama que muestra hacia dónde evoluciona la situación.', 'gems'),
+            quiz('¿Cuántos hexagramas tiene el I Ching?', ['8', '36', '64', '78'], 2, '8 trigramas × 8 trigramas = 64 hexagramas.'),
+            quiz('Una línea continua es…', ['Yin', 'Yang'], 1, 'Continua = yang; cortada = yin.'),
+            quiz('¿Qué sumas indican una línea móvil?', ['7 y 8', '6 y 9', '6 y 7'], 1, 'El 6 (yin móvil) y el 9 (yang móvil) cambian.')
+          ]
+        },
+        {
+          id: 'u8l3', emoji: '🌹', title: 'Lenormand y baraja española',
+          steps: [
+            learn('Lenormand: directo y práctico',
+              'El Lenormand tiene <b>36 cartas</b> con imágenes cotidianas (Jinete, Casa, Barco…). Se leen en <b>combinación</b>, como palabras de una frase, y <b>no se invierten</b>.', 'cards'),
+            learn('La baraja española',
+              'La cartomancia con baraja española usa <b>40 cartas</b> en cuatro palos: <b>oros, copas, espadas y bastos</b>, los mismos símbolos que el tarot (oros = pentáculos).', 'elements'),
+            quiz('¿Cuántas cartas tiene el Lenormand?', ['22', '36', '40', '52'], 1, 'Son 36 cartas.'),
+            quiz('El palo de la baraja española equivalente a los Pentáculos es…', ['Copas', 'Bastos', 'Oros'], 2, 'Oros = pentáculos = tierra.'),
+            quiz('Una diferencia clave del Lenormand con el tarot es que…', ['Se lee por combinaciones de cartas', 'Tiene 78 cartas', 'Solo se usa invertido'], 0, 'El sentido surge de combinar cartas contiguas.')
+          ]
+        },
+        {
+          id: 'u8l4', emoji: '🔮', title: 'El péndulo',
+          steps: [
+            learn('Sí, no y quizá',
+              'Sujeta el péndulo, quédate quieto y pide que te muestre su <b>“sí”</b> y su <b>“no”</b> (suele ser adelante-atrás o de lado a lado y un giro). Después haz preguntas <b>cerradas</b>.', 'shuffle'),
+            learn('Un espejo de tu intuición',
+              'El movimiento se debe a microgestos involuntarios (<b>efecto ideomotor</b>). No es una fuente externa: <b>refleja lo que ya intuyes</b>, y eso lo hace útil para la introspección.', 'stars'),
+            quiz('¿Qué tipo de preguntas funcionan mejor con el péndulo?', ['Cerradas (sí/no)', 'Abiertas y largas', 'Sobre el futuro lejano'], 0, 'El péndulo responde a opciones claras.'),
+            quiz('El movimiento del péndulo se explica principalmente por…', ['Microgestos involuntarios', 'Energía magnética', 'El viento'], 0, 'Es el efecto ideomotor.')
+          ]
+        },
+        {
+          id: 'u8l5', emoji: '🪐', title: 'Leer el cielo de hoy',
+          steps: [
+            learn('Retrógrado no es “malo”',
+              'Un planeta <b>retrógrado</b> parece ir hacia atrás visto desde la Tierra (es un efecto óptico). En astrología simboliza <b>revisar y repensar</b>. Mercurio lo hace unas tres veces al año.', 'zodiac'),
+            learn('La Luna cambia de signo',
+              'La Luna pasa por un signo nuevo cada <b>2 o 3 días</b> y por los 12 en unos 27 días. Marca el <b>ánimo del momento</b>. Mira la pestaña <b>Cielo</b> para ver dónde está ahora.', 'moon'),
+            quiz('¿Qué significa que un planeta esté retrógrado?', ['Parece ir hacia atrás visto desde la Tierra', 'Está a punto de chocar', 'Se ha apagado'], 0, 'Es un movimiento aparente.'),
+            quiz('¿Cada cuánto cambia la Luna de signo, aproximadamente?', ['Cada 2-3 días', 'Cada mes', 'Cada año'], 0, 'Unos 2,5 días por signo.')
+          ]
+        }
+      ]
     }
   ];
 
