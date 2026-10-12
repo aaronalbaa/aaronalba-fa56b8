@@ -109,6 +109,13 @@
       who.push('Sol en ' + ASTRO.SIGNS[ss].n);
       L.push('Datos natales (calculados, sin hora ni lugar de nacimiento): Mercurio en ' + ASTRO.SIGNS[by['Mercurio'].sign].n + ', Venus en ' + ASTRO.SIGNS[by['Venus'].sign].n + ', Marte en ' + ASTRO.SIGNS[by['Marte'].sign].n + ', Júpiter en ' + ASTRO.SIGNS[by['Júpiter'].sign].n + ', Saturno en ' + ASTRO.SIGNS[by['Saturno'].sign].n + ' y Luna aproximada en ' + ASTRO.SIGNS[by['Luna'].sign].n + '. No se conoce el ascendente.');
     }
+    if (ARC.natal && P.natal && P.natal.place) {
+      try {
+        var ch = ARC.natal.chart('placidus'), by2 = {}; ch.planets.forEach(function (p) { by2[p.id] = p; });
+        var sn = function (lon) { return ASTRO.SIGNS[Math.floor(lon / 30)].n; };
+        L.push('CARTA NATAL COMPLETA (' + (P.natal.unknown ? 'sin hora exacta' : 'con hora y lugar') + '): Ascendente ' + sn(ch.asc) + ', MC ' + sn(ch.mc) + '; Sol ' + sn(by2['Sol'].lon) + ' casa ' + by2['Sol'].house + ', Luna ' + sn(by2['Luna'].lon) + ' casa ' + by2['Luna'].house + ', Mercurio ' + sn(by2['Mercurio'].lon) + ' casa ' + by2['Mercurio'].house + ', Venus ' + sn(by2['Venus'].lon) + ' casa ' + by2['Venus'].house + ', Marte ' + sn(by2['Marte'].lon) + ' casa ' + by2['Marte'].house + ', Saturno ' + sn(by2['Saturno'].lon) + ' casa ' + by2['Saturno'].house + ', Nodo Norte ' + sn(by2['Nodo Norte'].lon) + '. Regente del ascendente: ' + ch.rulerName + '.');
+      } catch (err) { /* sin carta */ }
+    }
     L.unshift('PERSONA: ' + (who.join(', ') || 'sin datos básicos') + (ci ? '; año chino ' + ASTRO.ANIMALS[ci.animal] + ' de ' + ci.element : '') + (P.intentions && P.intentions.length ? '; busca: ' + P.intentions.join(', ') : '') + '.');
     if (ARC.num && ARC.num.summary) { var ns = ARC.num.summary(); if (ns) L.push(ns); }
     var F = ARC.FACTS || [], f = P.facts || {}, fl = [];

@@ -728,3 +728,40 @@ body.crypt .btn.primary { background: linear-gradient(135deg, #8e1f2c, #c4414f);
 @media (max-width: 899px) { .tabs button small { font-size: 10px; } .tabs button { padding: 6px 0; } }
 
 body[data-tab=crypt] #fab, body[data-tab=chat] #fab { display: none; }
+
+/* ---------- carta natal ---------- */
+.chips.sub2 { margin: 6px -16px 10px; padding: 6px 16px; }
+.natbody { animation: fadeUp .4s ease both; }
+.wheelwrap { max-width: 620px; margin: 8px auto; filter: drop-shadow(0 0 40px #8b6cff22); }
+.wheelwrap.sm { max-width: 420px; }
+.wheel-svg { width: 100%; height: auto; display: block; }
+.wh-sign { font-size: 22px; text-anchor: middle; dominant-baseline: central; font-family: "Segoe UI Symbol", "Noto Sans Symbols", "DejaVu Sans", serif; }
+.wh-house { font-size: 11px; fill: #9a93b0; text-anchor: middle; dominant-baseline: central; }
+.wh-pl { font-size: 19px; fill: #ece7f5; text-anchor: middle; dominant-baseline: central; font-family: "Segoe UI Symbol", "Noto Sans Symbols", "DejaVu Sans", serif; }
+.wh-deg { font-size: 10px; fill: #e6c97a; text-anchor: middle; dominant-baseline: central; }
+.wh-ang { font-size: 13px; font-weight: 700; fill: #e6c97a; text-anchor: middle; dominant-baseline: central; }
+.wp-bg { fill: #1b1731; stroke: #e6c97a77; stroke-width: 1; }
+.wp { cursor: pointer; animation: wpop .6s cubic-bezier(.3, 1.4, .5, 1) both; transform-box: fill-box; transform-origin: center; }
+.wp:hover .wp-bg { fill: #2d2350; stroke: #e6c97a; }
+@keyframes wpop { from { opacity: 0; transform: scale(.3); } }
+.wh-asp { animation: aspfade .9s ease both; }
+@keyframes aspfade { from { opacity: 0; } }
+.big3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+.big3 > div { background: linear-gradient(160deg, #2a2050, var(--card)); border: 1px solid #8b6cff44; border-radius: 18px; padding: 12px 8px; text-align: center; display: grid; gap: 2px; }
+.big3 small { color: var(--gold); text-transform: uppercase; letter-spacing: .12em; font-size: 10.5px; } .big3 b { font-family: var(--serif); font-size: 17px; } .big3 span { color: var(--muted); font-size: 12px; }
+.tbl { display: grid; gap: 6px; }
+.trow { display: grid; grid-template-columns: 28px 1fr auto auto; gap: 4px 10px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 8px 12px; cursor: pointer; }
+.trow .tg { font-size: 19px; color: var(--gold); text-align: center; font-family: "Segoe UI Symbol", "Noto Sans Symbols", "DejaVu Sans", serif; } .trow .tc { color: var(--muted); font-size: 13px; } .trow b { font-size: 14.5px; }
+.trow .dg { grid-column: 2 / -1; color: var(--gold); font-style: normal; font-size: 12px; }
+.crow { display: grid; grid-template-columns: 30px 1fr auto; gap: 4px 12px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+.crow > b { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); color: #1a1226; display: grid; place-items: center; font-size: 13px; }
+.crow div { display: grid; } .crow small { color: var(--muted); font-size: 12px; } .crow .cr { font-size: 18px; color: var(--gold); font-family: "Segoe UI Symbol", "Noto Sans Symbols", "DejaVu Sans", serif; } .crow p { grid-column: 1 / -1; margin: 2px 0 0; font-size: 13.5px; color: var(--muted); }
+.agrid { overflow-x: auto; margin: 6px 0; } .agrid table { border-collapse: collapse; margin: 0 auto; }
+.agrid th, .agrid td { width: 30px; height: 30px; text-align: center; font-size: 15px; border: 1px solid var(--line); font-family: "Segoe UI Symbol", "Noto Sans Symbols", "DejaVu Sans", serif; }
+.agrid th { color: var(--gold); background: var(--card); } .agrid td.x { background: transparent; border-color: transparent; }
+.a-conj { color: var(--gold); background: #e6c97a22; } .a-sext { color: #6fb7ff; background: #6fb7ff1a; } .a-cuad, .a-opos { color: #ff6b81; background: #ff6b8120; } .a-trig { color: #6fe3a0; background: #6fe3a01a; } .a-quin { color: #b794ff; }
+.place { display: grid; text-align: left; width: 100%; background: var(--bg); border: 1px solid var(--line2); border-radius: 12px; padding: 10px 12px; margin-top: 6px; cursor: pointer; }
+.place small { color: var(--muted); } .placesel { background: #6fe3a010; border: 1px solid #6fe3a044; border-radius: 12px; padding: 8px 12px; display: grid; margin-bottom: 8px; } .placesel small { color: var(--muted); }
+.trpl { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; } .trpl span { background: var(--card); border: 1px solid var(--line2); border-radius: 99px; padding: 4px 12px; font-size: 13.5px; font-family: "Segoe UI Symbol", "Noto Sans Symbols", "DejaVu Sans", var(--sans); }
+.yrbig { font: 600 34px var(--serif); color: var(--gold); flex: 1; text-align: center; }
+@media (min-width: 900px) { .chips.sub2 { flex-wrap: wrap; overflow: visible; margin: 6px 0 10px; padding: 6px 0; } .tbl { grid-template-columns: 1fr 1fr; } }
