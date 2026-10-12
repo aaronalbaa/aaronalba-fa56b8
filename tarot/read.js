@@ -464,7 +464,7 @@
     R.cards[pk.slot] = { id: c.id, rev: !!(S.reversed && D().reversible && !c.norev && pk.rev) };
     ARC.closeModal(); ARC.render(true);
   };
-  A.reading = function () { R.stage = 'reading'; ARC.render(); };
+  A.reading = function () { R.stage = 'reading'; P.stats = P.stats || { readings: 0 }; P.stats.readings = (P.stats.readings || 0) + 1; ARC.save('profile'); ARC.render(); };
   A.detail = function (el) { var p = Number(el.dataset.p); if (R.cards[p]) detailModal(R.cards[p], sp().pos[p]); };
   A.ai = function () { if (R.stage === 'ich') ichAI(); else aiInterpret(); };
   A.cast = function () { ichCast(); };
@@ -494,7 +494,7 @@
   A.addPrompt = function (el) { var t = $('#jnote'); t.value += (t.value ? '\n\n' : '') + el.dataset.t + '\n'; t.focus(); };
   A.journalSave = function () {
     var e = Object.assign({ id: Date.now(), ts: Date.now(), note: $('#jnote').value.trim() }, ARC.draft || {});
-    ARC.journal.unshift(e); ARC.save('journal'); ARC.draft = null; ARC.closeModal(); ARC.toast('Guardado en tu diario 📓');
+    ARC.journal.unshift(e); ARC.save('journal'); if (e.type === 'reflexion' && ARC.mission) ARC.mission('reflexion'); ARC.draft = null; ARC.closeModal(); ARC.toast('Guardado en tu diario 📓');
   };
 
   ARC.inputs.q = function (v) { R.question = v; };

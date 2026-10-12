@@ -108,9 +108,11 @@
 
   function render(keepScroll) {
     var v = $('#view'), fn = ARC.views[ARC.tab];
-    v.innerHTML = fn ? fn() : '';
-    $$('#tabs button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === ARC.tab); });
-    var fab = $('#fab'); if (fab) fab.classList.toggle('hide', ARC.tab === 'chat');
+    if (ARC.unlocked && !ARC.unlocked(ARC.tab) && ARC.lockedHTML) fn = function () { return ARC.lockedHTML(ARC.tab); };
+    v.innerHTML = fn ? fn() : '<section class="page"><header class="hero small"><h1>Pronto ✨</h1><p>Esta sección se está preparando</p></header></section>';
+    var GROUP = { sky: 1, study: 1, magic: 1, crypt: 1, chat: 1, me: 1, games: 1, codex: 1, more: 1 };
+    $$('#tabs button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === ARC.tab || (b.dataset.tab === 'more' && !!GROUP[ARC.tab])); });
+
     document.body.dataset.tab = ARC.tab;
     document.body.classList.toggle('crypt', ARC.tab === 'crypt' && !!ARC.profile.darkOk);
     document.body.classList.toggle('norev', keepScroll === true);

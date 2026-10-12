@@ -26,7 +26,7 @@
       '</svg>';
   }
 
-  var TABS = [['luna', '🌙', 'Luna'], ['planetas', '🪐', 'Planetas'], ['natal', '🧿', 'Carta natal'], ['signo', '♈', 'Signo'], ['chino', '🐉', 'Chino'], ['numeros', '🔢', 'Números']];
+  var TABS = [['luna', '🌙', 'Luna'], ['planetas', '🪐', 'Planetas'], ['natal', '🧿', 'Carta natal'], ['local', '📍', 'Mi cielo'], ['signo', '♈', 'Signo'], ['chino', '🐉', 'Chino'], ['numeros', '🔢', 'Números']];
 
   function head() {
     return '<header class="hero small"><h1>Cielo <span>🌌</span></h1></header><div class="chips sub">' +
@@ -153,7 +153,7 @@
   }
 
   ARC.views.sky = function () {
-    var body = SK.sub === 'luna' ? lunaHTML() : SK.sub === 'planetas' ? planetasHTML() : SK.sub === 'natal' ? (ARC.natal ? ARC.natal.html() : '') : SK.sub === 'signo' ? signoHTML() : SK.sub === 'chino' ? chinoHTML() : (ARC.num ? ARC.num.html() : numeroHTML());
+    var body = SK.sub === 'luna' ? lunaHTML() : SK.sub === 'planetas' ? planetasHTML() : SK.sub === 'natal' ? (ARC.natal ? ARC.natal.html() : '') : SK.sub === 'local' ? (ARC.loc ? ARC.loc.html() : '') : SK.sub === 'signo' ? signoHTML() : SK.sub === 'chino' ? chinoHTML() : (ARC.num ? ARC.num.html() : numeroHTML());
     return '<section class="page">' + head() + '<div class="skybody">' + body + '</div></section>';
   };
 

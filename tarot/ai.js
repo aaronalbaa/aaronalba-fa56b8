@@ -125,6 +125,10 @@
     var j = ARC.journal.slice(0, 4);
     if (j.length) L.push('DIARIO RECIENTE: ' + j.map(function (e) { return (e.title || '') + (e.question ? ' (pregunta: ' + e.question + ')' : '') + (e.items && e.items.length ? ' [' + e.items.slice(0, 4).join('; ') + ']' : '') + (e.note ? ' — ' + e.note.slice(0, 140) : ''); }).join(' || '));
     var retro = pl.filter(function (p) { return p.status === 'retrógrado' && ['Mercurio', 'Venus', 'Marte'].indexOf(p.id) > -1; }).map(function (p) { return p.id + ' retrógrado'; });
+    if (P.loc) {
+      var wxd = ARC.loc && ARC.loc.getWeather && ARC.loc.getWeather();
+      L.push('UBICACIÓN: ' + P.loc.name + ' (zona horaria ' + P.loc.tz + ')' + (wxd && wxd.current ? '; clima ahora: ' + Math.round(wxd.current.temperature_2m) + '°, nubosidad ' + wxd.current.cloud_cover + '%' : '') + '.');
+    }
     L.push('CIELO HOY: ' + mi.name + ' en ' + ASTRO.SIGNS[mi.sign].n + ' (' + Math.round(mi.illum * 100) + '% iluminada), Sol en ' + ASTRO.SIGNS[pl[0].sign].n + (retro.length ? '; ' + retro.join(', ') : '') + '.');
     return L.join('\n');
   };

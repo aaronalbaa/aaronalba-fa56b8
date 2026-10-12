@@ -18,7 +18,7 @@
   ];
   var INTENTS = ['🪞 Introspección', '💞 Amor', '💼 Trabajo', '🧭 Decisiones', '🌿 Bienestar', '✨ Espiritualidad', '🔭 Curiosidad'];
   var OB = { step: 0, name: '', birth: '', owned: [], intents: [] };
-  var STEPS = 6;
+  var STEPS = 7;
 
   function obDots() { var h = ''; for (var i = 0; i < STEPS; i++) h += '<i class="' + (i === OB.step ? 'on' : (i < OB.step ? 'done' : '')) + '"></i>'; return '<div class="dots">' + h + '</div>'; }
 
@@ -41,6 +41,10 @@
         OWN.map(function (o) { return '<button class="ownc' + (OB.owned.indexOf(o[0]) > -1 ? ' on' : '') + '" data-a="obOwn" data-v="' + o[0] + '"><b>' + o[1] + '</b><span>' + esc(o[2]) + '</span><small>' + esc(o[3]) + '</small></button>'; }).join('') +
         '</div><button class="btn primary big" data-a="obNext">Continuar</button></div>';
     } else if (s === 4) {
+      h = '<div class="ob-c left"><h2>¿Dónde estás?</h2><p class="hint">Con tu ubicación calculamos cuándo sale y se pone la Luna donde vives, las horas planetarias y el clima real. Es opcional y se queda en tu dispositivo.</p>' +
+        (P.loc ? '<div class="placesel"><b>📍 ' + esc(P.loc.name) + '</b><small>ubicación guardada</small></div>' : '<button class="btn primary big" data-a="obLoc">📍 Usar mi ubicación</button>') +
+        '<button class="btn primary big" data-a="obNext">Continuar</button><button class="btn link" data-a="obSkip2">Prefiero no compartirla</button></div>';
+    } else if (s === 5) {
       h = '<div class="ob-c left"><h2>¿Qué buscas aquí?</h2><p class="hint">Elige lo que quieras. Puedes cambiarlo cuando quieras.</p><div class="chips wrap big">' +
         INTENTS.map(function (t) { return '<button data-a="obIntent" data-v="' + esc(t) + '" class="' + (OB.intents.indexOf(t) > -1 ? 'on' : '') + '">' + t + '</button>'; }).join('') +
         '</div><button class="btn primary big" data-a="obNext">Continuar</button></div>';
@@ -63,6 +67,8 @@
     OB.step = Math.min(STEPS - 1, OB.step + 1); obRender();
   };
   A.obSkip = function () { OB.birth = ''; OB.step++; obRender(); };
+  A.obSkip2 = function () { OB.step++; obRender(); };
+  A.obLoc = function () { ARC.act.locGet(); setTimeout(function () { if (!$('#ob').hidden) obRender(); }, 1500); setTimeout(function () { if (!$('#ob').hidden) obRender(); }, 5000); };
   A.obBack = function () { OB.step = Math.max(0, OB.step - 1); obRender(); };
   A.obOwn = function (el) {
     var v = el.dataset.v, i = OB.owned.indexOf(v);
@@ -98,38 +104,52 @@
     return D;
   }
 
+  function sageLine(mi, card, rev) {
+    var tx = TX.moonText(mi)[0];
+    return tx + ' Hoy te acompaña «' + card.name + (rev ? ' (invertida)' : '') + '»: ' + (rev ? card.rev : card.up);
+  }
+  function knowPct() {
+    var f = P.facts || {}, n = ARC.FACTS ? ARC.FACTS.filter(function (q) { var v = f[q.k]; return v && (!Array.isArray(v) || v.length); }).length : 0, tot = ARC.FACTS ? ARC.FACTS.length : 1;
+    var psy = P.psy ? Object.keys(P.psy).length : 0;
+    return Math.min(100, Math.round(((n / tot) * 60) + Math.min(psy, 4) * 10 + (P.birth ? 5 : 0) + (P.natal ? 5 : 0)));
+  }
+  ARC.knowPct = knowPct;
+
   ARC.views.home = function () {
     var now = new Date(), mi = ASTRO.moonInfo(now), ss = ARC.sunSign(), D = dailyCard(), dk = DECKS.get(D.deck, P.tarotStyle), card = dk.cards[D.id];
-    var h = '<section class="page"><header class="homeh"><div><small>' + DAYS[now.getDay()] + ' ' + now.getDate() + ' de ' + MONTHS[now.getMonth()] + '</small><h1>' + ARC.greeting() + (P.name ? ',<br>' + esc(P.name) : '') + '</h1></div>' +
+    var h = '<section class="page home2"><header class="homeh"><div><small>' + DAYS[now.getDay()] + ' ' + now.getDate() + ' de ' + MONTHS[now.getMonth()] + '</small><h1>' + ARC.greeting() + (P.name ? ',<br>' + esc(P.name) : '') + '</h1></div>' +
       '<button class="avatar" data-a="tab" data-tab="me" aria-label="Mi perfil">' + (P.name ? esc(P.name.charAt(0).toUpperCase()) : '👤') + '</button></header>';
 
-    h += '<button class="moonc" data-a="goSkyLuna"><div class="mm">' + ARC.sky.moonSVG(mi.phase, 84) + '</div><div class="mt"><small>La Luna ahora</small><b>' + mi.emoji + ' ' + esc(mi.name) + '</b>' +
-      '<span>' + Math.round(mi.illum * 100) + '% iluminada · en ' + AS[mi.sign].g + ' ' + AS[mi.sign].n + '</span></div></button>';
+    h += '<button class="hero-orb" data-a="goSkyLuna"><span class="orbglow"></span><span class="orbmoon">' + ARC.sky.moonSVG(mi.phase, 168) + '</span><span class="orb-t"><b>' + mi.emoji + ' ' + esc(mi.name) + '</b><small>' + Math.round(mi.illum * 100) + '% · en ' + AS[mi.sign].g + ' ' + AS[mi.sign].n + '</small></span></button>';
+    h += '<p class="sage">' + esc(sageLine(mi, card, D.rev)) + '</p>';
 
-    h += '<div class="panel dcard"><div class="lbl">Tu carta del día</div><div class="dc-row"><div class="dc-card">' +
-      ARC.read.tcard({ id: D.id, rev: D.rev }, { deck: dk, flipped: D.revealed, attrs: 'data-a="dayFlip"' }) + '</div><div class="dc-t">' +
-      (D.revealed ? '<b>' + (card.glyph ? '' : card.emoji + ' ') + esc(card.name) + (D.rev ? ' <span class="tag">↺</span>' : '') + '</b><p class="kw">' + esc(D.rev ? card.kwRev : card.kwUp) + '</p><p>' + esc(D.rev ? card.rev : card.up) + '</p>' +
-        '<p class="ask">💭 ¿Dónde aparece «' + esc((D.rev ? card.kwRev : card.kwUp).split(',')[0].toLowerCase()) + '» en mi día de hoy?</p><button class="btn ghost sm" data-a="daySave">📓 Escribir en mi diario</button>'
-        : '<p>Respira, piensa en cómo quieres vivir hoy y toca la carta para descubrir tu mensaje.</p><button class="btn primary sm" data-a="dayFlip">Revelar carta</button>') + '</div></div></div>';
+    h += '<div class="group">';
+    h += '<button class="grow" data-a="dayOpen"><span class="gthumb">' + ARC.read.tcard({ id: D.id, rev: D.rev }, { deck: dk, flipped: D.revealed }) + '</span><div><b>Carta del día</b><small>' + (D.revealed ? esc(card.name) + (D.rev ? ' · invertida' : '') : 'Toca para descubrirla') + '</small></div><i class="chev">›</i></button>';
+    if (P.loc && ARC.loc) h += '<button class="grow" data-a="goSkyLocal"><span class="gi">🌤️</span><div><b>Tu cielo</b><small>' + (ARC.loc.getWeather() && ARC.loc.getWeather().current ? Math.round(ARC.loc.getWeather().current.temperature_2m) + '° en ' + esc(P.loc.name) + ' · luna y horas planetarias' : 'Luna y horas planetarias en ' + esc(P.loc.name)) + '</small></div><i class="chev">›</i></button>';
+    else h += '<button class="grow" data-a="goSkyLocal"><span class="gi">📍</span><div><b>Activa tu ubicación</b><small>Luna local, clima y horas planetarias</small></div><i class="chev">›</i></button>';
+    if (ss !== null) h += '<button class="grow" data-a="goSkySigno"><span class="gi gsign">' + AS[ss].g + '</span><div><b>Horóscopo de ' + AS[ss].n + '</b><small>' + esc(TX.daily(ss, now).areas[0].t) + '</small></div><i class="chev">›</i></button>';
+    h += '</div>';
 
-    if (ss !== null) {
-      var hd = TX.daily(ss, now);
-      h += '<button class="panel hline" data-a="goSkySigno"><div class="lbl">Horóscopo de ' + AS[ss].g + ' ' + AS[ss].n + '</div><p>' + esc(hd.areas[0].e + ' ' + hd.areas[0].t) + '</p><small>Ver horóscopo completo →</small></button>';
-    }
+    h += ARC.missionsHTML();
 
-    h += '<div class="panel"><div class="lbl">Pregunta para reflexionar</div><p class="prompt">' + esc(TX.dayPrompt(now)) + '</p><button class="btn ghost sm" data-a="promptWrite">Escribir mi respuesta</button></div>';
-
-    h += '<div class="duo"><button class="mini" data-a="tab" data-tab="chat"><b>💬</b><span>Habla con Sibila</span><small>Tu guía de introspección</small></button>' +
-      '<button class="mini" data-a="tab" data-tab="oracle"><b>🔮</b><span>Haz una pregunta</span><small>Oráculos y tiradas</small></button></div>';
-
-    var pr = ARC.progress;
-    h += '<button class="panel acadline" data-a="tab" data-tab="study"><span>🎓</span><div><b>Academia</b><small>🔥 ' + (pr.last === ARC.dayKey(0) || pr.last === ARC.dayKey(-1) ? pr.streak : 0) + ' días · ✨ ' + pr.xp + ' XP · ' + Object.keys(pr.done).length + ' lecciones</small></div><i>→</i></button>';
+    var kp = knowPct();
+    h += '<button class="group know" data-a="tab" data-tab="chat"><div class="grow"><span class="gi">🔮</span><div><b>Sibila te conoce al ' + kp + '%</b><small>Cuanto más sabe de ti, más personales son sus respuestas</small></div><i class="chev">›</i></div><div class="meter"><i style="width:' + kp + '%"></i></div></button>';
+    h += '<p class="fine">' + esc(TX.dayPrompt(now)) + '</p>';
     return h + '</section>';
   };
 
+  A.dayOpen = function () {
+    var D = ARC.daily; if (!D) return;
+    var dk = DECKS.get(D.deck, P.tarotStyle), card = dk.cards[D.id];
+    if (!D.revealed) { D.revealed = true; ARC.save('daily'); ARC.mission('carta'); }
+    var kw = (D.rev ? card.kwRev : card.kwUp);
+    ARC.openModal('<div class="det">' + ARC.read.tcard({ id: D.id, rev: D.rev }, { deck: dk, flipped: true, cls: 'big' }) + '<div class="det-t"><small>Tu carta del día</small><h3>' + (card.glyph ? '' : card.emoji + ' ') + esc(card.name) + '</h3>' + (D.rev ? '<span class="tag">↺ Invertida</span>' : '') +
+      '<p class="kw">' + esc(kw) + '</p><p>' + esc(D.rev ? card.rev : card.up) + '</p><p class="ask">💭 ¿Dónde aparece «' + esc(kw.split(',')[0].toLowerCase()) + '» en mi día de hoy?</p></div><button class="btn primary big" data-a="daySave">📓 Escribir en mi diario</button></div>');
+    ARC.render(true);
+  };
   A.dayFlip = function () {
     var D = ARC.daily; if (!D || D.revealed) return;
-    D.revealed = true; ARC.save('daily'); ARC.render(true);
+    D.revealed = true; ARC.save('daily'); ARC.mission && ARC.mission('carta'); ARC.render(true);
   };
   A.daySave = function () {
     var D = ARC.daily, card = DECKS.get(D.deck, P.tarotStyle).cards[D.id];
@@ -143,6 +163,7 @@
     ARC.openModal('<h3>💭 Reflexión</h3><p class="hint">' + esc(q) + '</p><textarea id="jnote" rows="7" placeholder="Escribe sin juzgarte…"></textarea><button class="btn primary big" data-a="journalSave">Guardar</button>');
   };
   A.goSkyLuna = function () { ARC.sky.setSub('luna'); ARC.go('sky'); };
+  A.goSkyLocal = function () { ARC.sky.setSub('local'); ARC.go('sky'); };
   A.goSkySigno = function () { ARC.sky.setSub('signo'); ARC.go('sky'); };
 
 
