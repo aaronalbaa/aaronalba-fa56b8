@@ -115,6 +115,21 @@
   }
   ARC.knowPct = knowPct;
 
+  function homeExtra(now, mi) {
+    var rows = [];
+    try {
+      if (ARC.lib) { var cur = ARC.lib.data().books.filter(function (b) { return b.fmt !== 'physical' && b.status !== 'read' && b.lastOpen; }).sort(function (a, b) { return b.lastOpen - a.lastOpen; })[0]; if (cur) rows.push('<button class="grow" data-a="homeRead" data-id="' + cur.id + '"><span class="gi">📖</span><div><b>Sigue leyendo</b><small>' + esc(cur.title) + '</small></div><i class="chev">›</i></button>'); }
+      if (ARC.life) { var hb = ARC.life.data().habits.filter(function (x) { return !x.arch; }); if (hb.length) { var t = ARC.dayKey(0), dn = hb.filter(function (x) { return x.log && x.log[t]; }).length; rows.push('<button class="grow" data-a="homeLife"><span class="gi">✅</span><div><b>Tus hábitos de hoy</b><small>' + dn + ' de ' + hb.length + ' hechos</small></div><i class="chev">›</i></button>'); } }
+      if (now.getHours() < 11 && ARC.dreams) rows.push('<button class="grow" data-a="homeDream"><span class="gi">🌌</span><div><b>¿Soñaste algo?</b><small>Anótalo antes de que se desvanezca</small></div><i class="chev">›</i></button>');
+      else if (now.getHours() >= 19 && ARC.magic) rows.push('<button class="grow" data-a="homeRitual"><span class="gi">🕯️</span><div><b>Ritual para esta noche</b><small>' + esc(mi.name) + ' · un momento para ti</small></div><i class="chev">›</i></button>');
+    } catch (e) { /* opcional */ }
+    return rows.length ? '<div class="group">' + rows.join('') + '</div>' : '';
+  }
+  A.homeRead = function (el) { ARC.go('library'); ARC.libOpen(el.dataset.id); };
+  A.homeLife = function () { ARC.go('life'); };
+  A.homeDream = function () { ARC.go('dreams'); setTimeout(function () { A.drAdd && A.drAdd(); }, 50); };
+  A.homeRitual = function () { ARC.go('magic'); };
+
   ARC.views.home = function () {
     var now = new Date(), mi = ASTRO.moonInfo(now), ss = ARC.sunSign(), D = dailyCard(), dk = DECKS.get(D.deck, P.tarotStyle), card = dk.cards[D.id];
     var h = '<section class="page home2"><header class="homeh"><div><small>' + DAYS[now.getDay()] + ' ' + now.getDate() + ' de ' + MONTHS[now.getMonth()] + '</small><h1>' + ARC.greeting() + (P.name ? ',<br>' + esc(P.name) : '') + '</h1></div>' +
@@ -131,6 +146,7 @@
     h += '</div>';
 
     h += ARC.missionsHTML();
+    h += homeExtra(now, mi);
 
     var kp = knowPct();
     h += '<button class="group know" data-a="goKnow"><div class="grow"><span class="gi">🔮</span><div><b>Sibila te conoce al ' + kp + '%</b><small>Cuanto más sabe de ti, más personales son sus respuestas</small></div><i class="chev">›</i></div><div class="meter"><i style="width:' + kp + '%"></i></div></button>';
