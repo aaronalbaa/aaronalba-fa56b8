@@ -130,6 +130,7 @@
       L.push('UBICACIÓN: ' + P.loc.name + ' (zona horaria ' + P.loc.tz + ')' + (wxd && wxd.current ? '; clima ahora: ' + Math.round(wxd.current.temperature_2m) + '°, nubosidad ' + wxd.current.cloud_cover + '%' : '') + '.');
     }
     if (ARC.interview) { var ps = ARC.interview.summary(); if (ps) L.push(ps); }
+    if (ARC.life) { var lv = ARC.life.summary(); if (lv) L.push(lv); }
     L.push('CIELO HOY: ' + mi.name + ' en ' + ASTRO.SIGNS[mi.sign].n + ' (' + Math.round(mi.illum * 100) + '% iluminada), Sol en ' + ASTRO.SIGNS[pl[0].sign].n + (retro.length ? '; ' + retro.join(', ') : '') + '.');
     return L.join('\n');
   };
