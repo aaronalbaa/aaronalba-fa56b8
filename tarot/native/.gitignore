@@ -1,0 +1,5 @@
+Web/
+build/
+Arcana.xcodeproj/
+xcuserdata/
+.DS_Store
