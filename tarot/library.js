@@ -40,7 +40,7 @@
     if (LV.tab === 'descubrir') h += discoverHTML(); else if (LV.tab === 'stats') h += statsHTML(); else if (LV.tab === 'amigos' && ARC.social) h += ARC.social.html(); else h += shelfHTML();
     return h + '</section>';
   };
-  A.libTab = function (el) { LV.tab = el.dataset.v; ARC.render(); };
+  A.libTab = function (el) { LV.tab = el.dataset.v; if (LV.tab === 'amigos' && ARC.social && ARC.social.refresh) ARC.social.refresh(); ARC.render(); };
   ARC.changes.libfile = function (v, el) { importFiles(Array.prototype.slice.call(el.files)); el.value = ''; };
 
   function shelfHTML() {
@@ -129,7 +129,8 @@
   A.bkDelYes = function (el) {
     var id = el.dataset.id; L.books = L.books.filter(function (b) { return b.id !== id; }); L.hl = L.hl.filter(function (h) { return h.book !== id; }); delete L.quiz[id]; saveL(); LP.del(id).catch(function () { }); ARC.closeModal(); ARC.render(true);
   };
-  A.bkShare = function (el) {
+  A.bkShare = function (el) { var b = book(el.dataset.id); if (ARC.social && ARC.social.giftModal(b)) return; A.bkShareFile(el); };
+  A.bkShareFile = function (el) {
     var b = book(el.dataset.id);
     LP.get(b.id).then(function (rec) {
       var f = rec.file, file = new File([f], f.name || b.title + '.' + b.fmt, { type: f.type || 'application/octet-stream' });

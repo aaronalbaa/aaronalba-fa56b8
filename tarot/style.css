@@ -47,8 +47,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; margin: 0; letter-spac
 .hint.c { text-align: center; }
 .fine { color: var(--muted); font-size: 12px; text-align: center; margin: 18px 8px 4px; opacity: .8; }
 .err { color: var(--red); font-size: 14px; }
-
-textarea, input[type=text], input[type=password], input[type=search] {
+textarea, input:not([type]), input[type=text], input[type=password], input[type=search], input[type=email], input[type=number], input[type=date], input[type=url] {
   width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--line2); border-radius: 14px;
   padding: 12px 14px; font: inherit; resize: vertical; outline: none;
 }
@@ -955,3 +954,8 @@ body[data-tab=crypt] #fab, body[data-tab=chat] #fab { display: none; }
 .grow.col { flex-direction: column; align-items: stretch; gap: 10px; } .grow.col .sr { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; } .grow.col .sr small { color: var(--muted); }
 .grow.bud b { flex: 1; font-weight: 500; } .grow.bud input { width: 110px; text-align: right; }
 .row2 > .btn, .row2 > button.btn { min-height: 48px; margin-top: 0; } .finsum { margin-bottom: 12px; } .row2 + .panel, .row2 + .lbl { margin-top: 14px; }
+
+/* nube */
+#syncbar { position: fixed; left: 50%; translate: -50% 0; bottom: calc(86px + env(safe-area-inset-bottom)); z-index: 45; display: flex; gap: 12px; align-items: center; padding: 10px 12px 10px 16px; background: #231d3a; border: 1px solid var(--line2); border-radius: 99px; box-shadow: 0 12px 30px #000a; font-size: 14px; }
+#syncbar button { background: var(--gold); color: #1a1226; border: 0; border-radius: 99px; padding: 8px 14px; font-weight: 600; cursor: pointer; }
+.seal2 { color: var(--rose); font-style: normal; font-size: 12px; }

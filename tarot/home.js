@@ -243,7 +243,8 @@
       '<div class="panel"><div class="lbl">Tono de Sibila</div><div class="seg three">' + [['sabio', 'Mentor sabio'], ['cercano', 'Cercano'], ['directo', 'Directo']].map(function (t) { return '<button data-a="tone" data-v="' + t[0] + '" class="' + ((P.tone || 'sabio') === t[0] ? 'on' : '') + '">' + t[1] + '</button>'; }).join('') + '</div><p class="hint">Cambia cómo te habla en lecturas, horóscopos y conversaciones.</p>' +
       '<label class="toggle"><input type="checkbox" id="revealall"' + (P.revealAll ? ' checked' : '') + '><span>Mostrar todas las puertas desde el principio</span></label></div>' +
       '<div class="panel"><div class="lbl">Lecturas</div><label class="toggle"><input type="checkbox" id="rev"' + (S.reversed ? ' checked' : '') + '><span>↺ Permitir cartas invertidas</span></label></div>' +
-      '<div class="panel"><div class="lbl">Tus datos</div><p class="hint">Todo se guarda solo en este dispositivo: perfil, diario, chat y progreso.</p>' +
+      (ARC.cloud ? ARC.cloud.panelHTML() : '') +
+      '<div class="panel"><div class="lbl">Tus datos</div><p class="hint">Todo se guarda en este dispositivo (y en tu nube cifrada si la conectas): perfil, diario, chat, biblioteca y progreso.</p>' +
       '<button class="btn ghost" data-a="progReset">Reiniciar la academia</button><button class="btn ghost danger" data-a="wipeAll">Borrar todos mis datos</button></div>' +
       '<p class="fine">Arcana es una herramienta de reflexión y entretenimiento. No predice el futuro ni sustituye a profesionales de la salud, el derecho o las finanzas.</p>';
   }
@@ -280,7 +281,7 @@
   };
   A.wipeAll = function () {
     if (!confirm('¿Borrar TODOS tus datos (perfil, diario, chat, progreso y claves)? No se puede deshacer.')) return;
-    ['settings', 'profile', 'progress', 'journal', 'chat', 'daily'].forEach(function (k) { ARC.store.del('arcana.' + k); });
+    ['settings', 'profile', 'progress', 'journal', 'chat', 'daily', 'missions', 'lib', 'life', 'fav', 'sync', 'cloud'].forEach(function (k) { ARC.store.del('arcana.' + k); });
     location.reload();
   };
   ARC.inputs.pname = function (v) { P.name = v.trim(); ARC.save('profile'); };
