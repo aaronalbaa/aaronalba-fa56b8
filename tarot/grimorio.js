@@ -85,18 +85,19 @@
     return out.sort(function (a, b) { return (ARC.norm(a.n).indexOf(nq) === 0 ? 0 : 1) - (ARC.norm(b.n).indexOf(nq) === 0 ? 0 : 1); }).slice(0, 60);
   }
   function listHTML(catId) {
-    var c = GR.cats[catId], q = ARC.norm(GS['q_' + catId] || ''), list = c.entries.filter(function (e) { return !q || ARC.norm(e.n).indexOf(q) > -1 || ARC.norm(e.s).indexOf(q) > -1 || e.t.some(function (t) { return ARC.norm(t).indexOf(q) > -1; }); });
+    var c = GR.cats[catId], lim = GS['lim_' + catId] || 30, q = ARC.norm(GS['q_' + catId] || ''), list = c.entries.filter(function (e) { return !q || ARC.norm(e.n).indexOf(q) > -1 || ARC.norm(e.s).indexOf(q) > -1 || e.t.some(function (t) { return ARC.norm(t).indexOf(q) > -1; }); });
     return '<div class="catbar"><div class="catx"><span>' + c.emoji + '</span><div><b>' + esc(c.name) + '</b><small>' + c.entries.length + ' entradas · ' + esc(c.desc) + '</small></div></div>' +
       '<input id="gq_' + catId + '" type="search" placeholder="Buscar en ' + esc(c.name) + '…" value="' + esc(GS['q_' + catId] || '') + '" autocomplete="off"></div>' +
-      '<div class="glist">' + (list.length ? list.map(entryCard).join('') : '<p class="hint c">Sin resultados</p>') + '</div>';
+      '<div class="glist">' + (list.length ? list.slice(0, lim).map(entryCard).join('') : '<p class="hint c">Sin resultados</p>') + '</div>' + (list.length > lim ? '<button class="btn ghost big" data-a="grMore" data-id="' + catId + '">Mostrar más (' + (list.length - lim) + ' restantes)</button>' : '');
   }
+  A.grMore = function (el) { var k = 'lim_' + el.dataset.id; GS[k] = (GS[k] || 30) + 40; ARC.render(true); };
   function enciView() {
     if (GS.cat && GR.cats[GS.cat]) return '<button class="btn link left" data-a="grBack">← Enciclopedia</button>' + listHTML(GS.cat);
     var cats = visibleCats(), total = cats.reduce(function (s, c) { return s + c.entries.length; }, 0), de = dayEntry();
     var h = '<div class="panel"><div class="lbl">Buscar en toda la enciclopedia · ' + total + ' entradas</div><input id="gq_all" type="search" placeholder="Cristales, dioses, símbolos, rituales…" value="' + esc(GS.q) + '" autocomplete="off"></div>';
     if (GS.q.trim().length >= 2) {
       var r = searchResults(GS.q, false);
-      return h + '<div class="glist">' + (r.length ? r.map(entryCard).join('') : '<p class="hint c">Sin resultados</p>') + '</div>';
+      return h + '<div class="glist">' + (r.length ? r.slice(0, 80).map(entryCard).join('') : '<p class="hint c">Sin resultados</p>') + '</div>';
     }
     if (de) h += '<button class="panel gday" data-a="grOpen" data-id="' + de.id + '" style="--h:' + GR.cats[de.cat].hue + '"><div class="gemb sm">' + ARC.sig.emblem(de.n, GR.cats[de.cat].hue, 84) + '</div><div><div class="lbl">Entrada del día</div><b>' + de.e + ' ' + esc(de.n) + '</b><p>' + esc(trunc(de.s, 120)) + '</p></div></button>';
     h += '<div class="duo"><button class="mini" data-a="grRandom"><b>🎲</b><span>Descubre algo</span><small>Una entrada al azar</small></button><button class="mini" data-a="grFavs"><b>★</b><span>Mis favoritos</span><small>' + favs.length + ' guardados</small></button></div>';

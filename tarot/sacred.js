@@ -89,7 +89,7 @@
   var SND = { ctx: null, master: null, on: false, layers: {}, vol: { drone: 0.6, bowl: 0.5, rain: 0, ocean: 0, wind: 0, bin: 0 }, tonic: 136.1, bin: 'theta', timer: 0, endAt: 0, bowlTimer: null, tick: null, analyser: null, scene: 'templo' };
   var BIN = { delta: [2, 'Delta · 2 Hz', 'sueño profundo'], theta: [6, 'Theta · 6 Hz', 'meditación'], alpha: [10, 'Alfa · 10 Hz', 'calma despierta'], beta: [18, 'Beta · 18 Hz', 'foco'] };
   var TON = [[136.1, 'Om · 136,1 Hz'], [174, '174 Hz'], [285, '285 Hz'], [396, '396 Hz'], [432, '432 Hz'], [528, '528 Hz'], [639, '639 Hz']];
-  var SCENES = { templo: ['🛕', 'Templo', { drone: 0.6, bowl: 0.6, rain: 0, ocean: 0, wind: 0.1, bin: 0 }], bosque: ['🌲', 'Bosque', { drone: 0.2, bowl: 0.2, rain: 0, ocean: 0, wind: 0.6, bin: 0 }], lluvia: ['🌧️', 'Lluvia nocturna', { drone: 0.2, bowl: 0.2, rain: 0.7, ocean: 0, wind: 0.2, bin: 0 }], sueno: ['😴', 'Sueño profundo', { drone: 0.25, bowl: 0, rain: 0, ocean: 0.55, wind: 0, bin: 0.5 }], foco: ['🎯', 'Foco', { drone: 0, bowl: 0, rain: 0.3, ocean: 0, wind: 0, bin: 0.5 }], meditacion: ['🧘', 'Meditación', { drone: 0.5, bowl: 0.4, rain: 0, ocean: 0.2, wind: 0, bin: 0.4 }] };
+  var SCENES = { templo: ['🛕', 'Templo', { drone: 0.6, bowl: 0.6, rain: 0, ocean: 0, wind: 0.1, bin: 0 }], bosque: ['🌲', 'Bosque', { drone: 0.2, bowl: 0.2, rain: 0, ocean: 0, wind: 0.6, bin: 0 }], lluvia: ['🌧️', 'Lluvia nocturna', { drone: 0.2, bowl: 0.2, rain: 0.7, ocean: 0, wind: 0.2, bin: 0 }], sueno: ['😴', 'Sueño profundo', { drone: 0.25, bowl: 0, rain: 0, ocean: 0.55, wind: 0, bin: 0.5 }], foco: ['🎯', 'Foco', { drone: 0, bowl: 0, rain: 0.3, ocean: 0, wind: 0, bin: 0.5 }], meditacion: ['🧘', 'Meditación', { drone: 0.5, bowl: 0.4, rain: 0, ocean: 0.2, wind: 0, bin: 0.4 }], cripta: ['🕯️', 'Cripta', { drone: 0.6, bowl: 0.25, rain: 0, ocean: 0.12, wind: 0.55, bin: 0 }, 65.4] };
 
   function noiseBuf(ctx, type) {
     var len = ctx.sampleRate * 4, b = ctx.createBuffer(2, len, ctx.sampleRate);
@@ -144,7 +144,7 @@
   ['drone', 'bowl', 'rain', 'ocean', 'wind', 'bin'].forEach(function (k) { ARC.inputs['sv_' + k] = function (v) { SND.vol[k] = Number(v); SND.scene = ''; applyVol(); }; });
   A.sndToggle = function () { if (SND.on) stop(); else play(); ARC.render(true); };
   A.sndStop = function () { stop(); };
-  A.sndScene = function (el) { SND.scene = el.dataset.v; Object.assign(SND.vol, SCENES[SND.scene][2]); if (!SND.on) play(); else applyVol(); ARC.render(true); };
+  A.sndScene = function (el) { SND.scene = el.dataset.v; Object.assign(SND.vol, SCENES[SND.scene][2]); if (SCENES[SND.scene][3]) SND.tonic = SCENES[SND.scene][3]; if (!SND.on) play(); else { applyVol(); applyTone(); } ARC.render(true); };
   A.sndTon = function (el) { SND.tonic = Number(el.dataset.v); applyTone(); ARC.render(true); };
   A.sndBin = function (el) { SND.bin = el.dataset.v; applyTone(); ARC.render(true); };
   A.sndTimer = function (el) { SND.timer = Number(el.dataset.v); SND.endAt = SND.timer ? Date.now() + SND.timer * 60000 : 0; ARC.render(true); };
