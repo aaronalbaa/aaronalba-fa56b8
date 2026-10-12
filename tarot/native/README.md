@@ -7,7 +7,7 @@
 ```bash
 curl -fsSL https://raw.githubusercontent.com/aaronalbaa/aaronalba-fa56b8/main/tarot/native/bootstrap.sh | bash
 ```
-Descarga el proyecto en `~/Arcana`, compila la app del Mac, la copia a **/Applications**, la **fija en el Dock**, detecta tu iPhone y tu Team ID, y la instala también en el iPhone. Si algo falta, el script te dice exactamente qué.
+Descarga el proyecto en `~/Arcana`, compila la app del Mac, la copia a **/Applications**, la **fija en el Dock**, detecta tu iPhone y tu Team ID, y la instala también en el iPhone. Si algo falta, el script te dice exactamente qué (y muestra los errores reales de Xcode con una pista). Puedes repetir el mismo comando para actualizar. Antes de tocar el Dock guarda una copia en `~/.arcana-dock-backup.plist`.
 
 Esta carpeta contiene un proyecto de Xcode listo para generar con **XcodeGen**. La app es un contenedor nativo en Swift/SwiftUI (WKWebView) que lleva dentro **toda la web de Arcana empaquetada**, así que funciona sin conexión (salvo la IA, el clima y la búsqueda de lugares).
 
@@ -20,7 +20,7 @@ Incluye:
 
 ## Requisitos
 - Un Mac con **Xcode** (ya lo tienes) y sus herramientas de línea de comandos (`xcode-select --install`).
-- **Homebrew** (https://brew.sh) para instalar XcodeGen automáticamente. Sin Homebrew: descarga XcodeGen desde https://github.com/yonaskolb/XcodeGen y ponlo en tu PATH.
+- **XcodeGen**: se instala solo (con Homebrew si lo tienes; si no, el script descarga el binario oficial a `~/.arcana`).
 - Un **Apple ID** (gratuito basta) iniciado en Xcode: *Xcode → Settings → Accounts*.
 
 ## 1) Abrir el proyecto

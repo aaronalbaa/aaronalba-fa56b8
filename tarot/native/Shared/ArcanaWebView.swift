@@ -51,7 +51,8 @@ final class WebCoordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScri
         web.scrollView.bounces = false
         web.scrollView.showsVerticalScrollIndicator = false
         #else
-        web.setValue(false, forKey: "drawsBackground")
+        // WKWebView no expone una API pública para el fondo transparente en macOS: solo se usa si existe.
+        if web.responds(to: NSSelectorFromString("setDrawsBackground:")) { web.setValue(false, forKey: "drawsBackground") }
         #endif
 
         if let dir = Bundle.main.resourceURL?.appendingPathComponent("Web", isDirectory: true) {
@@ -72,6 +73,11 @@ final class WebCoordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScri
             let style = body["s"] as? String ?? "light"
             let kind: UIImpactFeedbackGenerator.FeedbackStyle = style == "soft" ? .soft : style == "medium" ? .medium : .light
             UIImpactFeedbackGenerator(style: kind).impactOccurred()
+            #endif
+        case "drag":
+            #if os(macOS)
+            // Ventana sin barra de título: la web pide arrastrar desde su franja superior.
+            if let w = NSApp.keyWindow, let e = NSApp.currentEvent { w.performDrag(with: e) }
             #endif
         default: break
         }

@@ -27,22 +27,37 @@ ok "Team ID: $TEAM_ID"
 
 build_ios() {
   xcodebuild -project Arcana.xcodeproj -scheme Arcana -configuration Release \
-    -destination "id=$DEVICE" -derivedDataPath build -allowProvisioningUpdates \
+    -destination "id=$DEVICE" -derivedDataPath build -allowProvisioningUpdates -allowProvisioningDeviceRegistration \
     DEVELOPMENT_TEAM="$TEAM_ID" PRODUCT_BUNDLE_IDENTIFIER="$1" build 2>&1 | tee build/ios-build.log | tail -n 15
   return "${PIPESTATUS[0]}"
 }
 mkdir -p build
-BUNDLE="${BUNDLE_ID:-$BUNDLE_ID_DEFAULT}"
+
+# Falta la plataforma iOS de Xcode (descarga opcional en Xcode 15+/26): la bajamos.
+if ! xcodebuild -showsdks 2>/dev/null | grep -q iphoneos; then
+  warn "Falta la plataforma iOS de Xcode; la descargo (varios GB)…"
+  xcodebuild -downloadPlatform iOS || die "No pude descargar la plataforma iOS: Xcode → Settings → Components."
+fi
+
+# El identificador elegido se recuerda para que las próximas instalaciones actualicen la misma app.
+BUNDLE="${BUNDLE_ID:-$(cat "$HOME/.arcana-bundle-id" 2>/dev/null || true)}"
+BUNDLE="${BUNDLE:-$BUNDLE_ID_DEFAULT}"
 say "Compilando para el iPhone (la primera vez tarda unos minutos)…"
 if ! build_ios "$BUNDLE"; then
-  if grep -qiE "Failed Registering Bundle Identifier|not available|already exists|Bundle Identifier" build/ios-build.log; then
+  if grep -qiE "Failed Registering Bundle Identifier|cannot be registered to your development team|is not available.*bundle|Change your bundle identifier" build/ios-build.log; then
     BUNDLE="$BUNDLE_ID_DEFAULT.$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 5)"
     warn "El identificador está ocupado; pruebo con $BUNDLE"
-    build_ios "$BUNDLE" || die "No se pudo compilar para el iPhone. Revisa build/ios-build.log"
+    build_ios "$BUNDLE" || { explain_build_failure build/ios-build.log; die "No se pudo compilar para el iPhone. Registro completo: build/ios-build.log"; }
+  elif grep -qE "is not installed|Failed to find newest available Simulator runtime" build/ios-build.log; then
+    warn "Falta la plataforma iOS; la descargo y repito (varios GB)…"
+    xcodebuild -downloadPlatform iOS || die "No pude descargar la plataforma iOS: Xcode → Settings → Components."
+    build_ios "$BUNDLE" || { explain_build_failure build/ios-build.log; die "No se pudo compilar para el iPhone. Registro completo: build/ios-build.log"; }
   else
-    die "No se pudo compilar para el iPhone. Revisa build/ios-build.log"
+    explain_build_failure build/ios-build.log
+    die "No se pudo compilar para el iPhone. Registro completo: build/ios-build.log"
   fi
 fi
+echo "$BUNDLE" > "$HOME/.arcana-bundle-id"
 
 APP="build/Build/Products/Release-iphoneos/Arcana.app"
 [ -d "$APP" ] || die "No se generó $APP"
