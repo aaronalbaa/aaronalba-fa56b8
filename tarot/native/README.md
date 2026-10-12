@@ -1,5 +1,14 @@
 # Arcana como app nativa (iPhone, iPad y Mac)
 
+## Instalación con una sola línea (Mac + iPhone)
+1. Conecta el iPhone al Mac con el cable, desbloquéalo y pulsa «Confiar». En el iPhone: *Ajustes → Privacidad y seguridad → Modo de desarrollador* (actívalo y reinicia).
+2. Abre Xcode una vez, *Settings → Accounts* e inicia sesión con tu Apple ID (gratuito vale).
+3. Pega esto en el Terminal del Mac:
+```bash
+curl -fsSL https://raw.githubusercontent.com/aaronalbaa/aaronalba-fa56b8/main/tarot/native/bootstrap.sh | bash
+```
+Descarga el proyecto en `~/Arcana`, compila la app del Mac, la copia a **/Applications**, la **fija en el Dock**, detecta tu iPhone y tu Team ID, y la instala también en el iPhone. Si algo falta, el script te dice exactamente qué.
+
 Esta carpeta contiene un proyecto de Xcode listo para generar con **XcodeGen**. La app es un contenedor nativo en Swift/SwiftUI (WKWebView) que lleva dentro **toda la web de Arcana empaquetada**, así que funciona sin conexión (salvo la IA, el clima y la búsqueda de lugares).
 
 Incluye:
