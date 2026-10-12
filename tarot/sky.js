@@ -26,7 +26,7 @@
       '</svg>';
   }
 
-  var TABS = [['luna', '🌙', 'Luna'], ['planetas', '🪐', 'Planetas'], ['signo', '♈', 'Signo'], ['chino', '🐉', 'Chino'], ['numeros', '🔢', 'Números']];
+  var TABS = [['luna', '🌙', 'Luna'], ['planetas', '🪐', 'Planetas'], ['natal', '🧿', 'Carta natal'], ['local', '📍', 'Mi cielo'], ['signo', '♈', 'Signo'], ['chino', '🐉', 'Chino'], ['numeros', '🔢', 'Números']];
 
   function head() {
     return '<header class="hero small"><h1>Cielo <span>🌌</span></h1></header><div class="chips sub">' +
@@ -105,10 +105,10 @@
     ARC.ai.guard(function () {
       var my = ARC.sunSign(), cur = SK.sign !== null ? SK.sign : (my !== null ? my : 0), d = new Date(); d.setDate(d.getDate() + SK.dayOff);
       var h = TX.daily(cur, d), pl = ASTRO.planets(d), asp = ASTRO.aspects(pl).slice(0, 3);
-      var user = 'Signo: ' + AS[cur].n + (P.name ? '. Nombre: ' + P.name : '') + '. Fecha: ' + d.toLocaleDateString('es-ES') + '. ' + h.intro + ' ' + TX.skyWeather(pl, h.moon) +
+      var user = 'CONTEXTO\n' + ARC.ctx() + '\n\nSigno para el que escribes: ' + AS[cur].n + '. Fecha: ' + d.toLocaleDateString('es-ES') + '. ' + h.intro + ' ' + TX.skyWeather(pl, h.moon) +
         ' Aspectos: ' + asp.map(function (a) { return a.a + ' ' + a.type + ' ' + a.b; }).join('; ') + '. Escribe un horóscopo del día breve (máx. 160 palabras) con amor, trabajo y bienestar, en tono cálido y reflexivo, sin predicciones absolutas, y termina con una pregunta de introspección.';
       SK.aiState = 'loading'; var el = $('#skyai'); if (el) el.innerHTML = skyAIHTML();
-      ARC.ai.ask({ system: 'Eres una astróloga cálida que escribe en español. Usa solo los datos astronómicos que se te dan, no inventes posiciones. No hagas predicciones absolutas ni des consejos médicos, legales o financieros.', messages: [{ role: 'user', content: user }], max: 500 })
+      ARC.ai.ask({ system: 'Eres una astróloga cálida que escribe en español. Usa solo los datos astronómicos que se te dan, no inventes posiciones. No hagas predicciones absolutas ni des consejos médicos, legales o financieros. ' + ARC.PERSONALIZE, messages: [{ role: 'user', content: user }], max: 500 })
         .then(function (t) { SK.ai = t; SK.aiState = 'done'; })
         .catch(function (e) { SK.aiState = 'error'; SK.aiError = e.message; })
         .then(function () { var e2 = $('#skyai'); if (e2) e2.innerHTML = skyAIHTML(); });
@@ -153,7 +153,7 @@
   }
 
   ARC.views.sky = function () {
-    var body = SK.sub === 'luna' ? lunaHTML() : SK.sub === 'planetas' ? planetasHTML() : SK.sub === 'signo' ? signoHTML() : SK.sub === 'chino' ? chinoHTML() : numeroHTML();
+    var body = SK.sub === 'luna' ? lunaHTML() : SK.sub === 'planetas' ? planetasHTML() : SK.sub === 'natal' ? (ARC.natal ? ARC.natal.html() : '') : SK.sub === 'local' ? (ARC.loc ? ARC.loc.html() : '') : SK.sub === 'signo' ? signoHTML() : SK.sub === 'chino' ? chinoHTML() : (ARC.num ? ARC.num.html() : numeroHTML());
     return '<section class="page">' + head() + '<div class="skybody">' + body + '</div></section>';
   };
 

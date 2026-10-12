@@ -96,6 +96,53 @@
     var cb = ARC.pendingAI; ARC.pendingAI = null; if (cb) cb();
   };
 
+  /* Contexto profundo de la persona: se incluye en todas las consultas a la IA */
+  ARC.ctx = function () {
+    var L = [], b = P.birth, ss = ARC.sunSign(), ci = ARC.chineseInfo(), now = new Date(), mi = ASTRO.moonInfo(now), pl = ASTRO.planets(now);
+    var who = [];
+    if (P.name) who.push('nombre ' + P.name);
+    if (b) {
+      var age = now.getFullYear() - b.y - ((now.getMonth() + 1 < b.m || (now.getMonth() + 1 === b.m && now.getDate() < b.d)) ? 1 : 0);
+      who.push(age + ' años');
+      var nat = ASTRO.planets(new Date(Date.UTC(b.y, b.m - 1, b.d, 12))), by = {};
+      nat.forEach(function (p) { by[p.id] = p; });
+      who.push('Sol en ' + ASTRO.SIGNS[ss].n);
+      L.push('Datos natales (calculados, sin hora ni lugar de nacimiento): Mercurio en ' + ASTRO.SIGNS[by['Mercurio'].sign].n + ', Venus en ' + ASTRO.SIGNS[by['Venus'].sign].n + ', Marte en ' + ASTRO.SIGNS[by['Marte'].sign].n + ', Júpiter en ' + ASTRO.SIGNS[by['Júpiter'].sign].n + ', Saturno en ' + ASTRO.SIGNS[by['Saturno'].sign].n + ' y Luna aproximada en ' + ASTRO.SIGNS[by['Luna'].sign].n + '. No se conoce el ascendente.');
+    }
+    if (ARC.natal && P.natal && P.natal.place) {
+      try {
+        var ch = ARC.natal.chart('placidus'), by2 = {}; ch.planets.forEach(function (p) { by2[p.id] = p; });
+        var sn = function (lon) { return ASTRO.SIGNS[Math.floor(lon / 30)].n; };
+        L.push('CARTA NATAL COMPLETA (' + (P.natal.unknown ? 'sin hora exacta' : 'con hora y lugar') + '): Ascendente ' + sn(ch.asc) + ', MC ' + sn(ch.mc) + '; Sol ' + sn(by2['Sol'].lon) + ' casa ' + by2['Sol'].house + ', Luna ' + sn(by2['Luna'].lon) + ' casa ' + by2['Luna'].house + ', Mercurio ' + sn(by2['Mercurio'].lon) + ' casa ' + by2['Mercurio'].house + ', Venus ' + sn(by2['Venus'].lon) + ' casa ' + by2['Venus'].house + ', Marte ' + sn(by2['Marte'].lon) + ' casa ' + by2['Marte'].house + ', Saturno ' + sn(by2['Saturno'].lon) + ' casa ' + by2['Saturno'].house + ', Nodo Norte ' + sn(by2['Nodo Norte'].lon) + '. Regente del ascendente: ' + ch.rulerName + '.');
+      } catch (err) { /* sin carta */ }
+    }
+    L.unshift('PERSONA: ' + (who.join(', ') || 'sin datos básicos') + (ci ? '; año chino ' + ASTRO.ANIMALS[ci.animal] + ' de ' + ci.element : '') + (P.intentions && P.intentions.length ? '; busca: ' + P.intentions.join(', ') : '') + '.');
+    if (ARC.num && ARC.num.summary) { var ns = ARC.num.summary(); if (ns) L.push(ns); }
+    var F = ARC.FACTS || [], f = P.facts || {}, fl = [];
+    F.forEach(function (q) { var v = f[q.k]; if (v && (!Array.isArray(v) || v.length)) fl.push(q.l + ': ' + (Array.isArray(v) ? v.join(', ') : v)); });
+    if (fl.length) L.push('LO QUE ELLA/ÉL HA CONTADO DE SÍ: ' + fl.join(' | '));
+    if (P.memory) L.push('MEMORIA de conversaciones previas: ' + P.memory);
+    var j = ARC.journal.slice(0, 4);
+    if (j.length) L.push('DIARIO RECIENTE: ' + j.map(function (e) { return (e.title || '') + (e.question ? ' (pregunta: ' + e.question + ')' : '') + (e.items && e.items.length ? ' [' + e.items.slice(0, 4).join('; ') + ']' : '') + (e.note ? ' — ' + e.note.slice(0, 140) : ''); }).join(' || '));
+    var retro = pl.filter(function (p) { return p.status === 'retrógrado' && ['Mercurio', 'Venus', 'Marte'].indexOf(p.id) > -1; }).map(function (p) { return p.id + ' retrógrado'; });
+    if (P.loc) {
+      var wxd = ARC.loc && ARC.loc.getWeather && ARC.loc.getWeather();
+      L.push('UBICACIÓN: ' + P.loc.name + ' (zona horaria ' + P.loc.tz + ')' + (wxd && wxd.current ? '; clima ahora: ' + Math.round(wxd.current.temperature_2m) + '°, nubosidad ' + wxd.current.cloud_cover + '%' : '') + '.');
+    }
+    if (ARC.interview) { var ps = ARC.interview.summary(); if (ps) L.push(ps); }
+    if (ARC.dreams) { var dv = ARC.dreams.summary(); if (dv) L.push(dv); }
+    if (ARC.life) { var lv = ARC.life.summary(); if (lv) L.push(lv); }
+    L.push('CIELO HOY: ' + mi.name + ' en ' + ASTRO.SIGNS[mi.sign].n + ' (' + Math.round(mi.illum * 100) + '% iluminada), Sol en ' + ASTRO.SIGNS[pl[0].sign].n + (retro.length ? '; ' + retro.join(', ') : '') + '.');
+    return L.join('\n');
+  };
+  var TONES = {
+    sabio: 'TONO: hablas como un mentor ancestral, sereno y solemne, custodio de un códice de saber: lenguaje sobrio y evocador, con metáforas de templos, estrellas y raíces, y una calidez profunda. No presumas de omnisciencia: eres sabio porque escuchas, observas y haces buenas preguntas. ',
+    cercano: 'TONO: hablas de forma cercana, cálida y sencilla, como una amiga sabia que conoce bien a la persona. ',
+    directo: 'TONO: hablas de manera clara y concisa, sin adornos, con honestidad amable. '
+  };
+  var PERS_BASE = 'PERSONALIZACIÓN: usa el CONTEXTO de la persona para que la respuesta sea específica y relevante para ella, no genérica. Indica de forma explícita en qué te basas (por ejemplo «porque sacaste…», «por tu Venus en…», «porque me contaste que…»). Distingue lo que dicen las cartas de lo que infieres de la persona. Si falta información clave, dilo y haz una sola pregunta concreta. Nunca afirmes certezas sobre el futuro: ofrece posibilidades, símbolos y preguntas útiles.';
+  Object.defineProperty(ARC, 'PERSONALIZE', { get: function () { return (TONES[P.tone || 'sabio'] || TONES.sabio) + PERS_BASE; } });
+
   ARC.ai = { PROVIDERS: PROVIDERS, ready: ready, ask: ask, guard: guard };
 
   /* ================= Sibila: guía de conversación ================= */
@@ -110,17 +157,14 @@
   var userSince = 0;
 
   function systemPrompt() {
-    var d = new Date(), mi = ASTRO.moonInfo(d), pl = ASTRO.planets(d), ss = ARC.sunSign(), ci = ARC.chineseInfo();
     var lines = [];
     lines.push('Eres ' + NAME + ', una guía de introspección cálida, curiosa y serena dentro de una app de tarot y esoterismo. Escribes en español.');
     lines.push('Tu objetivo es conocer mejor a la persona y ayudarla a reflexionar. Haz UNA pregunta abierta por mensaje, escucha, refleja lo que dice y conecta con símbolos (cartas, Luna, signos) solo cuando ayude, como metáfora y no como verdad. Respuestas breves (máx. ~110 palabras), sin listas largas, con algún emoji sutil.');
     lines.push('Reglas: no hagas predicciones ni afirmes certezas sobre el futuro; no des diagnósticos médicos, psicológicos, legales ni financieros; no eres terapeuta (si el tema es serio, sugiere con suavidad apoyo profesional). Si detectas señales de crisis o autolesión, responde con cuidado y recomienda llamar al 024 (España) o al 112. No inventes datos sobre la persona.');
-    lines.push('Datos de la persona: nombre ' + (P.name || '(no lo ha dicho)') + (ss !== null ? '; signo solar ' + ASTRO.SIGNS[ss].n : '') +
-      (ci ? '; año chino ' + ASTRO.ANIMALS[ci.animal] + ' de ' + ci.element : '') + (P.intentions && P.intentions.length ? '; busca: ' + P.intentions.join(', ') : '') + '.');
-    lines.push('Cielo de hoy: ' + mi.name + ' en ' + ASTRO.SIGNS[mi.sign].n + ' (' + Math.round(mi.illum * 100) + '% iluminada). ' + SKYTXT.skyWeather(pl, mi));
-    if (P.memory) lines.push('Lo que ya sabes de ella/él (memoria): ' + P.memory);
-    var j = ARC.journal.slice(0, 3);
-    if (j.length) lines.push('Últimas entradas de su diario: ' + j.map(function (e) { return (e.title || '') + (e.note ? ' — ' + e.note.slice(0, 160) : ''); }).join(' | '));
+    lines.push(ARC.PERSONALIZE);
+    var nq = ARC.interview ? ARC.interview.nextQuestions(3) : [];
+    if (nq.length) lines.push('Si la conversación lo permite, entre tus preguntas puedes explorar alguno de estos temas que aún no conoces: ' + nq.join(' / '));
+    lines.push('CONTEXTO\n' + ARC.ctx());
     return lines.join('\n');
   }
 
