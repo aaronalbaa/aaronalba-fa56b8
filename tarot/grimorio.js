@@ -169,9 +169,8 @@
   A.stNext = function () { var st = GS.study; st.i++; st.sel = null; studyRender(); };
   A.grAsk = function (el) {
     var e = GR.byId(el.dataset.id); ARC.closeModal();
-    ARC.chat.push({ role: 'user', content: 'Cuéntame más sobre «' + e.n + '» (' + GR.cats[e.cat].name + ') y cómo podría relacionarse con mi vida o mi práctica. Lo que sé: ' + e.s }); ARC.save('chat');
-    ARC.go('chat'); setTimeout(function () { var i = $('#chatIn'); if (i && ARC.act.chatSend) { i.value = ''; } }, 0);
-    if (ARC.chatKick) ARC.chatKick();
+    ARC.go('chat');
+    if (ARC.chatAsk) ARC.chatAsk('Cuéntame más sobre «' + e.n + '» (' + GR.cats[e.cat].name + ') y cómo podría relacionarse con mi vida o mi práctica. Lo que sé: ' + e.s);
   };
   A.trCat = function (el) { var id = el.dataset.id, i = TR.cats.indexOf(id); if (i > -1) TR.cats.splice(i, 1); else { if (id === '*') TR.cats = []; else TR.cats = TR.cats.filter(function (x) { return x !== '*'; }); TR.cats.push(id); } ARC.render(true); };
   A.trLen = function (el) { TR.len = Number(el.dataset.v); ARC.render(true); };

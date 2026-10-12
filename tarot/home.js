@@ -207,7 +207,7 @@
       '<p class="hint">Cuanto más cuentes, más personales y precisas serán las lecturas, el horóscopo y las respuestas de Sibila. Todo se guarda solo en tu dispositivo y solo se envía a la IA al pedir una interpretación.</p></div>';
     FACTS.forEach(function (q) {
       h += '<div class="panel"><div class="lbl">' + esc(q.q) + '</div>';
-      if (q.t === 'text') h += '<textarea id="fact_' + q.k + '" rows="2" maxlength="300" placeholder="Escribe con libertad…">' + esc(f[q.k] || '') + '</textarea>';
+      if (q.t === 'text') h += '<textarea id="fact_' + q.k + '" rows="3" maxlength="1000" placeholder="Escribe con libertad…">' + esc(f[q.k] || '') + '</textarea>';
       else {
         var cur = f[q.k] || (q.t === 'multi' ? [] : '');
         h += '<div class="chips wrap">' + q.o.map(function (o) { var on = q.t === 'multi' ? cur.indexOf(o) > -1 : cur === o; return '<button data-a="factPick" data-k="' + q.k + '" data-v="' + esc(o) + '" class="' + (on ? 'on' : '') + '">' + esc(o) + '</button>'; }).join('') + '</div>';
@@ -261,6 +261,8 @@
       '<div class="panel"><div class="lbl">Lecturas</div><label class="toggle"><input type="checkbox" id="rev"' + (S.reversed ? ' checked' : '') + '><span>↺ Permitir cartas invertidas</span></label></div>' +
       (ARC.cloud ? ARC.cloud.panelHTML() : '') +
       '<div class="panel"><div class="lbl">Tus datos</div><p class="hint">Todo se guarda en este dispositivo (y en tu nube cifrada si la conectas): perfil, diario, chat, biblioteca y progreso.</p>' +
+      '<div class="lbl">Copia de seguridad</div><p class="hint">Descarga un archivo con tu perfil, tus respuestas de Conócete, el chat, el diario y el progreso (sin claves de IA ni libros). Sirve para guardarlos a salvo o llevarlos a otro dispositivo o a la app nativa.</p>' +
+      '<div class="row2"><button class="btn ghost" data-a="bkExport">⬇️ Descargar copia</button><label class="btn ghost"><input type="file" id="bkfile" accept=".json,application/json" hidden>⬆️ Restaurar copia</label></div>' +
       '<button class="btn ghost" data-a="progReset">Reiniciar la academia</button><button class="btn ghost danger" data-a="wipeAll">Borrar todos mis datos</button></div>' +
       '<p class="fine">Arcana es una herramienta de reflexión y entretenimiento. No predice el futuro ni sustituye a profesionales de la salud, el derecho o las finanzas.</p>';
   }
@@ -294,6 +296,42 @@
   A.progReset = function () {
     if (!confirm('¿Reiniciar todo tu progreso en la academia?')) return;
     var p = ARC.progress; p.xp = 0; p.streak = 0; p.last = ''; p.done = {}; ARC.save('progress'); ARC.toast('Progreso reiniciado');
+  };
+  /* ---------- copia de seguridad ---------- */
+  var BK_SKIP = { 'arcana.cloud': 1, 'arcana.lib': 1 };   // credenciales de la nube y libros (archivos grandes): fuera de la copia
+  function isObj(x) { return x && typeof x === 'object' && !Array.isArray(x); }
+  function bkMerge(k, cur, inc) {   // lo del archivo prevalece; lo que solo existe aquí se conserva
+    try {
+      var a = JSON.parse(cur), b = JSON.parse(inc);
+      if (Array.isArray(a) && Array.isArray(b)) return ARC.cloud && ARC.cloud._merge ? ARC.cloud._merge(k, cur, inc) : inc;
+      if (isObj(a) && isObj(b)) {
+        var o = Object.assign({}, a, b);
+        Object.keys(b).forEach(function (f) { if (isObj(a[f]) && isObj(b[f])) o[f] = Object.assign({}, a[f], b[f]); });
+        return JSON.stringify(o);
+      }
+    } catch (e) { /* no mezclable */ }
+    return inc;
+  }
+  A.bkExport = function () {
+    var o = {};
+    try { Object.keys(localStorage).forEach(function (k) { if (k.indexOf('arcana.') === 0 && !BK_SKIP[k]) o[k] = localStorage.getItem(k); }); } catch (e) { /* nada */ }
+    try { var st = JSON.parse(o['arcana.settings'] || 'null'); if (st) { delete st.geminiKey; delete st.anthropicKey; o['arcana.settings'] = JSON.stringify(st); } } catch (e) { /* nada */ }
+    var d = new Date(), name = 'arcana-copia-' + d.getFullYear() + '-' + ARC.pad(d.getMonth() + 1) + '-' + ARC.pad(d.getDate()) + '.json';
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify({ app: 'arcana', v: 1, ts: Date.now(), data: o })], { type: 'application/json' })); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    ARC.toast('Copia descargada 💾');
+  };
+  ARC.changes.bkfile = function (v, el) {
+    var f = el.files && el.files[0]; el.value = ''; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      var d = null; try { d = JSON.parse(rd.result); } catch (e) { /* nada */ }
+      var keys = d && d.app === 'arcana' && isObj(d.data) ? Object.keys(d.data).filter(function (k) { return k.indexOf('arcana.') === 0 && !BK_SKIP[k] && typeof d.data[k] === 'string'; }) : [];
+      if (!keys.length) { ARC.toast('Ese archivo no es una copia de Arcana'); return; }
+      if (!confirm('Se restaurarán ' + keys.length + ' apartados (perfil, respuestas de Conócete, chat, diario…). Lo del archivo prevalece y lo que solo exista aquí se conserva. ¿Continuar?')) return;
+      keys.forEach(function (k) { var cur = localStorage.getItem(k); localStorage.setItem(k, cur === null ? d.data[k] : bkMerge(k, cur, d.data[k])); });
+      ARC.toast('Copia restaurada ✨'); setTimeout(function () { location.reload(); }, 700);
+    };
+    rd.readAsText(f);
   };
   A.wipeAll = function () {
     if (!confirm('¿Borrar TODOS tus datos (perfil, diario, chat, progreso y claves)? No se puede deshacer.')) return;

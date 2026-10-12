@@ -6,7 +6,7 @@
   var CK = 'arcana.cloud';
   var C = ARC.store.get(CK, { url: '', key: '', email: '', uid: '', access: '', refresh: '', exp: 0, ck: '', hash: {}, pulled: {}, handle: '', display: '', cardHash: '' });
   C.hash = C.hash || {}; C.pulled = C.pulled || {};
-  var KEYS = ['profile', 'progress', 'journal', 'chat', 'daily', 'missions', 'lib', 'life', 'fav', 'sync', 'magic', 'dreams', 'games', 'courses', 'codex', 'crypt'];
+  var KEYS = ['profile', 'progress', 'journal', 'chat', 'rlog', 'daily', 'missions', 'lib', 'life', 'fav', 'sync', 'magic', 'dreams', 'games', 'courses', 'codex', 'crypt'];
   var INTERVAL = 15000, started = Date.now(), timer = null, busy = false, status = { st: C.uid ? 'idle' : 'off', last: 0, err: '' };
   function save() { ARC.store.set(CK, C); }
   function configured() { return !!(C.url && C.key && C.uid && C.ck); }
@@ -60,6 +60,16 @@
   function mergeVal(k, local, remote) {
     try {
       var a = JSON.parse(local), b = JSON.parse(remote);
+      if (k === 'arcana.chat' && Array.isArray(a) && Array.isArray(b)) { // une las conversaciones de ambos dispositivos en orden cronológico
+        var seenc = {}, old = [], dated = [];
+        a.concat(b).forEach(function (x) {
+          if (!x) return;
+          var id = (x.ts || '') + '|' + x.role + '|' + x.content; if (seenc[id]) return; seenc[id] = 1;
+          (x.ts ? dated : old).push(x);
+        });
+        dated.sort(function (x, y) { return x.ts - y.ts; });
+        return JSON.stringify(old.concat(dated).slice(-(ARC.CHAT_MAX || 400)));
+      }
       if (Array.isArray(a) && Array.isArray(b)) {
         var seen = {}, out = [];
         a.concat(b).forEach(function (x) { var id = x && (x.id || x.ts) ? String(x.id || x.ts) : JSON.stringify(x); if (!seen[id]) { seen[id] = 1; out.push(x); } });
@@ -137,7 +147,7 @@
 
   /* ---------- cuenta ---------- */
   ARC.cloud = {
-    configured: configured, tick: function () { return tick(true); }, status: function () { return status; }, cfg: function () { return C; },
+    _merge: mergeVal, configured: configured, tick: function () { return tick(true); }, status: function () { return status; }, cfg: function () { return C; },
     panelHTML: function () {
       if (configured()) return '<div class="panel"><div class="lbl">Nube y sincronización</div><p class="hint">Cuenta: <b>' + esc(C.email) + '</b>' + (C.handle ? ' · @' + esc(C.handle) : '') + '</p><p class="hint" id="cloudst">' + statusLine() + '</p><p class="hint">Se sincroniza cada 15 s entre tus dispositivos. Los datos viajan <b>cifrados</b> con tu frase secreta: ni el servidor puede leerlos.</p><div class="row2"><button class="btn ghost" data-a="cloudNow">Sincronizar ya</button><button class="btn ghost danger" data-a="cloudOut">Salir</button></div></div>';
       return '<div class="panel"><div class="lbl">Nube y sincronización</div><p class="hint">Sincroniza móvil y ordenador, y conecta con amigos. Necesitas tu propio proyecto gratuito de Supabase (guía en <b>backend/README.md</b>).</p><button class="btn primary big" data-a="cloudOpen">☁️ Conectar mi nube</button></div>';

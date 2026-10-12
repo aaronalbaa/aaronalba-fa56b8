@@ -124,6 +124,11 @@
     if (P.memory) L.push('MEMORIA de conversaciones previas: ' + P.memory);
     var j = ARC.journal.slice(0, 4);
     if (j.length) L.push('DIARIO RECIENTE: ' + j.map(function (e) { return (e.title || '') + (e.question ? ' (pregunta: ' + e.question + ')' : '') + (e.items && e.items.length ? ' [' + e.items.slice(0, 4).join('; ') + ']' : '') + (e.note ? ' — ' + e.note.slice(0, 140) : ''); }).join(' || '));
+    var rl = (ARC.rlog || []).slice(0, 5);
+    if (rl.length) L.push('TIRADAS RECIENTES (lo que preguntó y lo que dijo antes de cada una): ' + rl.map(function (e) {
+      var c = e.consult;
+      return new Date(e.ts).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) + ' ' + (e.title || '') + (e.q ? ' · pregunta «' + e.q + '»' : '') + (c ? ' · motivo ' + c.why + ', sentía ' + c.feel + ', esperaba ' + c.hope + ', plazo ' + c.when : '') + (e.items && e.items.length ? ' [' + e.items.slice(0, 4).join('; ') + ']' : '');
+    }).join(' || '));
     var retro = pl.filter(function (p) { return p.status === 'retrógrado' && ['Mercurio', 'Venus', 'Marte'].indexOf(p.id) > -1; }).map(function (p) { return p.id + ' retrógrado'; });
     if (P.loc) {
       var wxd = ARC.loc && ARC.loc.getWeather && ARC.loc.getWeather();
@@ -153,8 +158,14 @@
     'Si estás en otro país, busca la línea de ayuda local. Hablar con una persona de confianza o con un profesional puede marcar la diferencia. ' +
     'Yo sigo aquí para acompañarte, pero no puedo sustituir ese apoyo. 💜';
 
-  var busy = false;
-  var userSince = 0;
+  var busy = false, memBusy = false;
+  var MEM_EVERY = 6;   // cada tantos mensajes tuyos, Sibila actualiza sus notas sobre ti (el contador se guarda en el perfil: P.memN)
+  // Todo mensaje lleva marca de tiempo: así las conversaciones de móvil y ordenador se mezclan en orden y sin perder nada.
+  function addMsg(role, content, extra) {
+    var last = ARC.chat[ARC.chat.length - 1], ts = Math.max(Date.now(), last && last.ts ? last.ts + 1 : 0);
+    var m = Object.assign({ role: role, content: content, ts: ts }, extra || {});
+    ARC.chat.push(m); return m;
+  }
 
   function systemPrompt() {
     var lines = [];
@@ -169,12 +180,16 @@
   }
 
   function updateMemory() {
-    var recent = ARC.chat.slice(-16).map(function (m) { return (m.role === 'user' ? 'Persona' : NAME) + ': ' + m.content; }).join('\n');
+    if (memBusy) return; memBusy = true;
+    var sent = P.memN || 0, n = Math.min(40, sent * 2 + 4);
+    var recent = ARC.chat.filter(function (m) { return !m.err; }).slice(-n).map(function (m) { return (m.role === 'user' ? 'Persona' : NAME) + ': ' + m.content; }).join('\n');
     ask({
-      system: 'Eres un asistente que mantiene notas breves sobre una persona para recordarla en futuras conversaciones. Escribe en español, en tercera persona, máximo 90 palabras, solo hechos y preferencias que la persona haya expresado (nunca inventes ni deduzcas diagnósticos).',
+      system: 'Eres un asistente que mantiene notas sobre una persona para recordarla en futuras conversaciones. Escribe en español, en tercera persona, máximo 220 palabras. Conserva de las notas anteriores todo lo que siga siendo relevante y añade lo nuevo: solo hechos, preguntas que se hace, preocupaciones y preferencias que la persona haya expresado (nunca inventes ni deduzcas diagnósticos).',
       messages: [{ role: 'user', content: 'Notas actuales: ' + (P.memory || '(vacías)') + '\n\nConversación reciente:\n' + recent + '\n\nDevuelve las notas actualizadas, sin introducción.' }],
-      max: 300
-    }).then(function (t) { P.memory = t.slice(0, 700); ARC.save('profile'); }).catch(function () { /* silencioso */ });
+      max: 700
+    }).then(function (t) { P.memory = t.slice(0, 1500); P.memN = Math.max(0, (P.memN || 0) - sent); ARC.save('profile'); })
+      .catch(function () { /* silencioso: el contador no baja y se reintenta con el siguiente mensaje */ })
+      .then(function () { memBusy = false; });
   }
 
   function bubble(m) {
@@ -211,27 +226,27 @@
     text = String(text || '').trim();
     if (!text || busy) return;
     guard(function () {
-      ARC.chat.push({ role: 'user', content: text }); ARC.save('chat');
-      userSince++;
+      addMsg('user', text); P.memN = (P.memN || 0) + 1; ARC.save('chat'); ARC.save('profile');
       var input = $('#chatIn'); if (input) { input.value = ''; input.style.height = ''; }
       if (CRISIS.test(text)) {
-        ARC.chat.push({ role: 'assistant', content: CRISIS_MSG }); ARC.save('chat');
+        addMsg('assistant', CRISIS_MSG); ARC.save('chat');
         var starters = $('.starters'); if (starters) starters.remove();
         refreshMsgs(); return;
       }
       busy = true;
       var st = $('.starters'); if (st) st.remove();
       refreshMsgs();
-      var hist = ARC.chat.slice(-20).map(function (m) { return { role: m.role, content: m.content }; });
+      var hist = ARC.chat.filter(function (m) { return !m.err; }).slice(-20).map(function (m) { return { role: m.role, content: m.content }; });
       while (hist.length && hist[0].role !== 'user') hist.shift();
       ask({ system: systemPrompt(), messages: hist, max: 500 }).then(function (t) {
-        ARC.chat.push({ role: 'assistant', content: t }); ARC.save('chat');
-        if (userSince >= 6) { userSince = 0; updateMemory(); }
+        addMsg('assistant', t); ARC.save('chat');
+        if ((P.memN || 0) >= MEM_EVERY) updateMemory();
       }).catch(function (err) {
-        ARC.chat.push({ role: 'assistant', content: '⚠️ ' + err.message });
+        addMsg('assistant', '⚠️ ' + err.message, { err: true });
       }).then(function () { busy = false; refreshMsgs(); });
     });
   }
+  ARC.chatAsk = send;   // otros módulos (p. ej. la enciclopedia) hacen preguntas a Sibila por aquí
   ARC.act.chatSend = function () { var i = $('#chatIn'); if (i) send(i.value); };
   ARC.act.chatStarter = function (el) { send(el.dataset.t); };
   ARC.act.chatClear = function () {
@@ -244,8 +259,8 @@
       '<textarea id="memText" rows="6" placeholder="Todavía no hay notas. Se irán creando mientras charlas.">' + esc(P.memory || '') + '</textarea>' +
       '<button class="btn primary big" data-a="memSave">Guardar</button><button class="btn link" data-a="memClear">Borrar memoria</button>');
   };
-  ARC.act.memSave = function () { P.memory = $('#memText').value.slice(0, 900); ARC.save('profile'); ARC.closeModal(); ARC.toast('Memoria guardada'); };
-  ARC.act.memClear = function () { P.memory = ''; ARC.save('profile'); ARC.closeModal(); ARC.toast('Memoria borrada'); };
+  ARC.act.memSave = function () { P.memory = $('#memText').value.slice(0, 1500); ARC.save('profile'); ARC.closeModal(); ARC.toast('Memoria guardada'); };
+  ARC.act.memClear = function () { P.memory = ''; P.memN = 0; ARC.save('profile'); ARC.closeModal(); ARC.toast('Memoria borrada'); };
 
   document.addEventListener('keydown', function (e) {
     if (e.target.id === 'chatIn' && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(e.target.value); }

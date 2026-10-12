@@ -54,6 +54,8 @@
   var progress = Object.assign({ xp: 0, streak: 0, last: '', done: {} }, store.get('arcana.progress', {}));
   var journal = store.get('arcana.journal', []);
   var chat = store.get('arcana.chat', []);
+  var CHAT_MAX = 400;                 // mensajes que se conservan; lo anterior queda resumido en la memoria de Sibila
+  var rlog = store.get('arcana.rlog', []);   // registro automático de tiradas (pregunta, consulta previa y cartas)
   var daily = store.get('arcana.daily', null);
 
   var saveFns = {
@@ -61,7 +63,11 @@
     profile: function () { store.set('arcana.profile', profile); },
     progress: function () { store.set('arcana.progress', progress); },
     journal: function () { store.set('arcana.journal', journal.slice(0, 300)); },
-    chat: function () { store.set('arcana.chat', chat.slice(-60)); },
+    chat: function () {
+      if (chat.length > CHAT_MAX) chat.splice(0, chat.length - CHAT_MAX);
+      store.set('arcana.chat', chat.filter(function (m) { return !m.err; }));
+    },
+    rlog: function () { store.set('arcana.rlog', rlog.slice(0, 200)); },
     daily: function () { store.set('arcana.daily', ARC.daily); }
   };
 
@@ -159,7 +165,7 @@
 
   Object.assign(ARC, {
     $: $, $$: $$, esc: esc, norm: norm, pad: pad, store: store, rnd: rnd, shuffle: shuffle, dayKey: dayKey, toast: toast,
-    settings: settings, profile: profile, progress: progress, journal: journal, chat: chat, daily: daily,
+    settings: settings, profile: profile, progress: progress, journal: journal, chat: chat, rlog: rlog, CHAT_MAX: CHAT_MAX, daily: daily,
     save: function (k) { saveFns[k](); },
     openModal: openModal, closeModal: closeModal, fmt: fmt,
     sunSign: sunSign, chineseInfo: chineseInfo, primaryDeck: primaryDeck, greeting: greeting,

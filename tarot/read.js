@@ -38,6 +38,22 @@
   function later(fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; }
   function clearTimers() { timers.forEach(clearTimeout); timers = []; }
 
+  // Resumen de la tirada actual (para el diario y para el registro automático).
+  function readingInfo() {
+    if (R.stage === 'ich') { var r = R.ich.res; return { title: 'I Ching · ' + ICHING.H[r.num][1], items: ['Hexagrama ' + r.num + (r.rel ? ' → ' + r.rel : '')] }; }
+    var d = D(); return { title: sp().name + ' · ' + d.name, items: sp().pos.map(function (n, i) { var c = R.cards[i]; return n + ': ' + d.cards[c.id].name + (c.rev ? ' (invertida)' : ''); }) };
+  }
+  // Cada tirada queda registrada sola (pregunta + consulta previa + cartas): Sibila la recuerda aunque no la guardes en el diario.
+  var lastLog = '';
+  function logReading(info) {
+    var q = (R.question || '').trim().slice(0, 300), sig = info.title + '|' + q + '|' + info.items.join(';');
+    if (sig === lastLog) return; lastLog = sig;
+    var now = Date.now(), c = R.consult;
+    ARC.rlog.unshift({ id: now, ts: now, title: info.title, q: q, items: info.items.slice(0, 12), consult: c ? { why: c.why, feel: c.feel, hope: c.hope, when: c.when } : null });
+    ARC.save('rlog');
+  }
+  function stageReading() { R.stage = 'reading'; P.stats = P.stats || { readings: 0 }; P.stats.readings = (P.stats.readings || 0) + 1; ARC.save('profile'); try { logReading(readingInfo()); } catch (e) { /* el registro nunca debe romper la lectura */ } }
+
   function D() { return DECKS.get(R.deck, P.tarotStyle); }
   function sp() { return SPREADS[R.spread]; }
   function owned(id) { return (P.owned || []).indexOf(id) > -1; }
@@ -318,7 +334,7 @@
       later(function () {
         if (!R.ich || ARC.tab !== 'oracle') return;
         R.ich.shown = n;
-        if (n === 6) { R.ich.res = ICHING.resolve(R.ich.lines); ARC.render(); }
+        if (n === 6) { R.ich.res = ICHING.resolve(R.ich.lines); try { logReading(readingInfo()); } catch (e) { /* nada */ } ARC.render(); }
         else { var b = $('#hexbox'); if (b) b.innerHTML = castFigure(R.ich.lines.slice(0, n)); }
       }, n * 750);
     })(i);
@@ -445,7 +461,7 @@
   A.feelPick = function (el) { R.g.feels[R.g.i] = el.dataset.v; $$('[data-a=feelPick]').forEach(function (b) { b.classList.toggle('on', b === el); }); };
   A.feelGo = function () {
     ARC.closeModal(); var n = sp().pos.length, nxt = R.cards.findIndex(function (c) { return !c; });
-    if (nxt === -1) { R.stage = 'reading'; P.stats = P.stats || { readings: 0 }; P.stats.readings = (P.stats.readings || 0) + 1; ARC.save('profile'); ARC.render(); return; }
+    if (nxt === -1) { stageReading(); ARC.render(); return; }
     R.g.i = nxt; ARC.render(true);
   };
 
@@ -531,7 +547,7 @@
     if (R.stage === 'guide') { feelModal(pk.slot); return; }
     ARC.closeModal(); ARC.render(true);
   };
-  A.reading = function () { R.stage = 'reading'; P.stats = P.stats || { readings: 0 }; P.stats.readings = (P.stats.readings || 0) + 1; ARC.save('profile'); ARC.render(); };
+  A.reading = function () { stageReading(); ARC.render(); };
   A.detail = function (el) { var p = Number(el.dataset.p); if (R.cards[p]) detailModal(R.cards[p], sp().pos[p]); };
   A.ai = function () { if (R.stage === 'ich') ichAI(); else aiInterpret(); };
   A.cast = function () { if (!R.consultDone) { R.consultDone = true; consultModal(function () { A.cast(); }); return; } R.consultDone = false; ichCast(); };
@@ -549,9 +565,7 @@
   }
 
   A.saveReading = function () {
-    var title, items;
-    if (R.stage === 'ich') { var r = R.ich.res; title = 'I Ching · ' + ICHING.H[r.num][1]; items = ['Hexagrama ' + r.num + (r.rel ? ' → ' + r.rel : '')]; }
-    else { var d = D(); title = sp().name + ' · ' + d.name; items = sp().pos.map(function (n, i) { var c = R.cards[i]; return n + ': ' + d.cards[c.id].name + (c.rev ? ' (invertida)' : ''); }); }
+    var info = readingInfo(), title = info.title, items = info.items;
     var prompts = ['¿Qué parte de esta lectura resuena conmigo?', '¿Qué me sorprendió o me incomodó?', '¿Qué pequeño paso puedo dar a partir de esto?'];
     ARC.draft = { type: 'lectura', title: title, question: R.question, items: items, ai: R.aiState === 'done' ? R.ai.slice(0, 600) : '' };
     ARC.openModal('<h3>📓 Guardar en mi diario</h3><p class="hint">' + esc(title) + '</p><div class="chips wrap">' +

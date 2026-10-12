@@ -180,8 +180,18 @@
     return '<button class="btn link left" data-a="ivBack">← Conócete</button><div class="ivbar"><i style="width:' + Math.round(i / t.items * 100) + '%"></i></div><small class="gold">' + t.n + ' · ' + (i + 1) + ' de ' + t.items + '</small>' + body + (i > 0 ? '<button class="btn link" data-a="ivPrev">‹ Anterior</button>' : '');
   }
 
+  var OPEN_MAX = 5000;   // caracteres por respuesta abierta (antes 600: recortaba en silencio las respuestas largas)
   function openAnswered() { return Object.keys(P.open).length; }
   function nextOpen() { for (var i = 0; i < OPEN.length; i++) if (!P.open[i]) return i; return -1; }
+
+  function savedHTML() {
+    var ks = Object.keys(P.open).sort(function (a, b) { return (P.open[b].ts || 0) - (P.open[a].ts || 0); });
+    if (!ks.length) return '';
+    return '<h3 class="sec">Tus respuestas guardadas</h3><div class="group">' + ks.map(function (k) {
+      var o = P.open[k];
+      return '<button class="grow" data-a="ivOpenEdit" data-i="' + k + '"><span class="gi">📝</span><div><b>' + esc(o.q) + '</b><small>' + esc(o.a.slice(0, 90)) + (o.a.length > 90 ? '…' : '') + ' · ' + o.a.length + ' caracteres</small></div><i class="chev">›</i></button>';
+    }).join('') + '</div>';
+  }
 
   function html() {
     if (IV.view === 'test') return sessionHTML();
@@ -193,7 +203,8 @@
       return '<button class="grow" data-a="ivOpen" data-id="' + t.id + '"><span class="gi">' + t.e + '</span><div><b>' + esc(t.n) + '</b><small>' + (d ? 'Completado · ver resultado' : p > 0 ? Math.round(p * 100) + '% · continuar' : esc(t.t)) + '</small></div><i class="chev">' + (d ? '✓' : '›') + '</i></button>';
     }).join('') + '</div>';
     var no = nextOpen();
-    h += '<div class="panel"><div class="lbl">Pregunta abierta</div>' + (no > -1 ? '<p class="prompt">' + esc(OPEN[no]) + '</p><textarea id="openans" rows="3" placeholder="Escribe con total libertad…"></textarea><button class="btn primary big" data-a="ivOpenSave">Guardar y siguiente</button>' : '<p class="hint">¡Has respondido todas! Sibila seguirá haciéndote preguntas nuevas con el tiempo.</p>') + '</div>';
+    h += '<div class="panel"><div class="lbl">Pregunta abierta</div>' + (no > -1 ? '<p class="prompt">' + esc(OPEN[no]) + '</p><textarea id="openans" rows="5" maxlength="5000" placeholder="Escribe con total libertad…"></textarea><button class="btn primary big" data-a="ivOpenSave">Guardar y siguiente</button>' : '<p class="hint">¡Has respondido todas! Sibila seguirá haciéndote preguntas nuevas con el tiempo.</p>') + '</div>';
+    h += savedHTML();
     if (ARC.FACTS) h += '<h3 class="sec">Datos básicos</h3>' + ARC.factsHTML();
     return h;
   }
@@ -211,15 +222,29 @@
   A.ivFinishVals = function () { IV.i = 1; ARC.render(true); };
   A.ivOpenSave = function () {
     var i = nextOpen(), v = ($('#openans') || {}).value.trim(); if (i < 0 || !v) { ARC.toast('Escribe una respuesta'); return; }
-    P.open[i] = { q: OPEN[i], a: v.slice(0, 600), ts: Date.now() }; ARC.save('profile'); if (ARC.mission) ARC.mission('conocer'); ARC.render(true); ARC.toast('Sibila lo recordará 🔮');
+    P.open[i] = { q: OPEN[i], a: v.slice(0, OPEN_MAX), ts: Date.now() }; ARC.save('profile'); if (ARC.mission) ARC.mission('conocer'); ARC.render(true); ARC.toast('Sibila lo recordará 🔮');
+  };
+  A.ivOpenEdit = function (el) {
+    var i = el.dataset.i, o = P.open[i]; if (!o) return;
+    ARC.openModal('<h3>Tu respuesta</h3><p class="prompt">' + esc(o.q) + '</p><textarea id="openedit" rows="9" maxlength="' + OPEN_MAX + '">' + esc(o.a) + '</textarea>' +
+      '<button class="btn primary big" data-a="ivOpenUpd" data-i="' + i + '">Guardar cambios</button><button class="btn ghost danger" data-a="ivOpenDel" data-i="' + i + '">Borrar esta respuesta</button>');
+  };
+  A.ivOpenUpd = function (el) {
+    var i = el.dataset.i, v = ($('#openedit') || {}).value.trim(); if (!P.open[i]) return;
+    if (!v) { ARC.toast('Escribe una respuesta o bórrala'); return; }
+    P.open[i] = { q: P.open[i].q, a: v.slice(0, OPEN_MAX), ts: Date.now() }; ARC.save('profile'); ARC.closeModal(); ARC.render(true); ARC.toast('Guardado ✨');
+  };
+  A.ivOpenDel = function (el) {
+    if (!confirm('¿Borrar esta respuesta?')) return;
+    delete P.open[el.dataset.i]; ARC.save('profile'); ARC.closeModal(); ARC.render(true);
   };
   A.knowOne = function () {
     var i = nextOpen(); if (i < 0) { ARC.toast('Ya respondiste todas por ahora ✨'); return; }
-    ARC.openModal('<h3>Conócete un poco más</h3><p class="prompt">' + esc(OPEN[i]) + '</p><textarea id="openans2" rows="4" placeholder="Escribe con libertad…"></textarea><button class="btn primary big" data-a="knowOneSave">Guardar</button>');
+    ARC.openModal('<h3>Conócete un poco más</h3><p class="prompt">' + esc(OPEN[i]) + '</p><textarea id="openans2" rows="6" maxlength="5000" placeholder="Escribe con libertad…"></textarea><button class="btn primary big" data-a="knowOneSave">Guardar</button>');
   };
   A.knowOneSave = function () {
     var i = nextOpen(), v = ($('#openans2') || {}).value.trim(); if (i < 0 || !v) { ARC.toast('Escribe una respuesta'); return; }
-    P.open[i] = { q: OPEN[i], a: v.slice(0, 600), ts: Date.now() }; ARC.save('profile'); ARC.closeModal(); ARC.mission('conocer'); ARC.render(true); ARC.toast('Sibila lo recordará 🔮');
+    P.open[i] = { q: OPEN[i], a: v.slice(0, OPEN_MAX), ts: Date.now() }; ARC.save('profile'); ARC.closeModal(); ARC.mission('conocer'); ARC.render(true); ARC.toast('Sibila lo recordará 🔮');
   };
 
   /* ---------- contexto para la IA ---------- */
@@ -233,8 +258,13 @@
     if (p.love) L.push('Lenguajes del amor: ' + p.love.top.map(function (k) { return LOVEN[k]; }).join(' y ') + '.');
     if (p.life) L.push('Hábitos (0–100): ' + Object.keys(p.life).map(function (k) { return LIFEN[k] + ' ' + p.life[k]; }).join(', ') + '.');
     if (p.belief) L.push('Enfoque esotérico: ' + BELT[p.belief.style] + '.');
-    var open = Object.keys(P.open).slice(-8).map(function (k) { return P.open[k].q + ' → ' + P.open[k].a.slice(0, 160); });
-    if (open.length) L.push('Respuestas abiertas recientes: ' + open.join(' | '));
+    var ks = Object.keys(P.open).sort(function (a, b) { return (P.open[b].ts || 0) - (P.open[a].ts || 0); }), budget = 5000, open = [];
+    ks.forEach(function (k, n) {
+      if (budget <= 0) return;
+      var o = P.open[k], t = o.a.slice(0, Math.min(n < 6 ? 700 : 220, budget)); budget -= t.length;
+      open.push(o.q + ' → ' + t + (o.a.length > t.length ? '…' : ''));
+    });
+    if (open.length) L.push('Respuestas abiertas (de la más reciente a la más antigua): ' + open.join(' | '));
     var moods = (P.moods || []).slice(0, 5); if (moods.length) L.push('Ánimo reciente (1–5): ' + moods.map(function (m) { return m.v; }).join(', ') + '.');
     return L.length ? 'PERFIL PSICOLÓGICO: ' + L.join(' ') : '';
   }
