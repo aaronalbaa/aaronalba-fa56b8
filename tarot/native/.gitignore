@@ -3,3 +3,4 @@ build/
 Arcana.xcodeproj/
 xcuserdata/
 .DS_Store
+__pycache__/
