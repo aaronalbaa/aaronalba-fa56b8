@@ -15,13 +15,16 @@ enum Persistence {
         try? data.write(to: fileURL, options: .atomic)
     }
 
-    /// Script que se inyecta antes de cargar la página: solo restaura si el perfil no existe.
+    /// Script que se inyecta antes de cargar la página: solo restaura al arrancar la app (no al recargar,
+    /// para que «Borrar mis datos» no se deshaga) y solo si el perfil no existe.
     static func restoreScript() -> String {
         guard let data = try? Data(contentsOf: fileURL),
               (try? JSONSerialization.jsonObject(with: data)) is [String: Any],
               let json = String(data: data, encoding: .utf8) else { return "" }
         return """
         (function(){try{
+          if(sessionStorage.getItem('arcana.restored'))return;
+          sessionStorage.setItem('arcana.restored','1');
           if(localStorage.getItem('arcana.profile'))return;
           var o=\(json);
           for(var k in o){localStorage.setItem(k,o[k]);}

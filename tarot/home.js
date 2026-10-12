@@ -298,6 +298,9 @@
   A.wipeAll = function () {
     if (!confirm('¿Borrar TODOS tus datos (perfil, diario, chat, progreso y claves)? No se puede deshacer.')) return;
     ['settings', 'profile', 'progress', 'journal', 'chat', 'daily', 'missions', 'lib', 'life', 'fav', 'sync', 'magic', 'dreams', 'games', 'courses', 'codex', 'crypt', 'cloud'].forEach(function (k) { ARC.store.del('arcana.' + k); });
+    try { Object.keys(localStorage).filter(function (k) { return k.indexOf('arcana') === 0; }).forEach(function (k) { localStorage.removeItem(k); }); } catch (e) { /* nada */ }
+    try { indexedDB.deleteDatabase('arcana-lib'); } catch (e) { /* nada */ }
+    if (ARC.native && ARC.native.backup) ARC.native.backup();
     location.reload();
   };
   ARC.inputs.pname = function (v) { P.name = v.trim(); ARC.save('profile'); };
