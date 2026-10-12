@@ -6,7 +6,7 @@
   var CK = 'arcana.cloud';
   var C = ARC.store.get(CK, { url: '', key: '', email: '', uid: '', access: '', refresh: '', exp: 0, ck: '', hash: {}, pulled: {}, handle: '', display: '', cardHash: '' });
   C.hash = C.hash || {}; C.pulled = C.pulled || {};
-  var KEYS = ['profile', 'progress', 'journal', 'chat', 'daily', 'missions', 'lib', 'life', 'fav', 'sync'];
+  var KEYS = ['profile', 'progress', 'journal', 'chat', 'daily', 'missions', 'lib', 'life', 'fav', 'sync', 'magic'];
   var INTERVAL = 15000, started = Date.now(), timer = null, busy = false, status = { st: C.uid ? 'idle' : 'off', last: 0, err: '' };
   function save() { ARC.store.set(CK, C); }
   function configured() { return !!(C.url && C.key && C.uid && C.ck); }

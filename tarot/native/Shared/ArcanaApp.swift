@@ -1,7 +1,17 @@
 import SwiftUI
+#if os(iOS)
+import AVFoundation
+#endif
 
 @main
 struct ArcanaApp: App {
+    init() {
+        #if os(iOS)
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
+        try? AVAudioSession.sharedInstance().setActive(true)
+        #endif
+    }
+
     var body: some Scene {
         #if os(macOS)
         WindowGroup {

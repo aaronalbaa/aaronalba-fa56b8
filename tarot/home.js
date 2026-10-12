@@ -281,7 +281,7 @@
   };
   A.wipeAll = function () {
     if (!confirm('¿Borrar TODOS tus datos (perfil, diario, chat, progreso y claves)? No se puede deshacer.')) return;
-    ['settings', 'profile', 'progress', 'journal', 'chat', 'daily', 'missions', 'lib', 'life', 'fav', 'sync', 'cloud'].forEach(function (k) { ARC.store.del('arcana.' + k); });
+    ['settings', 'profile', 'progress', 'journal', 'chat', 'daily', 'missions', 'lib', 'life', 'fav', 'sync', 'magic', 'cloud'].forEach(function (k) { ARC.store.del('arcana.' + k); });
     location.reload();
   };
   ARC.inputs.pname = function (v) { P.name = v.trim(); ARC.save('profile'); };
