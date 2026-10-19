@@ -1,0 +1,74 @@
+name: Arcana
+options:
+  bundleIdPrefix: com.aaronalbaa
+  deploymentTarget:
+    iOS: "16.4"
+    macOS: "13.3"
+  createIntermediateGroups: true
+  projectFormat: xcode15_0
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+targets:
+  Arcana:
+    type: application
+    platform: iOS
+    sources:
+      - path: Shared
+      - path: iOS/Assets.xcassets
+      - path: Web
+        type: folder
+        buildPhase: resources
+    preBuildScripts:
+      - name: Sincronizar la web
+        script: '"$SRCROOT/build-web.sh"'
+        basedOnDependencyAnalysis: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aaronalbaa.arcana
+        PRODUCT_NAME: Arcana
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Arcana
+        INFOPLIST_FILE: iOS/Info.plist
+        INFOPLIST_KEY_UIUserInterfaceStyle: Dark
+        INFOPLIST_KEY_UIStatusBarStyle: UIStatusBarStyleLightContent
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "Arcana usa tu ubicación para calcular la Luna, el clima y las horas planetarias de tu lugar."
+        INFOPLIST_KEY_NSMotionUsageDescription: "Arcana usa el movimiento del móvil para mover el péndulo."
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+        INFOPLIST_KEY_UIRequiresFullScreen: NO
+        DEVELOPMENT_TEAM: ""
+        CODE_SIGN_STYLE: Automatic
+  ArcanaMac:
+    type: application
+    platform: macOS
+    sources:
+      - path: Shared
+      - path: macOS/Assets.xcassets
+      - path: Web
+        type: folder
+        buildPhase: resources
+    preBuildScripts:
+      - name: Sincronizar la web
+        script: '"$SRCROOT/build-web.sh"'
+        basedOnDependencyAnalysis: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aaronalbaa.arcana.mac
+        PRODUCT_NAME: Arcana
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Arcana
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.lifestyle
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "Arcana usa tu ubicación para calcular la Luna, el clima y las horas planetarias de tu lugar."
+        INFOPLIST_KEY_NSLocationUsageDescription: "Arcana usa tu ubicación para calcular la Luna, el clima y las horas planetarias de tu lugar."
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Arcana"
+        CODE_SIGN_ENTITLEMENTS: macOS/Arcana-macOS.entitlements
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: NO
