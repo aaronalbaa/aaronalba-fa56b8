@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Arcana — Tarot, oráculos y cielo</title>
+<meta name="description" content="Tarot, runas, I Ching, Luna, planetas, horóscopo diario y chino, academia esotérica y una guía de IA para conocerte mejor.">
+<meta name="theme-color" content="#0d0b14">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Arcana">
+<meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Runic&family=Noto+Sans+Ogham&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="app" hidden>
+  <main id="view" aria-live="polite"></main>
+  <nav class="tabs" id="tabs">
+    <div class="brand">Arcana <span>🌙</span></div>
+    <button data-a="tab" data-tab="home"><span>🏠</span><small>Hoy</small></button>
+    <button data-a="tab" data-tab="oracle"><span>🔮</span><small>Oráculos</small></button>
+    <button data-a="tab" data-tab="library"><span>📖</span><small>Biblioteca</small></button>
+    <button data-a="tab" data-tab="life"><span>🌿</span><small>Vida</small></button>
+    <button data-a="tab" data-tab="more" class="only-m"><span>✦</span><small>Más</small></button>
+    <div class="navsep only-d">Explorar</div>
+    <button data-a="tab" data-tab="sky" class="only-d"><span>🌙</span><small>Cielo</small></button>
+    <button data-a="tab" data-tab="study" class="only-d"><span>📚</span><small>Estudio</small></button>
+    <button data-a="tab" data-tab="magic" class="only-d"><span>✨</span><small>Magia</small></button>
+    <button data-a="tab" data-tab="dreams" class="only-d"><span>🌌</span><small>Sueños</small></button>
+    <button data-a="tab" data-tab="games" class="only-d"><span>🎮</span><small>Juegos</small></button>
+    <button data-a="tab" data-tab="codex" class="only-d"><span>📜</span><small>Códice</small></button>
+    <button data-a="tab" data-tab="crypt" class="only-d"><span>🕯️</span><small>Cripta</small></button>
+    <div class="navsep only-d">Contigo</div>
+    <button data-a="tab" data-tab="chat" class="only-d"><span>💬</span><small>Sibila</small></button>
+    <button data-a="tab" data-tab="me" class="only-d"><span>👤</span><small>Yo</small></button>
+  </nav>
+</div>
+<div id="ob" hidden></div>
+<div id="overlay" hidden></div>
+<div id="modal" hidden></div>
+<div id="toast" role="status"></div>
+<script src="cards.js"></script>
+<script src="astro.js"></script>
+<script src="ephem.js"></script>
+<script src="decks.js"></script>
+<script src="iching.js"></script>
+<script src="horoscope.js"></script>
+<script src="natal_txt.js"></script>
+<script src="numdata.js"></script>
+<script src="academy.js"></script>
+<script src="bookkit.js"></script>
+<script src="books_a.js"></script>
+<script src="books_b.js"></script>
+<script src="books_c.js"></script>
+<script src="books_d.js"></script>
+<script src="core.js"></script>
+<script src="ai.js"></script>
+<script src="read.js"></script>
+<script src="sky.js"></script>
+<script src="numerology.js"></script>
+<script src="natal.js"></script>
+<script src="loc.js"></script>
+<script src="anims.js"></script>
+<script src="acad.js"></script>
+<script src="emblem.js"></script>
+<script src="grimorio.js"></script>
+<script src="g_cristales.js"></script>
+<script src="g_plantas.js"></script>
+<script src="g_deidades.js"></script>
+<script src="g_oraciones.js"></script>
+<script src="g_angeles.js"></script>
+<script src="g_sociedades.js"></script>
+<script src="g_simbolos.js"></script>
+<script src="g_practica.js"></script>
+<script src="g_mundo.js"></script>
+<script src="g_historia.js"></script>
+<script src="g_mente.js"></script>
+<script src="g_demonios.js"></script>
+<script src="g_criaturas.js"></script>
+<script src="g_oscuro.js"></script>
+<script src="pendulum.js"></script>
+<script src="libparse.js"></script>
+<script src="library.js"></script>
+<script src="life.js"></script>
+<script src="sync.js"></script>
+<script src="ritdata.js"></script>
+<script src="magic.js"></script>
+<script src="sacred.js"></script>
+<script src="dreamdata.js"></script>
+<script src="dreams.js"></script>
+<script src="akidata.js"></script>
+<script src="games.js"></script>
+<script src="courses.js"></script>
+<script src="codex.js"></script>
+<script src="crypt.js"></script>
+<script src="more.js"></script>
+<script src="interview.js"></script>
+<script src="home.js"></script>
+<script src="fx.js"></script>
+<script src="native.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

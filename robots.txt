@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /$
+Allow: /404.html
+Allow: /fonts/
+Allow: /img/
+Disallow: /
